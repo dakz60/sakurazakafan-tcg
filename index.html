@@ -91,7 +91,7 @@ h1 { margin-bottom: 5px; }
 </div>
 
 <script>
-// タブ切り替え
+// ===== タブ切り替え =====
 const tabs = document.querySelectorAll('.tab');
 const contents = document.querySelectorAll('.tab-content');
 
@@ -104,256 +104,127 @@ tabs.forEach(tab => {
     });
 });
 
-// 発売日カウントダウン例
-const releaseDate = new Date('2026-03-20'); // 例: 3月20日発売
+// ===== カウントダウン =====
+const releaseDate = new Date('2026-03-20'); 
 function updateCountdown() {
     const today = new Date();
     const diff = Math.ceil((releaseDate - today)/(1000*60*60*24));
     document.getElementById('countdown').textContent = `発売まであと ${diff} 日`;
 }
 updateCountdown();
-setInterval(updateCountdown, 1000*60*60*24); // 1日ごと更新
-</script>
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-<meta charset="UTF-8">
-<title>櫻坂デッキ管理</title>
-<style>
-body {
-    font-family: sans-serif;
-    background-color: #fff;
-    color: #333;
-    margin: 0;
-    padding: 20px;
+setInterval(updateCountdown, 1000*60*60*24); 
+
+// ===== カード一覧と検索UI =====
+const deckTab = document.getElementById('deck');
+const searchDiv = document.createElement('div');
+searchDiv.innerHTML = `
+<h3>カード検索</h3>
+<input type="text" id="search-name" placeholder="カード名">
+<input type="number" id="search-cost" placeholder="コスト">
+<input type="number" id="search-power" placeholder="パワー">
+<input type="number" id="search-hit" placeholder="ヒット">
+<select id="search-type">
+<option value="">タイプ</option>
+<option value="unit">ユニット</option>
+<option value="unit/ace">ユニット/エース</option>
+<option value="unit/buster">ユニット/バスター</option>
+<option value="territory">テリトリー</option>
+<option value="command">コマンド</option>
+</select>
+<select id="search-color">
+<option value="">色</option>
+<option value="白">白</option>
+<option value="赤">赤</option>
+<option value="青">青</option>
+<option value="黒">黒</option>
+</select>
+<input type="text" id="search-generation" placeholder="期別">
+<input type="text" id="search-trigger" placeholder="トリガー">
+<select id="search-rarity">
+<option value="">レアリティ</option>
+<option value="N">N</option>
+<option value="N+">N+</option>
+<option value="R">R</option>
+<option value="R+">R+</option>
+<option value="SR">SR</option>
+<option value="SC">SC</option>
+<option value="PR">PR</option>
+<option value="LLC">LLC</option>
+<option value="BT">BT</option>
+</select>
+<input type="text" id="search-effect" placeholder="効果">
+<button id="search-button">検索</button>
+<button id="clear-search">クリア</button>
+<div id="search-results" class="card-list"></div>
+`;
+deckTab.appendChild(searchDiv);
+
+// ===== デッキ管理 =====
+let deck = [];
+function addToDeck(cardId) {
+    const card = cards.find(c => c.id === cardId);
+    if(!card) return;
+    deck.push(cardId);
+    updateDeckDisplay();
 }
-h1 { margin-bottom: 5px; }
-#countdown { margin-bottom: 20px; font-weight: bold; }
-
-.tabs {
-    display: flex;
-    border-bottom: 2px solid #ccc;
-    margin-bottom: 10px;
-}
-.tab {
-    padding: 10px 20px;
-    cursor: pointer;
-    border: 1px solid #ccc;
-    border-bottom: none;
-    background-color: #f9f9f9;
-    margin-right: 2px;
-    border-radius: 5px 5px 0 0;
-}
-.tab.active {
-    background-color: #fff;
-    font-weight: bold;
+function updateDeckDisplay() {
+    let deckDiv = document.getElementById('deck-display');
+    if(!deckDiv) {
+        deckDiv = document.createElement('div');
+        deckDiv.id = 'deck-display';
+        deckTab.appendChild(deckDiv);
+    }
+    deckDiv.innerHTML = '<h3>デッキ</h3>' + deck.map(id => {
+        const c = cards.find(c => c.id === id);
+        return `<div>${c.name} (${c.id})</div>`;
+    }).join('');
 }
 
-.tab-content {
-    display: none;
-    border: 1px solid #ccc;
-    padding: 10px;
-    border-radius: 0 5px 5px 5px;
-    background-color: #fff;
-}
+// ===== カード検索処理 =====
+function searchCards() {
+    const results = cards.filter(card => {
+        const name = document.getElementById('search-name').value.trim();
+        const cost = document.getElementById('search-cost').value;
+        const power = document.getElementById('search-power').value;
+        const hit = document.getElementById('search-hit').value;
+        const type = document.getElementById('search-type').value;
+        const color = document.getElementById('search-color').value;
+        const generation = document.getElementById('search-generation').value.trim();
+        const trigger = document.getElementById('search-trigger').value.trim();
+        const rarity = document.getElementById('search-rarity').value;
+        const effect = document.getElementById('search-effect').value.trim();
 
-.tab-content.active { display: block; }
-
-.card-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-.card-item {
-    width: 100px;
-    text-align: center;
-    cursor: pointer;
-}
-.card-item img {
-    width: 100px;
-    height: 140px;
-    object-fit: cover;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-</style>
-</head>
-<body>
-
-<h1>櫻坂デッキ管理</h1>
-<div id="countdown">発売まであと XX 日</div>
-
-<div class="tabs">
-    <div class="tab active" data-tab="deck">デッキ管理</div>
-    <div class="tab" data-tab="post">デッキレシピ投稿</div>
-    <div class="tab" data-tab="cards">カード一覧</div>
-</div>
-
-<div id="deck" class="tab-content active">
-    <h2>デッキ管理</h2>
-    <!-- デッキ管理UIはここに追加 -->
-</div>
-
-<div id="post" class="tab-content">
-    <h2>デッキレシピ投稿</h2>
-    <!-- 投稿リンク生成UIはここに追加 -->
-</div>
-
-<div id="cards" class="tab-content">
-    <h2>カード一覧</h2>
-    <div class="card-list" id="card-list">
-        <!-- カード画像と名前/IDをここに表示 -->
-    </div>
-</div>
-
-<script>
-// タブ切り替え
-const tabs = document.querySelectorAll('.tab');
-const contents = document.querySelectorAll('.tab-content');
-
-tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-        tabs.forEach(t => t.classList.remove('active'));
-        contents.forEach(c => c.classList.remove('active'));
-        tab.classList.add('active');
-        document.getElementById(tab.dataset.tab).classList.add('active');
+        if(name && !card.name.includes(name)) return false;
+        if(cost && card.cost != cost) return false;
+        if(power && card.power != power) return false;
+        if(hit && card.hit != hit) return false;
+        if(type && card.type != type) return false;
+        if(color && card.color != color) return false;
+        if(generation && card.generation != generation) return false;
+        if(trigger && !(card.subType && card.subType.includes(trigger))) return false;
+        if(rarity && card.rarity != rarity) return false;
+        if(effect && (!card.effect || !card.effect.includes(effect))) return false;
+        return true;
     });
-});
-
-// 発売日カウントダウン例
-const releaseDate = new Date('2026-03-20'); // 例: 3月20日発売
-function updateCountdown() {
-    const today = new Date();
-    const diff = Math.ceil((releaseDate - today)/(1000*60*60*24));
-    document.getElementById('countdown').textContent = `発売まであと ${diff} 日`;
+    displaySearchResults(results);
 }
-updateCountdown();
-setInterval(updateCountdown, 1000*60*60*24); // 1日ごと更新
-</script>
-
-</body>
-</html>
-
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-<meta charset="UTF-8">
-<title>櫻坂デッキ管理</title>
-<style>
-body {
-    font-family: sans-serif;
-    background-color: #fff;
-    color: #333;
-    margin: 0;
-    padding: 20px;
-}
-h1 { margin-bottom: 5px; }
-#countdown { margin-bottom: 20px; font-weight: bold; }
-
-.tabs {
-    display: flex;
-    border-bottom: 2px solid #ccc;
-    margin-bottom: 10px;
-}
-.tab {
-    padding: 10px 20px;
-    cursor: pointer;
-    border: 1px solid #ccc;
-    border-bottom: none;
-    background-color: #f9f9f9;
-    margin-right: 2px;
-    border-radius: 5px 5px 0 0;
-}
-.tab.active {
-    background-color: #fff;
-    font-weight: bold;
-}
-
-.tab-content {
-    display: none;
-    border: 1px solid #ccc;
-    padding: 10px;
-    border-radius: 0 5px 5px 5px;
-    background-color: #fff;
-}
-
-.tab-content.active { display: block; }
-
-.card-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-.card-item {
-    width: 100px;
-    text-align: center;
-    cursor: pointer;
-}
-.card-item img {
-    width: 100px;
-    height: 140px;
-    object-fit: cover;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-</style>
-</head>
-<body>
-
-<h1>櫻坂デッキ管理</h1>
-<div id="countdown">発売まであと XX 日</div>
-
-<div class="tabs">
-    <div class="tab active" data-tab="deck">デッキ管理</div>
-    <div class="tab" data-tab="post">デッキレシピ投稿</div>
-    <div class="tab" data-tab="cards">カード一覧</div>
-</div>
-
-<div id="deck" class="tab-content active">
-    <h2>デッキ管理</h2>
-    <!-- デッキ管理UIはここに追加 -->
-</div>
-
-<div id="post" class="tab-content">
-    <h2>デッキレシピ投稿</h2>
-    <!-- 投稿リンク生成UIはここに追加 -->
-</div>
-
-<div id="cards" class="tab-content">
-    <h2>カード一覧</h2>
-    <div class="card-list" id="card-list">
-        <!-- カード画像と名前/IDをここに表示 -->
-    </div>
-</div>
-
-<script>
-// タブ切り替え
-const tabs = document.querySelectorAll('.tab');
-const contents = document.querySelectorAll('.tab-content');
-
-tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-        tabs.forEach(t => t.classList.remove('active'));
-        contents.forEach(c => c.classList.remove('active'));
-        tab.classList.add('active');
-        document.getElementById(tab.dataset.tab).classList.add('active');
+function displaySearchResults(cardsArray) {
+    const list = document.getElementById('search-results');
+    list.innerHTML = '';
+    cardsArray.forEach(card => {
+        const div = document.createElement('div');
+        div.className = 'card-item';
+        div.innerHTML = `<img src="${card.img}" alt="${card.name}"><div>${card.name} (${card.id})</div>`;
+        div.addEventListener('click', () => addToDeck(card.id));
+        list.appendChild(div);
     });
-});
-
-// 発売日カウントダウン例
-const releaseDate = new Date('2026-03-20'); // 例: 3月20日発売
-function updateCountdown() {
-    const today = new Date();
-    const diff = Math.ceil((releaseDate - today)/(1000*60*60*24));
-    document.getElementById('countdown').textContent = `発売まであと ${diff} 日`;
 }
-updateCountdown();
-setInterval(updateCountdown, 1000*60*60*24); // 1日ごと更新
+document.getElementById('search-button').addEventListener('click', searchCards);
+document.getElementById('clear-search').addEventListener('click', () => {
+    document.querySelectorAll('#deck input, #deck select').forEach(input => input.value = '');
+    displaySearchResults([]);
+});
 </script>
-
-</body>
-</html>
-
 
 </body>
 </html>
