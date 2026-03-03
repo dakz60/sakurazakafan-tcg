@@ -114,6 +114,247 @@ function updateCountdown() {
 updateCountdown();
 setInterval(updateCountdown, 1000*60*60*24); // 1日ごと更新
 </script>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>櫻坂デッキ管理</title>
+<style>
+body {
+    font-family: sans-serif;
+    background-color: #fff;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+}
+h1 { margin-bottom: 5px; }
+#countdown { margin-bottom: 20px; font-weight: bold; }
+
+.tabs {
+    display: flex;
+    border-bottom: 2px solid #ccc;
+    margin-bottom: 10px;
+}
+.tab {
+    padding: 10px 20px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-bottom: none;
+    background-color: #f9f9f9;
+    margin-right: 2px;
+    border-radius: 5px 5px 0 0;
+}
+.tab.active {
+    background-color: #fff;
+    font-weight: bold;
+}
+
+.tab-content {
+    display: none;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 0 5px 5px 5px;
+    background-color: #fff;
+}
+
+.tab-content.active { display: block; }
+
+.card-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.card-item {
+    width: 100px;
+    text-align: center;
+    cursor: pointer;
+}
+.card-item img {
+    width: 100px;
+    height: 140px;
+    object-fit: cover;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+</style>
+</head>
+<body>
+
+<h1>櫻坂デッキ管理</h1>
+<div id="countdown">発売まであと XX 日</div>
+
+<div class="tabs">
+    <div class="tab active" data-tab="deck">デッキ管理</div>
+    <div class="tab" data-tab="post">デッキレシピ投稿</div>
+    <div class="tab" data-tab="cards">カード一覧</div>
+</div>
+
+<div id="deck" class="tab-content active">
+    <h2>デッキ管理</h2>
+    <!-- デッキ管理UIはここに追加 -->
+</div>
+
+<div id="post" class="tab-content">
+    <h2>デッキレシピ投稿</h2>
+    <!-- 投稿リンク生成UIはここに追加 -->
+</div>
+
+<div id="cards" class="tab-content">
+    <h2>カード一覧</h2>
+    <div class="card-list" id="card-list">
+        <!-- カード画像と名前/IDをここに表示 -->
+    </div>
+</div>
+
+<script>
+// タブ切り替え
+const tabs = document.querySelectorAll('.tab');
+const contents = document.querySelectorAll('.tab-content');
+
+tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        contents.forEach(c => c.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById(tab.dataset.tab).classList.add('active');
+    });
+});
+
+// 発売日カウントダウン例
+const releaseDate = new Date('2026-03-20'); // 例: 3月20日発売
+function updateCountdown() {
+    const today = new Date();
+    const diff = Math.ceil((releaseDate - today)/(1000*60*60*24));
+    document.getElementById('countdown').textContent = `発売まであと ${diff} 日`;
+}
+updateCountdown();
+setInterval(updateCountdown, 1000*60*60*24); // 1日ごと更新
+</script>
 
 </body>
 </html>
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>櫻坂デッキ管理</title>
+<style>
+body {
+    font-family: sans-serif;
+    background-color: #fff;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+}
+h1 { margin-bottom: 5px; }
+#countdown { margin-bottom: 20px; font-weight: bold; }
+
+.tabs {
+    display: flex;
+    border-bottom: 2px solid #ccc;
+    margin-bottom: 10px;
+}
+.tab {
+    padding: 10px 20px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-bottom: none;
+    background-color: #f9f9f9;
+    margin-right: 2px;
+    border-radius: 5px 5px 0 0;
+}
+.tab.active {
+    background-color: #fff;
+    font-weight: bold;
+}
+
+.tab-content {
+    display: none;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 0 5px 5px 5px;
+    background-color: #fff;
+}
+
+.tab-content.active { display: block; }
+
+.card-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.card-item {
+    width: 100px;
+    text-align: center;
+    cursor: pointer;
+}
+.card-item img {
+    width: 100px;
+    height: 140px;
+    object-fit: cover;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+</style>
+</head>
+<body>
+
+<h1>櫻坂デッキ管理</h1>
+<div id="countdown">発売まであと XX 日</div>
+
+<div class="tabs">
+    <div class="tab active" data-tab="deck">デッキ管理</div>
+    <div class="tab" data-tab="post">デッキレシピ投稿</div>
+    <div class="tab" data-tab="cards">カード一覧</div>
+</div>
+
+<div id="deck" class="tab-content active">
+    <h2>デッキ管理</h2>
+    <!-- デッキ管理UIはここに追加 -->
+</div>
+
+<div id="post" class="tab-content">
+    <h2>デッキレシピ投稿</h2>
+    <!-- 投稿リンク生成UIはここに追加 -->
+</div>
+
+<div id="cards" class="tab-content">
+    <h2>カード一覧</h2>
+    <div class="card-list" id="card-list">
+        <!-- カード画像と名前/IDをここに表示 -->
+    </div>
+</div>
+
+<script>
+// タブ切り替え
+const tabs = document.querySelectorAll('.tab');
+const contents = document.querySelectorAll('.tab-content');
+
+tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        contents.forEach(c => c.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById(tab.dataset.tab).classList.add('active');
+    });
+});
+
+// 発売日カウントダウン例
+const releaseDate = new Date('2026-03-20'); // 例: 3月20日発売
+function updateCountdown() {
+    const today = new Date();
+    const diff = Math.ceil((releaseDate - today)/(1000*60*60*24));
+    document.getElementById('countdown').textContent = `発売まであと ${diff} 日`;
+}
+updateCountdown();
+setInterval(updateCountdown, 1000*60*60*24); // 1日ごと更新
+</script>
+
+</body>
+</html>
+
+
+</body>
+</html>
+
