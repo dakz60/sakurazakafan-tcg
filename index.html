@@ -2,217 +2,118 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>櫻坂TCG◢ デッキ管理 完全版</title>
+<title>櫻坂デッキ管理</title>
 <style>
-body { font-family: sans-serif; background:white; color: rgb(241,157,181); padding:20px; font-size:16px; margin:0;}
-h1, h2 { text-align:center; color: rgb(241,157,181);}
-button.tab { background: rgb(241,157,181); color:white; border:none; padding:10px 20px; margin-right:5px; cursor:pointer; border-radius:5px; }
-button.tab.active { background:white; color: rgb(241,157,181); border:1px solid rgb(241,157,181); }
-.tab-content { display:none; margin-top:20px; }
-.tab-content.active { display:block; }
+body {
+    font-family: sans-serif;
+    background-color: #fff;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+}
+h1 { margin-bottom: 5px; }
+#countdown { margin-bottom: 20px; font-weight: bold; }
 
-input, select, button, textarea { margin:5px; padding:6px; border-radius:5px; border:1px solid rgb(241,157,181); font-size:16px; }
-input, select, textarea { color:black; }
-button:hover { background:white; color:rgb(241,157,181);}
-hr { border:1px solid rgb(241,157,181);}
-textarea { width:100%; resize:none;}
+.tabs {
+    display: flex;
+    border-bottom: 2px solid #ccc;
+    margin-bottom: 10px;
+}
+.tab {
+    padding: 10px 20px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-bottom: none;
+    background-color: #f9f9f9;
+    margin-right: 2px;
+    border-radius: 5px 5px 0 0;
+}
+.tab.active {
+    background-color: #fff;
+    font-weight: bold;
+}
 
-.card-white { color: rgb(241,157,181); background-color: rgba(241,157,181,0.1); padding:10px; margin:6px 0; border-radius:10px; }
-.card-red { color: white; background-color: rgba(241,157,181,0.6); padding:10px; margin:6px 0; border-radius:10px; }
-.card-blue { color: white; background-color: rgba(68,170,255,0.4); padding:10px; margin:6px 0; border-radius:10px; }
-.card-black { color: white; background-color: rgba(0,0,0,0.4); padding:10px; margin:6px 0; border-radius:10px; }
+.tab-content {
+    display: none;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 0 5px 5px 5px;
+    background-color: #fff;
+}
 
-.flex-row { display:flex; gap:40px; align-items:flex-start; }
-.flex-col { display:flex; flex-direction:column; }
+.tab-content.active { display: block; }
 
-#deckContainer { display:flex; gap:20px; align-items:flex-start; margin-top:20px; padding:20px; border-radius:20px; box-shadow:0 8px 20px rgba(0,0,0,0.2); min-height:700px;}
-#deckContainer.white-mode { background:white;}
-#deckContainer.mat-mode { background-image: url("images/plm.jpg"); background-size: cover; background-position: center; background-repeat:no-repeat;}
-
-#deckImages { display:grid; grid-template-columns: repeat(10,98px); grid-template-rows: repeat(5,140px); gap:1px; justify-items:center; align-items:center;}
-#deckImages img { border-radius:5px; border:1px solid #ccc; object-fit:cover; width:98px; height:140px; cursor:grab; }
-#territoryImage { width:180px; min-width:180px;}
-#territoryImage img { width:270px; height:180px; border-radius:5px; border:1px solid #ccc; display:block; margin:5px auto; }
-
-#releaseCountdown, #deckCheckResult, #deckCodeResult { text-align:center; font-weight:bold; margin:10px 0; }
-#deckCheckResult { color: rgb(241,50,50); }
-
-.search-section { margin-bottom:10px; }
-.search-section label { display:block; margin:2px 0; }
-
-#result, #cardListContainer { max-height:500px; overflow-y:auto; }
-#cardListContainer img { width:85px; height:auto; border-radius:5px; margin-right:5px; margin-bottom:5px; }
-
+.card-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.card-item {
+    width: 100px;
+    text-align: center;
+    cursor: pointer;
+}
+.card-item img {
+    width: 100px;
+    height: 140px;
+    object-fit: cover;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
 </style>
 </head>
 <body>
 
-<h1>櫻坂TCG◢ デッキ管理</h1>
-<div id="releaseCountdown"></div>
+<h1>櫻坂デッキ管理</h1>
+<div id="countdown">発売まであと XX 日</div>
 
-<!-- タブ -->
-<div style="text-align:center;">
-  <button class="tab active" onclick="openTab('deckTab')">デッキ作成</button>
-  <button class="tab" onclick="openTab('recipeTab')">デッキレシピ投稿</button>
-  <button class="tab" onclick="openTab('cardTab')">カード一覧</button>
+<div class="tabs">
+    <div class="tab active" data-tab="deck">デッキ管理</div>
+    <div class="tab" data-tab="post">デッキレシピ投稿</div>
+    <div class="tab" data-tab="cards">カード一覧</div>
 </div>
 
-<!-- デッキ作成タブ -->
-<div id="deckTab" class="tab-content active">
+<div id="deck" class="tab-content active">
+    <h2>デッキ管理</h2>
+    <!-- デッキ管理UIはここに追加 -->
+</div>
 
-<h2>デッキ作成＋ランダムカード</h2>
+<div id="post" class="tab-content">
+    <h2>デッキレシピ投稿</h2>
+    <!-- 投稿リンク生成UIはここに追加 -->
+</div>
 
-<div class="flex-row">
-  <!-- 検索フォーム -->
-  <div style="flex:2;" class="flex-col">
-    <div class="search-section">
-      <label>カード名検索：<input type="text" id="searchBox" placeholder="カード名" list="cardList"><datalist id="cardList"></datalist></label>
-      <label>効果検索：<input type="text" id="effectSearchBox" placeholder="効果検索"></label>
+<div id="cards" class="tab-content">
+    <h2>カード一覧</h2>
+    <div class="card-list" id="card-list">
+        <!-- カード画像と名前/IDをここに表示 -->
     </div>
-    <div class="search-section">
-      <label>コスト：<input type="number" id="costMin" placeholder="最小"> 〜 <input type="number" id="costMax" placeholder="最大"></label>
-      <label>パワー：<input type="number" id="powerMin" placeholder="最小"> 〜 <input type="number" id="powerMax" placeholder="最大"></label>
-      <label>ヒット：<input type="number" id="hitMin" placeholder="最小"> 〜 <input type="number" id="hitMax" placeholder="最大"></label>
-    </div>
-    <div class="search-section">
-      <label>タイプ：
-        <select id="typeFilter">
-          <option value="">すべて</option>
-          <option value="unit">ユニット</option>
-          <option value="command">コマンド</option>
-          <option value="territory">テリトリー</option>
-        </select>
-      </label>
-      <label>色：
-        <select id="colorFilter">
-          <option value="">すべて</option>
-          <option value="白">白</option>
-          <option value="赤">赤</option>
-          <option value="青">青</option>
-          <option value="黒">黒</option>
-        </select>
-      </label>
-      <label>期別：
-        <select id="generationFilter">
-          <option value="">すべて</option>
-          <option value="2期">2期</option>
-          <option value="3期">3期</option>
-          <option value="4期">4期</option>
-        </select>
-      </label>
-      <label>トリガー：
-        <select id="subTypeFilter">
-          <option value="">すべて</option>
-          <option value="バスター">バスター</option>
-          <option value="ショット">ショット</option>
-          <option value="その他">その他</option>
-        </select>
-      </label>
-      <label>レアリティ：
-        <select id="rarityFilter">
-          <option value="">すべて</option>
-          <option value="PR">PR</option>
-          <option value="BT">BT</option>
-          <option value="LLC">LLC</option>
-          <option value="R">R</option>
-          <option value="R+">R+</option>
-          <option value="SC">SC</option>
-          <option value="N">N</option>
-          <option value="N+">N+</option>
-        </select>
-      </label>
-    </div>
-    <button onclick="search()">検索</button>
-  </div>
-
-  <!-- ランダムカード -->
-  <div style="flex:1; border:2px solid rgb(241,157,181); border-radius:80px; padding:40px;">
-    <h3 style="text-align:center;">🌸ランダムカード🌸</h3>
-    <div id="dailyCard"></div>
-    <div style="text-align:center; margin-top:10px;">
-      <button onclick="rerollDailyCard()" style="font-size:16px; border-radius:20px; cursor:pointer;">🌸</button>
-      <input type="text" id="manualCardId" placeholder="カードID" style="width:66px;">
-      <button onclick="showManualCard()">表示</button>
-    </div>
-  </div>
 </div>
 
-<div class="flex-row">
-  <div style="flex:2;">
-    <h2>検索結果</h2>
-    <div id="result"></div>
-  </div>
-  <div style="flex:1;">
-    <h3>デッキ状況</h3>
-    <div id="deckStatus"></div>
-  </div>
-</div>
-
-<hr>
-<div id="deckContainer" class="white-mode">
-  <div id="deckImages"></div>
-  <div id="territoryImage"></div>
-</div>
-
-<button onclick="checkDeckRules()">完成チェック</button>
-<button onclick="toggleBackground()">on/off</button>
-<div id="deckCheckResult"></div>
-
-<h2>デッキコード</h2>
-<textarea id="deckCodeBox" placeholder="ここにデッキコードを入力"></textarea><br>
-<button onclick="generateDeckCode()">デッキコード生成</button>
-<button onclick="loadDeckFromCode()">デッキ復元</button>
-<button onclick="copyDeckCode()">コピー</button>
-<div id="deckCodeResult"></div>
-
-</div>
-
-<!-- デッキレシピ投稿 -->
-<div id="recipeTab" class="tab-content">
-<h2>デッキレシピ投稿</h2>
-<form>
-  <label>タイトル:<br><input type="text" name="title" style="width:100%"></label><br><br>
-  <label>説明:<br><textarea name="description" style="width:100%; height:100px;"></textarea></label><br><br>
-  <label>デッキコード:<br><textarea name="deckCode" style="width:100%; height:60px;" placeholder="デッキコードを入力"></textarea></label><br><br>
-  <div id="recipeDeckImage"></div>
-  <button type="button" onclick="alert('投稿リンク生成機能は後で追加')">Twitterに投稿</button>
-</form>
-</div>
-
-<!-- カード一覧 -->
-<div id="cardTab" class="tab-content">
-<h2>カード一覧</h2>
-<div id="cardListContainer"></div>
-</div>
-
-<script src="data/cards.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
 <script>
-// タブ切替
-function openTab(tabId){
-  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
-  document.getElementById(tabId).classList.add('active');
-  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
-  event.currentTarget.classList.add('active');
+// タブ切り替え
+const tabs = document.querySelectorAll('.tab');
+const contents = document.querySelectorAll('.tab-content');
+
+tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        contents.forEach(c => c.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById(tab.dataset.tab).classList.add('active');
+    });
+});
+
+// 発売日カウントダウン例
+const releaseDate = new Date('2026-03-20'); // 例: 3月20日発売
+function updateCountdown() {
+    const today = new Date();
+    const diff = Math.ceil((releaseDate - today)/(1000*60*60*24));
+    document.getElementById('countdown').textContent = `発売まであと ${diff} 日`;
 }
-
-// --- 以下、前回のデッキ管理JS（addToDeck, removeFromDeck, updateDeckImages, updateDeckStatus, checkDeckRules, generateDeckCode, loadDeckFromCode, copyDeckCode, toggleBackground, search, showDailyCard, rerollDailyCard, showManualCard）をそのままここに入れる ---
-
-// カード一覧表示
-function showAllCards(){
-  const container = document.getElementById("cardListContainer");
-  container.innerHTML = cards.map(c=>{
-    return `<div style="display:flex; flex-direction:column; align-items:center; margin:5px;">
-      <img src="${c.img}" alt="${c.name}">
-      <div style="text-align:center;">${c.name} / ${c.id}</div>
-    </div>`;
-  }).join('');
-}
-
-// 初期処理
-updateReleaseCountdown();
-showDailyCard();
-showAllCards();
+updateCountdown();
+setInterval(updateCountdown, 1000*60*60*24); // 1日ごと更新
 </script>
+
 </body>
 </html>
