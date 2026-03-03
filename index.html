@@ -4,7 +4,62 @@
 <meta charset="UTF-8">
 <title>櫻坂デッキ管理</title>
 <style>
-/* CSSはここにまとめる */
+body {
+    font-family: sans-serif;
+    background-color: #fff;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+}
+h1 { margin-bottom: 5px; }
+#countdown { margin-bottom: 20px; font-weight: bold; }
+
+.tabs {
+    display: flex;
+    border-bottom: 2px solid #ccc;
+    margin-bottom: 10px;
+}
+.tab {
+    padding: 10px 20px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-bottom: none;
+    background-color: #f9f9f9;
+    margin-right: 2px;
+    border-radius: 5px 5px 0 0;
+}
+.tab.active {
+    background-color: #fff;
+    font-weight: bold;
+}
+
+.tab-content {
+    display: none;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 0 5px 5px 5px;
+    background-color: #fff;
+}
+
+.tab-content.active { display: block; }
+
+.card-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.card-item {
+    width: 100px;
+    text-align: center;
+    cursor: pointer;
+}
+.card-item img {
+    width: 100px;
+    height: 140px;
+    object-fit: cover;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
 </style>
 </head>
 <body>
@@ -20,20 +75,170 @@
 
 <div id="deck" class="tab-content active">
     <h2>デッキ管理</h2>
+    <div id="deck-display"></div>
 </div>
 
 <div id="post" class="tab-content">
     <h2>デッキレシピ投稿</h2>
+    <!-- 投稿リンク生成UIはここに追加可能 -->
 </div>
 
 <div id="cards" class="tab-content">
     <h2>カード一覧</h2>
+    <div id="search-ui"></div>
     <div class="card-list" id="card-list"></div>
+    <div class="card-list" id="search-results"></div>
 </div>
 
 <script>
-// タブ切り替え＆カウントダウンのJSもここに1回だけ
-</script>
+// ---------- タブ切り替え ----------
+const tabs = document.querySelectorAll('.tab');
+const contents = document.querySelectorAll('.tab-content');
+tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        contents.forEach(c => c.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById(tab.dataset.tab).classList.add('active');
+    });
+});
 
+// ---------- 発売日カウントダウン ----------
+const releaseDate = new Date('2026-03-20'); 
+function updateCountdown() {
+    const today = new Date();
+    const diff = Math.ceil((releaseDate - today)/(1000*60*60*24));
+    document.getElementById('countdown').textContent = `発売まであと ${diff} 日`;
+}
+updateCountdown();
+setInterval(updateCountdown, 1000*60*60*24);
+
+// ---------- サンプルカードデータ ----------
+const cards = [
+    {id:"C001", name:"櫻坂ユニットA", type:"unit", color:"白", cost:1, power:1000, hit:1, generation:"1期", rarity:"N", img:"images/C001.png"},
+    {id:"C002", name:"櫻坂ユニットB", type:"unit/ace", color:"赤", cost:2, power:1500, hit:1, generation:"2期", rarity:"R", img:"images/C002.png"},
+    {id:"C003", name:"櫻坂テリトリー", type:"territory", color:"青", cost:3, power:0, hit:0, generation:"1期", rarity:"SR", img:"images/C003.png"},
+    // 追加カードはここに
+];
+
+// ---------- デッキ操作 ----------
+let deck = [];
+function addToDeck(cardId){
+    const card = cards.find(c => c.id === cardId);
+    if(!card) return;
+    deck.push(cardId);
+    updateDeckDisplay();
+}
+function updateDeckDisplay(){
+    const deckDiv = document.getElementById('deck-display');
+    deckDiv.innerHTML = '<h3>デッキ</h3>' + deck.map(id => {
+        const c = cards.find(c=>c.id===id);
+        return `<div>${c.name} (${c.id})</div>`;
+    }).join('');
+}
+
+// ---------- カード一覧表示 ----------
+function displayCards(cardsArray){
+    const list = document.getElementById('card-list');
+    list.innerHTML = '';
+    cardsArray.forEach(card=>{
+        const div = document.createElement('div');
+        div.className='card-item';
+        div.innerHTML=`<img src="${card.img}" alt="${card.name}"><div>${card.name}<br>(${card.id})</div>`;
+        div.addEventListener('click',()=>addToDeck(card.id));
+        list.appendChild(div);
+    });
+}
+displayCards(cards);
+
+// ---------- 検索UI ----------
+const searchUI = document.getElementById('search-ui');
+searchUI.innerHTML = `
+<h3>カード検索</h3>
+<input type="text" id="search-name" placeholder="カード名">
+<input type="number" id="search-cost" placeholder="コスト">
+<input type="number" id="search-power" placeholder="パワー">
+<input type="number" id="search-hit" placeholder="ヒット">
+<select id="search-type">
+    <option value="">タイプ</option>
+    <option value="unit">ユニット</option>
+    <option value="unit/ace">ユニット/エース</option>
+    <option value="unit/buster">ユニット/バスター</option>
+    <option value="territory">テリトリー</option>
+    <option value="command">コマンド</option>
+</select>
+<select id="search-color">
+    <option value="">色</option>
+    <option value="白">白</option>
+    <option value="赤">赤</option>
+    <option value="青">青</option>
+    <option value="黒">黒</option>
+</select>
+<input type="text" id="search-generation" placeholder="期別">
+<input type="text" id="search-trigger" placeholder="トリガー">
+<select id="search-rarity">
+    <option value="">レアリティ</option>
+    <option value="N">N</option>
+    <option value="N+">N+</option>
+    <option value="R">R</option>
+    <option value="R+">R+</option>
+    <option value="SR">SR</option>
+    <option value="SC">SC</option>
+    <option value="PR">PR</option>
+    <option value="LLC">LLC</option>
+    <option value="BT">BT</option>
+</select>
+<input type="text" id="search-effect" placeholder="効果">
+<button id="search-button">検索</button>
+<button id="clear-search">クリア</button>
+`;
+
+// ---------- 検索処理 ----------
+function searchCards(){
+    const name=document.getElementById('search-name').value.trim();
+    const cost=document.getElementById('search-cost').value;
+    const power=document.getElementById('search-power').value;
+    const hit=document.getElementById('search-hit').value;
+    const type=document.getElementById('search-type').value;
+    const color=document.getElementById('search-color').value;
+    const generation=document.getElementById('search-generation').value.trim();
+    const trigger=document.getElementById('search-trigger').value.trim();
+    const rarity=document.getElementById('search-rarity').value;
+    const effect=document.getElementById('search-effect').value.trim();
+
+    const results=cards.filter(card=>{
+        if(name && !card.name.includes(name)) return false;
+        if(cost && card.cost!=cost) return false;
+        if(power && card.power!=power) return false;
+        if(hit && card.hit!=hit) return false;
+        if(type && card.type!=type) return false;
+        if(color && card.color!=color) return false;
+        if(generation && card.generation!=generation) return false;
+        if(trigger && !(card.subType && card.subType.includes(trigger))) return false;
+        if(rarity && card.rarity!=rarity) return false;
+        if(effect && (!card.effect||!card.effect.includes(effect))) return false;
+        return true;
+    });
+    displaySearchResults(results);
+}
+function displaySearchResults(cardsArray){
+    const list=document.getElementById('search-results');
+    list.innerHTML='';
+    cardsArray.forEach(card=>{
+        const div=document.createElement('div');
+        div.className='card-item';
+        div.innerHTML=`<img src="${card.img}" alt="${card.name}"><div>${card.name}<br>(${card.id})</div>`;
+        div.addEventListener('click',()=>addToDeck(card.id));
+        list.appendChild(div);
+    });
+}
+
+document.getElementById('search-button').addEventListener('click',searchCards);
+document.getElementById('clear-search').addEventListener('click',()=>{
+    document.querySelectorAll('#search-ui input,#search-ui select').forEach(input=>input.value='');
+    displaySearchResults([]);
+});
+
+</script>
 </body>
 </html>
