@@ -371,7 +371,7 @@ function loadRecipeDeck(){
      container.innerHTML = deckIds.map(id=>{
     const card = cards.find(c=>c.id===id);
   if(!card) return "";
-  return `<div style="display:inline-block; margin:3px;">
+  return `<div style="display:inline-block; margin:1px;">
             <img src="${card.img}" style="width:120px; height:170px; object-fit:cover; border-radius:5px;">
           </div>`;
 }).join('');
@@ -401,4 +401,5 @@ showAllCards();
 </script>
 </body>
 </html>
+
 
