@@ -99,5 +99,11 @@
  { id: "032", name: "マモリビト", effect:"ユニット1枚対象とし、1枚引き、対象のパワーを【+5000】。" ,color: "青", cost: 3, type: "command",subType: ["ショット"], rarity: "N",img:"images/32.jpg"},
  { id: "043", name: "Nobody's fault", effect: "相手のパワー【10000】以下のユニット1枚を対象とする。相手は1枚引き、対象はエナジーゾーンに置く。" ,color: "赤", cost: 3, type: "command",subType: ["ショット"], rarity: "N",img:"images/43.jpg"},
  { id: "025", name: "Addiction", effect: "ターン中、相手ユニット全てのパワーを【-3000】ヒットを-1。ライフがレッドゾーンなら、もう1回行う。" ,color: "黒", cost: 3, type: "command",subType: ["ショット"], rarity: "N",img:"images/25.jpg"},
- { id: "p054", name: "み～んな!理子のとりこ♪", effect: "（自動）エースアタック時、山札を上から1枚見る。アタックしたユニットと異なる色でヒット1なら登場、違うならドロップ。各ターン1回まで。",color: "白", cost: 5, type: "territory", rarity: "PR",img:"images/54PR.jpg"}
+ { id: "p054", name: "み～んな!理子のとりこ♪", effect: "（自動）エースアタック時、山札を上から1枚見る。アタックしたユニットと異なる色でヒット1なら登場、違うならドロップ。各ターン1回まで。",color: "白", cost: 5, type: "territory", rarity: "PR",img:"images/54PR.jpg"},
+ { id: "026", name: "Dead end", effect: "相手のコスト4以下のユニットの全てをドロップ。", color: "黒", cost: 6, type: "command", subType: ["ショット"], rarity: "N", img:"images/26.jpg" },
+ { id: "029", name: "無念", effect: "相手のユニットを1枚対象とし、そのターン中、対象のパワーを【-3000】。このターン対象がドロップした時、1枚引く。", color: "黒", cost: 1, type: "command", subType: ["ショット"], rarity: "N", img:"images/29.jpg" },
+ { id: "027", name: "Nightmare症候群", effect: "エース全てのパワーを【+3000】、ヒットを+1。", color: "黒", cost: 4, type: "command", rarity: "N", img:"images/27.jpg" },
+ { id: "046", name: "愛し合いなさい", effect: "山札をシャッフルして上から1枚ライフの先頭に置く。", color: "赤", cost: 2, type: "command", subType: ["ショット"], rarity: "N", img:"images/46.jpg" },
+ { id: "044", name: "摩擦係数", effect: "そのターン中、あなたのユニット全てのパワーを【+3000】 。そのターン中、相手のユニット全ては可能限りブロックする。", color: "赤", cost: 1, type: "command", rarity: "N", img:"images/44.jpg" },
+
 ];
