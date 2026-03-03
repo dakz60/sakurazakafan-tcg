@@ -180,6 +180,8 @@ textarea { width: 100%; height: 60px; resize: none; }
     <label>タイトル:<br><input type="text" name="title" style="width:100%"></label><br><br>
     <label>説明:<br><textarea name="description" style="width:100%; height:100px;"></textarea></label><br><br>
     <label>デッキコード:<br><textarea name="deckCode" style="width:100%; height:60px;" placeholder="デッキコードを入力"></textarea></label><br><br>
+    <!-- デッキ画像プレビュー -->
+    <div id="recipeDeckImage" style="text-align:center; margin-top:10px;"></div>
     <button type="button" onclick="alert('投稿リンク生成機能は後で追加')">Twitterに投稿</button>
   </form>
 </div>
@@ -219,16 +221,23 @@ function exportDeckImage() {
     const resultDiv = document.getElementById('deckImageResult');
     resultDiv.innerHTML = '';
     resultDiv.appendChild(canvas);
+
+    const recipeDiv = document.getElementById('recipeDeckImage');
+    recipeDiv.innerHTML = '';
+    const imgCopy = new Image();
+    imgCopy.src = canvas.toDataURL();
+    recipeDiv.appendChild(imgCopy);
+
+    // ダウンロード
     const link = document.createElement('a');
     link.download = 'deck.png';
     link.href = canvas.toDataURL();
     link.click();
   });
 }
-
-/* デッキ管理など（add/remove/update/check/generate/load/copy） は以前のままです */
 // ...ここに先ほどの addToDeck, removeFromDeck, updateDeckImages, updateDeckStatus, checkDeckRules, generateDeckCode, loadDeckFromCode, copyDeckCode, toggleBackground をコピー
 </script>
 
 </body>
 </html>
+
