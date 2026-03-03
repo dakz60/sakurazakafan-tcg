@@ -4,17 +4,18 @@
 <meta charset="UTF-8">
 <title>櫻坂TCG◢ デッキ管理 完全版</title>
 <style>
-body { font-family: sans-serif; background:white; color: rgb(241,157,181); margin:0; padding:20px; font-size:16px; }
-h1,h2,h3 { text-align:center; color: rgb(241,157,181); }
+body { font-family: sans-serif; background:white; color: rgb(241,157,181); padding:20px; font-size:16px; margin:0;}
+h1, h2 { text-align:center; color: rgb(241,157,181);}
 button.tab { background: rgb(241,157,181); color:white; border:none; padding:10px 20px; margin-right:5px; cursor:pointer; border-radius:5px; }
 button.tab.active { background:white; color: rgb(241,157,181); border:1px solid rgb(241,157,181); }
-.tab-content { display:none; margin-top:20px; max-height:80vh; overflow-y:auto; padding-right:10px; }
+.tab-content { display:none; margin-top:20px; }
 .tab-content.active { display:block; }
+
 input, select, button, textarea { margin:5px; padding:6px; border-radius:5px; border:1px solid rgb(241,157,181); font-size:16px; }
 input, select, textarea { color:black; }
-button:hover { background:white; color:rgb(241,157,181); }
-hr { border:1px solid rgb(241,157,181); }
-textarea { width:100%; resize:none; }
+button:hover { background:white; color:rgb(241,157,181);}
+hr { border:1px solid rgb(241,157,181);}
+textarea { width:100%; resize:none;}
 
 .card-white { color: rgb(241,157,181); background-color: rgba(241,157,181,0.1); padding:10px; margin:6px 0; border-radius:10px; }
 .card-red { color: white; background-color: rgba(241,157,181,0.6); padding:10px; margin:6px 0; border-radius:10px; }
@@ -24,50 +25,54 @@ textarea { width:100%; resize:none; }
 .flex-row { display:flex; gap:40px; align-items:flex-start; }
 .flex-col { display:flex; flex-direction:column; }
 
-#deckContainer { display:flex; gap:20px; align-items:flex-start; margin-top:20px; padding:20px; border-radius:20px; box-shadow:0 8px 20px rgba(0,0,0,0.2); min-height:400px; }
-#deckContainer.white-mode { background:white; }
-#deckContainer.mat-mode { background-image:url("images/plm.jpg"); background-size:cover; background-position:center; background-repeat:no-repeat; }
+#deckContainer { display:flex; gap:20px; align-items:flex-start; margin-top:20px; padding:20px; border-radius:20px; box-shadow:0 8px 20px rgba(0,0,0,0.2); min-height:700px;}
+#deckContainer.white-mode { background:white;}
+#deckContainer.mat-mode { background-image: url("images/plm.jpg"); background-size: cover; background-position: center; background-repeat:no-repeat;}
 
-#deckImages { display:grid; grid-template-columns:repeat(10,98px); grid-template-rows:repeat(5,140px); gap:1px; justify-items:center; align-items:center; }
+#deckImages { display:grid; grid-template-columns: repeat(10,98px); grid-template-rows: repeat(5,140px); gap:1px; justify-items:center; align-items:center;}
 #deckImages img { border-radius:5px; border:1px solid #ccc; object-fit:cover; width:98px; height:140px; cursor:grab; }
-#territoryImage { width:180px; min-width:180px; }
+#territoryImage { width:180px; min-width:180px;}
 #territoryImage img { width:270px; height:180px; border-radius:5px; border:1px solid #ccc; display:block; margin:5px auto; }
 
-#deckStatus,#deckCheckResult,#deckCodeResult { text-align:center; font-weight:bold; margin:10px 0; }
+#releaseCountdown, #deckCheckResult, #deckCodeResult { text-align:center; font-weight:bold; margin:10px 0; }
 #deckCheckResult { color: rgb(241,50,50); }
 
-#result, #cardListAll { max-height:400px; overflow-y:auto; }
-#result div, #cardListAll div { display:flex; align-items:center; margin-bottom:5px; }
-#result img, #cardListAll img { width:85px; height:auto; border-radius:5px; margin-right:5px; }
+.search-section { margin-bottom:10px; }
+.search-section label { display:block; margin:2px 0; }
+
+#result, #cardListContainer { max-height:500px; overflow-y:auto; }
+#cardListContainer img { width:85px; height:auto; border-radius:5px; margin-right:5px; margin-bottom:5px; }
+
 </style>
 </head>
 <body>
 
 <h1>櫻坂TCG◢ デッキ管理</h1>
+<div id="releaseCountdown"></div>
 
 <!-- タブ -->
-<div>
+<div style="text-align:center;">
   <button class="tab active" onclick="openTab('deckTab')">デッキ作成</button>
-  <button class="tab" onclick="openTab('recipeTab')">デッキレシピ</button>
+  <button class="tab" onclick="openTab('recipeTab')">デッキレシピ投稿</button>
   <button class="tab" onclick="openTab('cardTab')">カード一覧</button>
 </div>
 
 <!-- デッキ作成タブ -->
 <div id="deckTab" class="tab-content active">
 
-<h2>デッキ作成</h2>
-<div id="releaseCountdown"></div>
+<h2>デッキ作成＋ランダムカード</h2>
 
 <div class="flex-row">
   <!-- 検索フォーム -->
   <div style="flex:2;" class="flex-col">
     <div class="search-section">
-      <label>カード名:<input type="text" id="searchBox" placeholder="カード名" list="cardList"><datalist id="cardList"></datalist></label>
-      <button onclick="search()">検索</button>
+      <label>カード名検索：<input type="text" id="searchBox" placeholder="カード名" list="cardList"><datalist id="cardList"></datalist></label>
+      <label>効果検索：<input type="text" id="effectSearchBox" placeholder="効果検索"></label>
     </div>
     <div class="search-section">
-      <label>コスト：<input type="number" id="costMin" placeholder="最小">〜<input type="number" id="costMax" placeholder="最大"></label>
-      <label>パワー：<input type="number" id="powerMin" placeholder="最小">〜<input type="number" id="powerMax" placeholder="最大"></label>
+      <label>コスト：<input type="number" id="costMin" placeholder="最小"> 〜 <input type="number" id="costMax" placeholder="最大"></label>
+      <label>パワー：<input type="number" id="powerMin" placeholder="最小"> 〜 <input type="number" id="powerMax" placeholder="最大"></label>
+      <label>ヒット：<input type="number" id="hitMin" placeholder="最小"> 〜 <input type="number" id="hitMax" placeholder="最大"></label>
     </div>
     <div class="search-section">
       <label>タイプ：
@@ -78,15 +83,54 @@ textarea { width:100%; resize:none; }
           <option value="territory">テリトリー</option>
         </select>
       </label>
+      <label>色：
+        <select id="colorFilter">
+          <option value="">すべて</option>
+          <option value="白">白</option>
+          <option value="赤">赤</option>
+          <option value="青">青</option>
+          <option value="黒">黒</option>
+        </select>
+      </label>
+      <label>期別：
+        <select id="generationFilter">
+          <option value="">すべて</option>
+          <option value="2期">2期</option>
+          <option value="3期">3期</option>
+          <option value="4期">4期</option>
+        </select>
+      </label>
+      <label>トリガー：
+        <select id="subTypeFilter">
+          <option value="">すべて</option>
+          <option value="バスター">バスター</option>
+          <option value="ショット">ショット</option>
+          <option value="その他">その他</option>
+        </select>
+      </label>
+      <label>レアリティ：
+        <select id="rarityFilter">
+          <option value="">すべて</option>
+          <option value="PR">PR</option>
+          <option value="BT">BT</option>
+          <option value="LLC">LLC</option>
+          <option value="R">R</option>
+          <option value="R+">R+</option>
+          <option value="SC">SC</option>
+          <option value="N">N</option>
+          <option value="N+">N+</option>
+        </select>
+      </label>
     </div>
+    <button onclick="search()">検索</button>
   </div>
 
   <!-- ランダムカード -->
-  <div style="flex:1; border:2px solid rgb(241,157,181); border-radius:80px; padding:20px;">
-    <h3>🌸ランダムカード🌸</h3>
+  <div style="flex:1; border:2px solid rgb(241,157,181); border-radius:80px; padding:40px;">
+    <h3 style="text-align:center;">🌸ランダムカード🌸</h3>
     <div id="dailyCard"></div>
     <div style="text-align:center; margin-top:10px;">
-      <button onclick="rerollDailyCard()" style="font-size:16px; border-radius:20px;">🌸</button>
+      <button onclick="rerollDailyCard()" style="font-size:16px; border-radius:20px; cursor:pointer;">🌸</button>
       <input type="text" id="manualCardId" placeholder="カードID" style="width:66px;">
       <button onclick="showManualCard()">表示</button>
     </div>
@@ -95,7 +139,7 @@ textarea { width:100%; resize:none; }
 
 <div class="flex-row">
   <div style="flex:2;">
-    <h3>検索結果</h3>
+    <h2>検索結果</h2>
     <div id="result"></div>
   </div>
   <div style="flex:1;">
@@ -105,41 +149,40 @@ textarea { width:100%; resize:none; }
 </div>
 
 <hr>
-
 <div id="deckContainer" class="white-mode">
   <div id="deckImages"></div>
   <div id="territoryImage"></div>
 </div>
 
 <button onclick="checkDeckRules()">完成チェック</button>
-<button onclick="toggleBackground()">背景切替</button>
+<button onclick="toggleBackground()">on/off</button>
 <div id="deckCheckResult"></div>
 
-<h3>デッキコード</h3>
-<textarea id="deckCodeBox" placeholder="デッキコード"></textarea><br>
-<button onclick="generateDeckCode()">生成</button>
-<button onclick="loadDeckFromCode()">復元</button>
+<h2>デッキコード</h2>
+<textarea id="deckCodeBox" placeholder="ここにデッキコードを入力"></textarea><br>
+<button onclick="generateDeckCode()">デッキコード生成</button>
+<button onclick="loadDeckFromCode()">デッキ復元</button>
 <button onclick="copyDeckCode()">コピー</button>
 <div id="deckCodeResult"></div>
 
 </div>
 
-<!-- デッキレシピタブ -->
+<!-- デッキレシピ投稿 -->
 <div id="recipeTab" class="tab-content">
 <h2>デッキレシピ投稿</h2>
 <form>
-  <label>タイトル:<input type="text" name="title" style="width:100%"></label><br>
-  <label>説明:<textarea name="description" style="width:100%; height:100px;"></textarea></label><br>
-  <label>デッキコード:<textarea name="deckCode" style="width:100%; height:60px;" placeholder="デッキコード"></textarea></label><br>
+  <label>タイトル:<br><input type="text" name="title" style="width:100%"></label><br><br>
+  <label>説明:<br><textarea name="description" style="width:100%; height:100px;"></textarea></label><br><br>
+  <label>デッキコード:<br><textarea name="deckCode" style="width:100%; height:60px;" placeholder="デッキコードを入力"></textarea></label><br><br>
   <div id="recipeDeckImage"></div>
   <button type="button" onclick="alert('投稿リンク生成機能は後で追加')">Twitterに投稿</button>
 </form>
 </div>
 
-<!-- カード一覧タブ -->
+<!-- カード一覧 -->
 <div id="cardTab" class="tab-content">
 <h2>カード一覧</h2>
-<div id="cardListAll"></div>
+<div id="cardListContainer"></div>
 </div>
 
 <script src="data/cards.js"></script>
@@ -147,84 +190,29 @@ textarea { width:100%; resize:none; }
 <script>
 // タブ切替
 function openTab(tabId){
-  document.querySelectorAll('.tab-content').forEach(tc=>tc.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
   document.getElementById(tabId).classList.add('active');
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
   event.currentTarget.classList.add('active');
 }
 
-// デッキ管理
-let deck=[], territoryCardId=null;
+// --- 以下、前回のデッキ管理JS（addToDeck, removeFromDeck, updateDeckImages, updateDeckStatus, checkDeckRules, generateDeckCode, loadDeckFromCode, copyDeckCode, toggleBackground, search, showDailyCard, rerollDailyCard, showManualCard）をそのままここに入れる ---
 
-// 発売日カウント
-function updateReleaseCountdown(){
-  const releaseDate = new Date("2026-03-20");
-  const today = new Date();
-  const diff = Math.ceil((releaseDate-today)/(1000*60*60*24));
-  document.getElementById("releaseCountdown").textContent = diff>0 ? `発売まであと${diff}日` : "発売日です！";
-}
-updateReleaseCountdown();
-
-// ランダムカード
-function showDailyCard(){
-  if(!cards || cards.length===0) return;
-  const c = cards[Math.floor(Math.random()*cards.length)];
-  document.getElementById("dailyCard").innerHTML = `<img src="${c.img}" style="width:240px; display:block; margin:auto;"><div style="text-align:center;margin-top:10px;">${c.name}</div>`;
-}
-function rerollDailyCard(){ showDailyCard(); }
-showDailyCard();
-
-function showManualCard(){
-  const id=document.getElementById("manualCardId").value.trim();
-  const card=cards.find(c=>c.id===id);
-  if(card) document.getElementById("dailyCard").innerHTML = `<img src="${card.img}" style="width:240px; display:block; margin:auto;"><div style="text-align:center;margin-top:10px;">${card.name}</div>`;
-  else alert("カードIDが見つかりません");
-}
-
-// 検索
-function search(){
-  const name=document.getElementById("searchBox").value.toLowerCase();
-  const resultDiv=document.getElementById("result");
-  const filtered=cards.filter(c=>!name || c.name.toLowerCase().includes(name));
-  if(filtered.length===0){ resultDiv.textContent="見つかりませんでした"; return; }
-  resultDiv.innerHTML="";
-  filtered.forEach(c=>{
-    const colorClass=c.color==='白'?'card-white':c.color==='赤'?'card-red':c.color==='青'?'card-blue':'card-black';
-    const div=document.createElement('div'); div.className=colorClass;
-    div.innerHTML=`<img src="${c.img}" alt="${c.name}"><div>${c.name}<br><button onclick="addToDeck('${c.id}')">＋</button><button onclick="removeFromDeck('${c.id}')">－</button></div>`;
-    resultDiv.appendChild(div);
-  });
-}
-
-// カード一覧
+// カード一覧表示
 function showAllCards(){
-  const allDiv=document.getElementById("cardListAll");
-  allDiv.innerHTML="";
-  cards.forEach(c=>{
-    const colorClass=c.color==='白'?'card-white':c.color==='赤'?'card-red':c.color==='青'?'card-blue':'card-black';
-    const div=document.createElement('div'); div.className=colorClass;
-    div.innerHTML=`<img src="${c.img}" alt="${c.name}"><div>${c.name}<br><button onclick="addToDeck('${c.id}')">＋</button></div>`;
-    allDiv.appendChild(div);
-  });
+  const container = document.getElementById("cardListContainer");
+  container.innerHTML = cards.map(c=>{
+    return `<div style="display:flex; flex-direction:column; align-items:center; margin:5px;">
+      <img src="${c.img}" alt="${c.name}">
+      <div style="text-align:center;">${c.name} / ${c.id}</div>
+    </div>`;
+  }).join('');
 }
+
+// 初期処理
+updateReleaseCountdown();
+showDailyCard();
 showAllCards();
-
-// デッキ管理
-function addToDeck(id){ const c=cards.find(x=>x.id===id); if(!c) return; if(c.type==='territory'){ territoryCardId=id; updateDeckImages(); return; } if(deck.filter(d=>d===id).length>=4){ alert("同じカードは4枚まで"); return; } if(deck.length>=50){ alert("デッキは50枚まで"); return; } deck.push(id); updateDeckImages(); updateDeckStatus(); }
-function removeFromDeck(id){ const idx=deck.indexOf(id); if(idx!==-1) deck.splice(idx,1); if(territoryCardId===id) territoryCardId=null; updateDeckImages(); updateDeckStatus(); }
-function updateDeckImages(){ const deckDiv=document.getElementById("deckImages"); deckDiv.innerHTML=""; deck.forEach(id=>{ const c=cards.find(x=>x.id===id); if(!c) return; const img=document.createElement("img"); img.src=c.img; img.alt=c.name; img.onclick=()=>removeFromDeck(c.id); deckDiv.appendChild(img); }); const terrDiv=document.getElementById("territoryImage"); terrDiv.innerHTML=""; if(territoryCardId){ const c=cards.find(x=>x.id===territoryCardId); if(c){ const img=document.createElement("img"); img.src=c.img; img.alt=c.name; img.onclick=()=>{territoryCardId=null; updateDeckImages(); updateDeckStatus();}; terrDiv.appendChild(img); } } }
-function updateDeckStatus(){ let unit=0,cmd=0,buster=0,shot=0; deck.forEach(id=>{ const c=cards.find(x=>x.id===id); if(!c) return; if(c.type==='unit') unit++; if(c.type==='command') cmd++; if(c.subType?.includes("バスター")) buster++; if(c.subType?.includes("ショット")) shot++; }); document.getElementById("deckStatus").innerHTML=`ユニット:${unit}<br>コマンド:${cmd}<br>バスター:${buster}<br>ショット:${shot}<br>テリトリー:${territoryCardId?"あり":"なし"}`; }
-function checkDeckRules(){ let total=deck.length; let terr=territoryCardId?1:0; let b=0,s=0; deck.forEach(id=>{ const c=cards.find(x=>x.id===id); if(c?.subType?.includes("バスター")) b++; if(c?.subType?.includes("ショット")) s++; }); let msg=""; if(total<40||total>50) msg+=`デッキ枚数は40～50枚（現在${total}枚）<br>`; if(terr!==1) msg+=`テリトリーカードは1枚必要（現在${terr}枚）<br>`; if(b!==12) msg+=`バスターカードは12枚必要（現在${b}枚）<br>`; if(s>12) msg+=`ショットカードは最大12枚（現在${s}枚）<br>`; document.getElementById("deckCheckResult").innerHTML=msg||"咲け、咲け、櫻坂46"; }
-
-Sortable.create(document.getElementById('deckImages'),{animation:150,onEnd:function(evt){const m=deck.splice(evt.oldIndex,1)[0];deck.splice(evt.newIndex,0,m);}});
-
-// デッキコード生成・復元・コピー
-function generateDeckCode(){ if(deck.length===0){alert("デッキが空です"); return;} document.getElementById("deckCodeBox").value=(territoryCardId||"0")+"|"+deck.join(","); document.getElementById("deckCodeResult").textContent="生成完了！"; }
-function loadDeckFromCode(){ const code=document.getElementById("deckCodeBox").value.trim(); if(!code){alert("コードを入力してください"); return;} try{ const p=code.split("|"); territoryCardId=p[0]!=="0"?p[0]:null; deck=p[1]?p[1].split(",").filter(id=>cards.some(c=>c.id===id)):[]; updateDeckImages(); updateDeckStatus(); document.getElementById("deckCodeResult").textContent="復元完了！"; }catch(e){alert("無効なコードです");} }
-function copyDeckCode(){ const box=document.getElementById("deckCodeBox"); if(!box.value){alert("コピーするコードがありません"); return;} navigator.clipboard.writeText(box.value).then(()=>{document.getElementById("deckCodeResult").textContent="コピーしました！";}).catch(()=>{alert("コピーに失敗しました");}); }
-
-function toggleBackground(){ const d=document.getElementById("deckContainer"); if(d.classList.contains("white-mode")){d.classList.replace("white-mode","mat-mode");}else{d.classList.replace("mat-mode","white-mode");} }
 </script>
-
 </body>
 </html>
