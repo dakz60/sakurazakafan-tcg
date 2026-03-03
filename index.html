@@ -372,7 +372,7 @@ function loadRecipeDeck(){
     const card = cards.find(c=>c.id===id);
   if(!card) return "";
   return `<div style="display:inline-block; margin:1px;">
-            <img src="${card.img}" style="width:120px; height:170px; object-fit:cover; border-radius:5px;">
+            <img src="${card.img}" style="width:120px; height:170px; object-fit:cover; border-radius:1px;">
           </div>`;
 }).join('');
   } catch(e){ alert("無効なデッキコードです"); }
@@ -401,5 +401,6 @@ showAllCards();
 </script>
 </body>
 </html>
+
 
 
