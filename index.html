@@ -177,6 +177,24 @@ textarea { width:100%; resize:none; }
   <div id="deckCodeResult"></div>
 </div>
 
+<div id="favorite" class="tab-content">
+  <h2>🌸 推しカード5選 🌸</h2>
+
+  <div style="text-align:center; margin-bottom:15px;">
+    <button onclick="generateRandomFive()">ランダム5枚</button>
+    <input type="text" id="favoriteManualIds" placeholder="IDをカンマ区切りで入力">
+    <button onclick="showManualFive()">表示</button>
+  </div>
+
+  <div id="favoriteDisplay" style="display:flex; gap:15px; justify-content:center; flex-wrap:wrap;"></div>
+
+  <div style="text-align:center; margin-top:15px;">
+    <button onclick="tweetFavoriteFive()">Twitter投稿用テキスト生成</button>
+  </div>
+
+  <textarea id="favoriteTweetText" style="height:120px;" placeholder="ここに投稿文が生成されます"></textarea>
+</div>
+  
 <!-- デッキレシピ投稿タブ -->
 <div id="recipe" class="tab-content">
   <h2>デッキレシピ投稿</h2>
@@ -441,6 +459,7 @@ showAllCards();
 </script>
 </body>
 </html>
+
 
 
 
