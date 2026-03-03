@@ -387,6 +387,45 @@ function submitToTwitter(){
   window.open(url,"_blank");
 }
 
+  let favoriteFive = [];
+
+function generateRandomFive(){
+  if(!cards || cards.length===0) return;
+  const shuffled = [...cards].sort(()=>0.5-Math.random());
+  favoriteFive = shuffled.slice(0,5);
+  renderFavoriteFive();
+}
+
+function showManualFive(){
+  const input = document.getElementById("favoriteManualIds").value.trim();
+  if(!input) return;
+  const ids = input.split(",").map(id=>id.trim());
+  favoriteFive = ids.map(id=>cards.find(c=>c.id===id)).filter(Boolean).slice(0,5);
+  renderFavoriteFive();
+}
+
+function renderFavoriteFive(){
+  const container = document.getElementById("favoriteDisplay");
+  container.innerHTML = "";
+
+  favoriteFive.forEach((card,index)=>{
+    const div = document.createElement("div");
+    div.innerHTML = `
+      <div style="text-align:center; font-weight:bold;">${index+1}</div>
+      <img src="${card.img}" style="width:140px; border-radius:8px;">
+      <div style="text-align:center; font-size:12px;">${card.id}</div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function tweetFavoriteFive(){
+  if(favoriteFive.length===0) return;
+  const names = favoriteFive.map((c,i)=>`${i+1}. ${c.name}`).join("\n");
+  const text = `🌸今日の推しカード5選🌸\n\n${names}\n\n#櫻坂TCG\n（あなたのサイトURL）`;
+  document.getElementById("favoriteTweetText").value = text;
+}
+  
 /* ==================== 全カード一覧 ==================== */
 function showAllCards(){
   const container = document.getElementById("cardListAll");
@@ -402,6 +441,7 @@ showAllCards();
 </script>
 </body>
 </html>
+
 
 
 
