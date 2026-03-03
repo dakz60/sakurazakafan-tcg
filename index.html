@@ -211,10 +211,12 @@ textarea { width:100%; resize:none; }
     </label>
     <button type="button" onclick="loadRecipeDeck()">デッキを読み込む</button><br><br>
 
-    <div id="recipeDeckPreview"></div><br>
-    
-    <button type="button" onclick="submitToTwitter()">Twitterに投稿</button>
-  </form>
+<div id="recipeDeckPreview"></div><br>
+
+<button type="button" onclick="submitToTwitter()">Twitterに投稿</button>
+
+<div style="text-align:center; margin-top:15px;">
+  <button onclick="downloadRecipeImage()">デッキ画像をPNG保存</button>
 </div>
 
 <!-- 全カード一覧タブ -->
@@ -619,4 +621,5 @@ showAllCards();
 </script>
 </body>
 </html>
+
 
