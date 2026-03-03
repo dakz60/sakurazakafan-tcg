@@ -438,10 +438,23 @@ function renderFavoriteFive(){
 }
 
 function tweetFavoriteFive(){
-  if(favoriteFive.length===0) return;
+  if(favoriteFive.length===0){
+    alert("カードを選んでください");
+    return;
+  }
+
   const names = favoriteFive.map((c,i)=>`${i+1}. ${c.name}`).join("\n");
-  const text = `🌸今日の推しカード5選🌸\n\n${names}\n\n#櫻坂TCG\n（あなたのサイトURL）`;
-  document.getElementById("favoriteTweetText").value = text;
+
+  const text = `🌸今日の推しカード5選🌸
+
+${names}
+
+#櫻坂TCG
+#櫻坂46
+#美しき衝突。櫻舞う。`;
+
+  const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+  window.open(url, "_blank");
 }
   
 /* ==================== 全カード一覧 ==================== */
@@ -459,6 +472,7 @@ showAllCards();
 </script>
 </body>
 </html>
+
 
 
 
