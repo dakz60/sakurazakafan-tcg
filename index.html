@@ -524,6 +524,85 @@ function downloadFavoriteImage(){
     };
   });
 }
+
+function downloadRecipeImage(){
+  const code = document.getElementById("recipeDeckCode").value.trim();
+  if(!code){
+    alert("デッキコードを入力してください");
+    return;
+  }
+
+  const parts = code.split("|");
+  const deckIds = parts[1] ? parts[1].split(",") : [];
+
+  if(deckIds.length === 0){
+    alert("デッキが読み込まれていません");
+    return;
+  }
+
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+
+  // ===== サイズ設定 =====
+  const cols = 10;
+  const rows = 5;
+  const cardWidth = 120;
+  const cardHeight = 170;
+  const margin = 10;
+  const padding = 30;
+
+  canvas.width = cols * (cardWidth + margin) + padding * 2 - margin;
+  canvas.height = rows * (cardHeight + margin) + padding * 2 + 80;
+
+  // 背景
+  ctx.fillStyle = "white";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // タイトル
+  ctx.fillStyle = "black";
+  ctx.font = "bold 28px sans-serif";
+  ctx.textAlign = "center";
+  ctx.fillText("デッキレシピ", canvas.width / 2, 40);
+
+  // 画像読み込み
+  const loadImages = deckIds.slice(0,50).map(id=>{
+    return new Promise(resolve=>{
+      const card = cards.find(c=>c.id===id);
+      if(!card){
+        resolve(null);
+        return;
+      }
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+      img.src = card.img;
+      img.onload = ()=>resolve(img);
+    });
+  });
+
+  Promise.all(loadImages).then(images=>{
+    images.forEach((img,i)=>{
+      if(!img) return;
+
+      const row = Math.floor(i / cols);
+      const col = i % cols;
+
+      const x = padding + col * (cardWidth + margin);
+      const y = padding + 40 + row * (cardHeight + margin);
+
+      ctx.drawImage(img, x, y, cardWidth, cardHeight);
+    });
+
+    // デッキコード表示
+    ctx.font = "16px sans-serif";
+    ctx.textAlign = "left";
+    ctx.fillText("デッキコード: " + code, 20, canvas.height - 20);
+
+    const link = document.createElement("a");
+    link.download = "deck_recipe.png";
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+  });
+}
   
 /* ==================== 全カード一覧 ==================== */
 function showAllCards(){
@@ -540,3 +619,4 @@ showAllCards();
 </script>
 </body>
 </html>
+
