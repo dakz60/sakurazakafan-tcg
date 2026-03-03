@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>櫻坂TCG◢ デッキ管理</title>
+<title>櫻坂TCG◢ ファンサイト</title>
 <style>
 body { font-family:sans-serif; background:white; color:rgb(241,157,181); margin:0; padding:20px; font-size:16px; }
 h1,h2 { text-align:center; color:rgb(241,157,181); }
@@ -52,7 +52,7 @@ textarea { width:100%; resize:none; }
 </head>
 <body>
 
-<h1>櫻坂TCG◢ デッキ管理</h1>
+<h1>櫻坂TCG◢ ファンサイト</h1>
 
 <!-- タブ -->
 <div>
@@ -178,7 +178,7 @@ textarea { width:100%; resize:none; }
 </div>
 
 <div id="favorite" class="tab-content">
-  <h2>🌸 推しカード5選 🌸</h2>
+  <h2>🌸 〇〇の最強5枚‼ 🌸</h2>
 
   <div style="text-align:center; margin-bottom:15px;">
     <button onclick="generateRandomFive()">ランダム5枚</button>
@@ -449,7 +449,7 @@ function tweetFavoriteFive(){
 
   const names = favoriteFive.map((c,i)=>`${i+1}. ${c.name}`).join("\n");
 
-  const text = `🌸今日の推しカード5選🌸
+  const text = `🌸〇〇の最強5枚‼🌸
 
 ${names}
 
@@ -485,7 +485,7 @@ function downloadFavoriteImage(){
   ctx.fillStyle = "#f19db5";
   ctx.font = "bold 40px sans-serif";
   ctx.textAlign = "center";
-  ctx.fillText("🌸 今日の推しカード5選 🌸", canvas.width / 2, 50);
+  ctx.fillText("🌸 〇〇の最強5枚‼ 🌸", canvas.width / 2, 50);
 
   let loaded = 0;
 
@@ -540,16 +540,3 @@ showAllCards();
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
