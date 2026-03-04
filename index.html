@@ -608,27 +608,17 @@ function downloadRecipeImage(){
 }
   
 /* ==================== 全カード一覧 ==================== */
-  <script>
-function showAllCards() {
+function showAllCards(){
   const container = document.getElementById("cardListAll");
-  if(!cards || cards.length===0){
-    container.textContent = "カードが読み込まれていません";
-    return;
-  }
-
-  container.innerHTML = cards.map(card => `
-    <div class="cardAll">
-      <img src="${card.img}" alt="${card.name}"><br>
-      ${card.name}<br>
-      ID: ${card.id}
-    </div>
-  `).join('');
+  container.innerHTML = cards.map(c=>{
+    return `<div class="cardAll">
+      <img src="${c.img}" alt="${c.name}"><br>
+      ${c.name}<br>
+      ID:${c.id}
+    </div>`;
+  }).join('');
 }
-
-window.addEventListener("load", () => {
-  showAllCards();
-});
+showAllCards();
 </script>
 </body>
 </html>
-
