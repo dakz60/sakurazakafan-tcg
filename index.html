@@ -616,9 +616,8 @@ function downloadRecipeImage(){
 function showAllCards(){
   const container = document.getElementById("cardListAll");
   container.innerHTML = cards.map(c=>{
-    const imgSrc = `data/images/${c.img}`;
     return `<div class="cardAll">
-      <img src="${imgSrc}" alt="${c.name}"><br>
+      <img src="images/${c.img}" alt="${c.name}"><br>
       ${c.name}<br>
       ID:${c.id}
     </div>`;
@@ -628,6 +627,7 @@ showAllCards();
 </script>
 </body>
 </html>
+
 
 
 
