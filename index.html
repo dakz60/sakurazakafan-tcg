@@ -59,7 +59,6 @@ textarea { width:100%; resize:none; }
   <button class="tab active" onclick="openTab('deck')">デッキ作成</button>
   <button class="tab" onclick="openTab('favorite')">推し5枚</button>
   <button class="tab" onclick="openTab('recipe')">デッキレシピ投稿</button>
-  <button class="tab" onclick="openTab('allcards')">カード一覧</button>
 </div>
 
 <!-- デッキ作成タブ -->
@@ -218,32 +217,6 @@ textarea { width:100%; resize:none; }
 <div style="text-align:center; margin-top:15px;">
   <button onclick="downloadRecipeImage()">デッキ画像をPNG保存</button>
 </div>
-
-<!-- 全カード一覧タブ -->
-<div id="allcards" class="tab-content">
-  <h2>カード一覧</h2>
-  <div id="cardListAll"></div>
-</div>
-
-<script src="data/cards.js"></script>
-<script>
-function showAllCards(){
-  if(!cards || cards.length===0){
-    // cardsがまだ読み込まれていない場合は待つ
-    setTimeout(showAllCards, 100); 
-    return;
-  }
-  const container = document.getElementById("cardListAll");
-  container.innerHTML = cards.map(c => {
-    return `<div style="display:inline-block; margin:5px; text-align:center;">
-              <img src="${c.img}" alt="${c.name}" style="width:80px; height:120px; object-fit:cover; border-radius:5px;">
-              <div style="font-size:12px;">${c.name}<br>${c.id}</div>
-            </div>`;
-  }).join('');
-}
-
-window.addEventListener("load", showAllCards);
-</script>
 
 /* ==================== デッキ作成 ==================== */
 let deck=[], territoryCardId=null;
@@ -615,20 +588,11 @@ function downloadRecipeImage(){
     link.click();
   });
 }
-  
-/* ==================== 全カード一覧 ==================== */
-function showAllCards(){
-  const container = document.getElementById("cardListAll");
-  container.innerHTML = cards.map(c => {
-    return `<div style="display:inline-block; margin:5px; text-align:center;">
-              <img src="${c.img}" alt="${c.name}" style="width:80px; height:120px; object-fit:cover; border-radius:5px;">
-            </div>`;
-  }).join('');
-}
-showAllCards();
+    
 </script>
 </body>
 </html>
+
 
 
 
