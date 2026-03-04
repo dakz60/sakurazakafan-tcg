@@ -226,14 +226,24 @@ textarea { width:100%; resize:none; }
 </div>
 
 <script src="data/cards.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
 <script>
-function openTab(tabId){
-  document.querySelectorAll('button.tab').forEach(b=>b.classList.remove('active'));
-  event.currentTarget.classList.add('active');
-  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
-  document.getElementById(tabId).classList.add('active');
+function showAllCards(){
+  if(!cards || cards.length===0){
+    // cardsがまだ読み込まれていない場合は待つ
+    setTimeout(showAllCards, 100); 
+    return;
+  }
+  const container = document.getElementById("cardListAll");
+  container.innerHTML = cards.map(c => {
+    return `<div style="display:inline-block; margin:5px; text-align:center;">
+              <img src="${c.img}" alt="${c.name}" style="width:80px; height:120px; object-fit:cover; border-radius:5px;">
+              <div style="font-size:12px;">${c.name}<br>${c.id}</div>
+            </div>`;
+  }).join('');
 }
+
+window.addEventListener("load", showAllCards);
+</script>
 
 /* ==================== デッキ作成 ==================== */
 let deck=[], territoryCardId=null;
@@ -619,6 +629,7 @@ showAllCards();
 </script>
 </body>
 </html>
+
 
 
 
