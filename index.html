@@ -218,8 +218,23 @@ textarea { width:100%; resize:none; }
 <div style="text-align:center; margin-top:15px;">
   <button onclick="downloadRecipeImage()">デッキ画像をPNG保存</button>
 </div>
-  </form>
-  
+
+<!-- 全カード一覧タブ -->
+<div id="allcards" class="tab-content">
+  <h2>カード一覧</h2>
+  <div id="cardListAll"></div>
+</div>
+
+<script src="data/cards.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+<script>
+function openTab(tabId){
+  document.querySelectorAll('button.tab').forEach(b=>b.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+}
+
 /* ==================== デッキ作成 ==================== */
 let deck=[], territoryCardId=null;
 
@@ -604,10 +619,6 @@ function showAllCards(){
 }
 showAllCards();
 </script>
-  </body>
+</body>
 </html>
-
-
-
-
 
