@@ -1,4 +1,4 @@
- window.cards = [
+ const cards = [
  { id: "162",name: "谷口愛季",effect: "（自動）アタック時、ユニットを2枚まで対象、フィールドのユニットの色につき、対象のパワーを【+1000】。" , color: "白", cost: 5, power: 5500, hit: 1, suit: "♤", type: "unit/ace", rarity: "SC", generation: "3期", img: "images/162.jpg" },
  { id: "001",name: "井上梨名", color: "青", cost: 2, power: 3000, hit: 1, suit: "♤♢", type: "unit", rarity: "N", generation: "2期", img: "images/1.jpg" },
  { id: "002",name: "遠藤光莉", color: "白", cost: 7, power: 8000, hit: 2, suit: "♡♧", type: "unit", rarity: "N", generation: "2期", img: "images/2.jpg" },
