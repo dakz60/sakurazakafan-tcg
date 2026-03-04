@@ -608,22 +608,17 @@ function downloadRecipeImage(){
   
 /* ==================== 全カード一覧 ==================== */
 function showAllCards(){
-  console.log(cards);
-  const allDiv=document.getElementById("cardListAll");
-  allDiv.innerHTML="";
-  cards.forEach(c=>{
-    const colorClass=c.color==='白'?'card-white':c.color==='赤'?'card-red':c.color==='青'?'card-blue':'card-black';
-    const div=document.createElement('div'); div.className=colorClass;
-    div.innerHTML=`<img src="${c.img}" alt="${c.name}"><div>${c.name}<br><button onclick="addToDeck('${c.id}')">＋</button></div>`;
-    allDiv.appendChild(div);
-  });
+  const container = document.getElementById("cardListAll");
+  container.innerHTML = cards.map(c=>{
+    return `<div class="cardAll">
+      <img src="${c.img}" alt="${c.name}"><br>
+      ${c.name}<br>
+      ID:${c.id}
+    </div>`;
+  }).join('');
 }
-window.addEventListener('load', showAllCards);
+showAllCards();
 </script>
 </body>
 </html>
-
-
-
-
 
