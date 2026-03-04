@@ -1,4 +1,3 @@
-// ---------- cards.js ----------
  const cards = [
  { id: "162",name: "谷口愛季",effect: "（自動）アタック時、ユニットを2枚まで対象、フィールドのユニットの色につき、対象のパワーを【+1000】。" , color: "白", cost: 5, power: 5500, hit: 1, suit: "♤", type: "unit/ace", rarity: "SC", generation: "3期", img: "images/162.jpg" },
  { id: "001",name: "井上梨名", color: "青", cost: 2, power: 3000, hit: 1, suit: "♤♢", type: "unit", rarity: "N", generation: "2期", img: "images/1.jpg" },
@@ -111,5 +110,4 @@
  { id: "p037", name: "小島凪沙",effect: "（永続）あなたが【小島凪沙】なら、あなたのターン中、このユニットのヒットを+4、パワーを6倍にする。" , color: "黒", cost: 4, power: 4500, hit: 1, suit: "♡", type: "unit/buster", subType: ["バスター"], rarity: "PR", generation: "3期", img: "images/37PR.jpg" },
  { id: "p038", name: "谷口愛季",effect: "（永続）あなたが【谷口愛季】なら、あなたのターン中、このユニットのヒットを+4、パワーを6倍にする。" , color: "黒", cost: 4, power: 4500, hit: 1, suit: "♤", type: "unit/buster", subType: ["バスター"], rarity: "PR", generation: "3期", img: "images/38PR.jpg" },
  { id: "p039", name: "的野美青",effect: "（永続）あなたが【的野美青】なら、あなたのターン中、このユニットのヒットを+4、パワーを6倍にする。" , color: "黒", cost: 4, power: 4500, hit: 1, suit: "♡", type: "unit/buster", subType: ["バスター"], rarity: "PR", generation: "3期", img: "images/39PR.jpg" }
-
 ];
