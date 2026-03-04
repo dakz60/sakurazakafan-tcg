@@ -217,7 +217,6 @@ textarea { width:100%; resize:none; }
 
 <div style="text-align:center; margin-top:15px;">
   <button onclick="downloadRecipeImage()">デッキ画像をPNG保存</button>
-</from>
 </div>
 
 <!-- 全カード一覧タブ -->
@@ -227,53 +226,14 @@ textarea { width:100%; resize:none; }
 </div>
 
 <script src="data/cards.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
 <script>
-function showAllCards() {
-  const container = document.getElementById("cardListAll");
-  container.innerHTML = cards.map(c => `
-    <div class="cardAll">
-      <img src="${c.img}" alt="${c.name}">
-      <div class="name">${c.name}</div>
-      <div class="id">ID: ${c.id}</div>
-    </div>
-  `).join('');
+function openTab(tabId){
+  document.querySelectorAll('button.tab').forEach(b=>b.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
 }
-
-document.addEventListener("DOMContentLoaded", showAllCards);
-</script>
-
-<style>
-#cardListAll {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  justify-content: center;
-}
-
-.cardAll {
-  width: 120px;
-  border: 1px solid rgb(241,157,181);
-  border-radius: 8px;
-  padding: 10px;
-  text-align: center;
-}
-
-.cardAll img {
-  width: 100%;
-  height: auto;
-  border-radius: 5px;
-}
-
-.cardAll .name {
-  font-weight: bold;
-  margin-top: 5px;
-}
-
-.cardAll .id {
-  font-size: 0.8em;
-  color: gray;
-}
-</style>
 
 /* ==================== デッキ作成 ==================== */
 let deck=[], territoryCardId=null;
@@ -421,20 +381,7 @@ function generateDeckCode(){if(deck.length===0){alert("デッキが空です"); 
 function loadDeckFromCode(){const code=document.getElementById("deckCodeBox").value.trim(); if(!code){alert("コードを入力してください"); return;} try{const parts=code.split("|"); const territoryId=parts[0]; const deckIds=parts[1]?parts[1].split(","):[]; territoryCardId=territoryId!=="0"?territoryId:null; deck=deckIds.filter(id=>cards.some(c=>c.id===id)); updateDeckImages(); document.getElementById("deckCodeResult").textContent="デッキ復元完了！";}catch(e){alert("無効なコードです");}}
 function copyDeckCode(){const box=document.getElementById("deckCodeBox"); if(!box.value){alert("コピーするコードがありません"); return;} navigator.clipboard.writeText(box.value).then(()=>{document.getElementById("deckCodeResult").textContent="コピーしました！";}).catch(()=>{alert("コピーに失敗しました");});}
 
-window.addEventListener("load", () => {
-  if(!window.cards || cards.length === 0){
-    console.error("cardsが読み込まれていません");
-    return;
-  }
-  const container = document.getElementById("cardListAll");
-  container.innerHTML = cards.map(c=>{
-    return `<div class="cardAll">
-      <img src="${c.img}" alt="${c.name}"><br>
-      ${c.name}<br>
-      ID:${c.id}
-    </div>`;
-  }).join('');
-});
+window.addEventListener("load",function(){ const params=new URLSearchParams(window.location.search); const deckParam=params.get("deck"); if(deckParam){ document.getElementById("deckCodeBox").value=deckParam; loadDeckFromCode(); }});
 
 function toggleBackground(){ const deck = document.getElementById("deckContainer"); if(deck.classList.contains("white-mode")){ deck.classList.replace("white-mode","mat-mode"); }else{ deck.classList.replace("mat-mode","white-mode"); } }
 
@@ -672,9 +619,6 @@ function showAllCards(){
 }
 showAllCards();
 </script>
-  </form>
-</div>
 </body>
 </html>
-
 
