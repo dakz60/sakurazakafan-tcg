@@ -608,6 +608,7 @@ function downloadRecipeImage(){
   
 /* ==================== 全カード一覧 ==================== */
 function showAllCards(){
+  console.log(cards);
   const allDiv=document.getElementById("cardListAll");
   allDiv.innerHTML="";
   cards.forEach(c=>{
@@ -621,6 +622,7 @@ window.addEventListener('load', showAllCards);
 </script>
 </body>
 </html>
+
 
 
 
