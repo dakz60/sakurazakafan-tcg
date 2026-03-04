@@ -219,49 +219,7 @@ textarea { width:100%; resize:none; }
   <button onclick="downloadRecipeImage()">デッキ画像をPNG保存</button>
 </div>
   </form>
-
-<!-- 全カード一覧タブ -->
-<div id="allcards" class="tab-content">
-  <h2>カード一覧</h2>
-  <div id="cardListAll"></div>
-</div>
-
-<script src="data/cards.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
-<script>
-function openTab(tabId){
-  document.querySelectorAll('button.tab').forEach(b=>b.classList.remove('active'));
-  event.currentTarget.classList.add('active');
-  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
-  document.getElementById(tabId).classList.add('active');
-}
-</script>
-
-<script>
-const container = document.getElementById("cardListAll");
-
-cards.forEach(card => {
-  const cardDiv = document.createElement("div");
-  cardDiv.style.display = "inline-block";
-  cardDiv.style.margin = "10px";
-  cardDiv.style.textAlign = "center";
-
-  const img = document.createElement("img");
-  img.src = card.img;
-  img.alt = card.name;
-  img.style.width = "120px";  // 好きなサイズに調整
-  img.style.height = "auto";
-
-  const name = document.createElement("div");
-  name.textContent = card.name;
-  name.style.marginTop = "5px";
-
-  cardDiv.appendChild(img);
-  cardDiv.appendChild(name);
-  container.appendChild(cardDiv);
-});
-</script>
-
+  
 /* ==================== デッキ作成 ==================== */
 let deck=[], territoryCardId=null;
 
@@ -648,6 +606,7 @@ showAllCards();
 </script>
   </body>
 </html>
+
 
 
 
