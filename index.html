@@ -382,7 +382,20 @@ function generateDeckCode(){if(deck.length===0){alert("デッキが空です"); 
 function loadDeckFromCode(){const code=document.getElementById("deckCodeBox").value.trim(); if(!code){alert("コードを入力してください"); return;} try{const parts=code.split("|"); const territoryId=parts[0]; const deckIds=parts[1]?parts[1].split(","):[]; territoryCardId=territoryId!=="0"?territoryId:null; deck=deckIds.filter(id=>cards.some(c=>c.id===id)); updateDeckImages(); document.getElementById("deckCodeResult").textContent="デッキ復元完了！";}catch(e){alert("無効なコードです");}}
 function copyDeckCode(){const box=document.getElementById("deckCodeBox"); if(!box.value){alert("コピーするコードがありません"); return;} navigator.clipboard.writeText(box.value).then(()=>{document.getElementById("deckCodeResult").textContent="コピーしました！";}).catch(()=>{alert("コピーに失敗しました");});}
 
-window.addEventListener("load",function(){ const params=new URLSearchParams(window.location.search); const deckParam=params.get("deck"); if(deckParam){ document.getElementById("deckCodeBox").value=deckParam; loadDeckFromCode(); }});
+window.addEventListener("load", () => {
+  if(!window.cards || cards.length === 0){
+    console.error("cardsが読み込まれていません");
+    return;
+  }
+  const container = document.getElementById("cardListAll");
+  container.innerHTML = cards.map(c=>{
+    return `<div class="cardAll">
+      <img src="${c.img}" alt="${c.name}"><br>
+      ${c.name}<br>
+      ID:${c.id}
+    </div>`;
+  }).join('');
+});
 
 function toggleBackground(){ const deck = document.getElementById("deckContainer"); if(deck.classList.contains("white-mode")){ deck.classList.replace("white-mode","mat-mode"); }else{ deck.classList.replace("mat-mode","white-mode"); } }
 
@@ -624,3 +637,4 @@ showAllCards();
 </div>
 </body>
 </html>
+
