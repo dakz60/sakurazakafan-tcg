@@ -607,18 +607,18 @@ function downloadRecipeImage(){
 }
   
 /* ==================== 全カード一覧 ==================== */
+<script>
 function showAllCards(){
   const container = document.getElementById("cardListAll");
-  container.innerHTML = cards.map(c=>{
-    return `<div class="cardAll">
-      <img src="${c.img}" alt="${c.name}"><br>
-      ${c.name}<br>
-      ID:${c.id}
-    </div>`;
+  container.innerHTML = cards.map(c => {
+    return `<div style="display:inline-block; margin:5px; text-align:center;">
+              <img src="${c.img}" alt="${c.name}" style="width:80px; height:120px; object-fit:cover; border-radius:5px;">
+            </div>`;
   }).join('');
 }
 showAllCards();
 </script>
 </body>
 </html>
+
 
