@@ -233,6 +233,10 @@ function openTab(tabId){
   event.currentTarget.classList.add('active');
   document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
   document.getElementById(tabId).classList.add('active');
+
+  if(tabId === "allcards"){
+    showAllCards();
+  }
 }
 
 /* ==================== デッキ作成 ==================== */
@@ -630,6 +634,7 @@ window.addEventListener("load", function(){
 </script>
 </body>
 </html>
+
 
 
 
