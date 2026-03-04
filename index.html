@@ -617,7 +617,7 @@ function showAllCards(){
   const container = document.getElementById("cardListAll");
   container.innerHTML = cards.map(c=>{
     return `<div class="cardAll">
-      <img src="images/${c.img}" alt="${c.name}"><br>
+      <img src="${c.img}" alt="${c.name}"><br>
       ${c.name}<br>
       ID:${c.id}
     </div>`;
@@ -627,6 +627,7 @@ showAllCards();
 </script>
 </body>
 </html>
+
 
 
 
