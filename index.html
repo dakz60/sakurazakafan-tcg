@@ -227,14 +227,53 @@ textarea { width:100%; resize:none; }
 </div>
 
 <script src="data/cards.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
 <script>
-function openTab(tabId){
-  document.querySelectorAll('button.tab').forEach(b=>b.classList.remove('active'));
-  event.currentTarget.classList.add('active');
-  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
-  document.getElementById(tabId).classList.add('active');
+function showAllCards() {
+  const container = document.getElementById("cardListAll");
+  container.innerHTML = cards.map(c => `
+    <div class="cardAll">
+      <img src="${c.img}" alt="${c.name}">
+      <div class="name">${c.name}</div>
+      <div class="id">ID: ${c.id}</div>
+    </div>
+  `).join('');
 }
+
+document.addEventListener("DOMContentLoaded", showAllCards);
+</script>
+
+<style>
+#cardListAll {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+}
+
+.cardAll {
+  width: 120px;
+  border: 1px solid rgb(241,157,181);
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+}
+
+.cardAll img {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+}
+
+.cardAll .name {
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+.cardAll .id {
+  font-size: 0.8em;
+  color: gray;
+}
+</style>
 
 /* ==================== デッキ作成 ==================== */
 let deck=[], territoryCardId=null;
@@ -637,4 +676,5 @@ showAllCards();
 </div>
 </body>
 </html>
+
 
