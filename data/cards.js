@@ -110,4 +110,5 @@
  { id: "p037", name: "小島凪沙",effect: "（永続）あなたが【小島凪沙】なら、あなたのターン中、このユニットのヒットを+4、パワーを6倍にする。" , color: "黒", cost: 4, power: 4500, hit: 1, suit: "♡", type: "unit/buster", subType: ["バスター"], rarity: "PR", generation: "3期", img:"images/37PR.jpg" },
  { id: "p038", name: "谷口愛季",effect: "（永続）あなたが【谷口愛季】なら、あなたのターン中、このユニットのヒットを+4、パワーを6倍にする。" , color: "黒", cost: 4, power: 4500, hit: 1, suit: "♤", type: "unit/buster", subType: ["バスター"], rarity: "PR", generation: "3期", img:"images/38PR.jpg" },
  { id: "p039", name: "的野美青",effect: "（永続）あなたが【的野美青】なら、あなたのターン中、このユニットのヒットを+4、パワーを6倍にする。" , color: "黒", cost: 4, power: 4500, hit: 1, suit: "♡", type: "unit/buster", subType: ["バスター"], rarity: "PR", generation: "3期", img:"images/39PR.jpg" },
+ { id: "p056", name: "ナギ・ブレイズ！", effect: "（自動）エースアタック時、山札を上から1枚見る。アタックしたユニットと異なる色でヒット1なら登場、違うならドロップ。各ターン1回まで。",color: "白", cost: 5, type: "territory", rarity: "PR",img:"images/56PR.jpg"},
 ];
