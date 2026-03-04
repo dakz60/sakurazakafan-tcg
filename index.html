@@ -218,6 +218,8 @@ textarea { width:100%; resize:none; }
 <div style="text-align:center; margin-top:15px;">
   <button onclick="downloadRecipeImage()">デッキ画像をPNG保存</button>
 </div>
+  </form>
+</div>
 
 <!-- 全カード一覧タブ -->
 <div id="allcards" class="tab-content">
@@ -630,20 +632,8 @@ function downloadRecipeImage(){
     link.click();
   });
 }
-  
-/* ==================== 全カード一覧 ==================== */
-function showAllCards(){
-  const container = document.getElementById("cardListAll");
-  container.innerHTML = cards.map(c=>{
-    return `<div class="cardAll">
-      <img src="${c.img}" alt="${c.name}"><br>
-      ${c.name}<br>
-      ID:${c.id}
-    </div>`;
-  }).join('');
-}
-showAllCards();
 </script>
 </body>
 </html>
+
 
