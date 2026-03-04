@@ -235,6 +235,32 @@ function openTab(tabId){
   document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
   document.getElementById(tabId).classList.add('active');
 }
+</script>
+
+<script>
+const container = document.getElementById("cardListAll");
+
+cards.forEach(card => {
+  const cardDiv = document.createElement("div");
+  cardDiv.style.display = "inline-block";
+  cardDiv.style.margin = "10px";
+  cardDiv.style.textAlign = "center";
+
+  const img = document.createElement("img");
+  img.src = card.img;
+  img.alt = card.name;
+  img.style.width = "120px";  // 好きなサイズに調整
+  img.style.height = "auto";
+
+  const name = document.createElement("div");
+  name.textContent = card.name;
+  name.style.marginTop = "5px";
+
+  cardDiv.appendChild(img);
+  cardDiv.appendChild(name);
+  container.appendChild(cardDiv);
+});
+</script>
 
 /* ==================== デッキ作成 ==================== */
 let deck=[], territoryCardId=null;
@@ -622,6 +648,7 @@ showAllCards();
 </script>
   </body>
 </html>
+
 
 
 
