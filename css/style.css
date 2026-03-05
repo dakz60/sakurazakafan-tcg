@@ -1,1 +1,46 @@
+<style>
+body { font-family:sans-serif; background:white; color:rgb(241,157,181); margin:0; padding:20px; font-size:16px; }
+h1,h2 { text-align:center; color:rgb(241,157,181); }
+button.tab { background: rgb(241,157,181); color:white; border:none; padding:10px 20px; margin-right:5px; cursor:pointer; border-radius:5px; }
+button.tab.active { background:white; color: rgb(241,157,181); border:1px solid rgb(241,157,181); }
+.tab-content { display:none; margin-top:20px; }
+.tab-content.active { display:block; }
 
+input, select, button, textarea { margin:5px; padding:6px; border-radius:5px; border:1px solid rgb(241,157,181); font-size:16px; }
+input, select, textarea { color:black; }
+button { cursor:pointer; }
+button:hover { background:white; color:rgb(241,157,181); }
+hr { border:1px solid rgb(241,157,181); }
+textarea { width:100%; resize:none; }
+
+.card-white { color: rgb(241,157,181); background-color: rgba(241,157,181,0.1); padding:10px; margin:6px 0; border-radius:10px; }
+.card-red { color: white; background-color: rgba(241,157,181,0.6); padding:10px; margin:6px 0; border-radius:10px; }
+.card-blue { color: white; background-color: rgba(68,170,255,0.4); padding:10px; margin:6px 0; border-radius:10px; }
+.card-black { color: white; background-color: rgba(0,0,0,0.4); padding:10px; margin:6px 0; border-radius:10px; }
+
+.flex-row { display:flex; gap:40px; align-items:flex-start; }
+.flex-col { display:flex; flex-direction:column; }
+
+#deckContainer { display:flex; gap:20px; align-items:flex-start; margin-top:20px; padding:20px; border-radius:20px; box-shadow:0 8px 20px rgba(0,0,0,0.2); min-height:700px; }
+#deckContainer.white-mode { background:white; }
+#deckContainer.mat-mode { background-image:url("images/plm.jpg"); background-size:cover; background-position:center; background-repeat:no-repeat; }
+
+#deckImages { display:grid; grid-template-columns:repeat(10,98px); grid-template-rows:repeat(5,140px); gap:1px; justify-items:center; align-items:center; }
+#deckImages img { border-radius:5px; border:1px solid #ccc; object-fit:cover; width:98px; height:140px; cursor:grab; }
+#territoryImage { width:180px; min-width:180px; }
+#territoryImage img { width:270px; height:180px; border-radius:5px; border:1px solid #ccc; display:block; margin:5px auto; }
+
+#releaseCountdown, #deckCheckResult, #deckCodeResult { text-align:center; font-weight:bold; margin:10px 0; }
+#deckCheckResult { color: rgb(241,50,50); }
+.search-section { margin-bottom:10px; }
+.search-section label { display:block; margin:2px 0; }
+#result { max-height:500px; overflow-y:auto; }
+
+#cardListAll { display:flex; flex-wrap:wrap; gap:10px; justify-content:flex-start; }
+.cardAll { width:80px; text-align:center; }
+.cardAll img { width:80px; height:120px; object-fit:cover; border-radius:5px; border:1px solid #ccc; }
+
+#recipeDeckPreview { display:flex; flex-wrap:wrap; gap:5px; margin-top:10px; }
+#recipeDeckPreview div { text-align:center; }
+#recipeDeckPreview img { width:60px; height:90px; object-fit:cover; border-radius:3px; border:1px solid #ccc; }
+</style>
