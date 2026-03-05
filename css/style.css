@@ -120,7 +120,7 @@ hr {
   background: white;
 }
 #deckContainer.mat-mode {
-  background-image: url("images/plm.jpg");
+  background-image: url("../images/plm.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
