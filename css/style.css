@@ -1,4 +1,3 @@
-/* ==================== 基本スタイル ==================== */
 body {
   font-family: sans-serif;
   background: white;
@@ -13,7 +12,6 @@ h1, h2 {
   color: rgb(241,157,181);
 }
 
-/* ==================== タブ ==================== */
 button.tab {
   background: rgb(241,157,181);
   color: white;
@@ -34,7 +32,6 @@ button.tab:hover {
   color: rgb(241,157,181);
 }
 
-/* ==================== タブコンテンツ ==================== */
 .tab-content {
   display: none;
   margin-top: 20px;
@@ -43,7 +40,6 @@ button.tab:hover {
   display: block;
 }
 
-/* ==================== 入力・ボタン ==================== */
 input, select, button, textarea {
   margin: 5px;
   padding: 6px;
@@ -65,7 +61,6 @@ hr {
   border: 1px solid rgb(241,157,181);
 }
 
-/* ==================== カードカラー ==================== */
 .card-white {
   color: rgb(241,157,181);
   background-color: rgba(241,157,181,0.1);
@@ -95,7 +90,6 @@ hr {
   border-radius: 10px;
 }
 
-/* ==================== レイアウト ==================== */
 .flex-row {
   display: flex;
   gap: 40px;
@@ -126,7 +120,6 @@ hr {
   background-repeat: no-repeat;
 }
 
-/* ==================== デッキカードグリッド ==================== */
 #deckImages {
   display: grid;
   grid-template-columns: repeat(10, 98px);
@@ -156,7 +149,6 @@ hr {
   margin: 5px auto;
 }
 
-/* ==================== メッセージ表示 ==================== */
 #releaseCountdown, #deckCheckResult, #deckCodeResult {
   text-align: center;
   font-weight: bold;
@@ -166,7 +158,6 @@ hr {
   color: rgb(241,50,50);
 }
 
-/* ==================== 検索セクション ==================== */
 .search-section {
   margin-bottom: 10px;
 }
@@ -179,7 +170,6 @@ hr {
   overflow-y: auto;
 }
 
-/* ==================== 全カード一覧 ==================== */
 #cardListAll {
   display: flex;
   flex-wrap: wrap;
@@ -198,7 +188,6 @@ hr {
   border: 1px solid #ccc;
 }
 
-/* ==================== レシピプレビュー ==================== */
 #recipeDeckPreview {
   display: flex;
   flex-wrap: wrap;
