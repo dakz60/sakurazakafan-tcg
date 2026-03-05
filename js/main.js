@@ -1,5 +1,4 @@
-<script>
-  // ==================== タブ切り替え ====================
+// ==================== タブ切り替え ====================
   function openTab(tabId){
     document.querySelectorAll('button.tab').forEach(b=>b.classList.remove('active'));
     event.currentTarget.classList.add('active');
@@ -401,4 +400,3 @@ function downloadRecipeImage(){
     link.click();
   });
 }
-</script>
