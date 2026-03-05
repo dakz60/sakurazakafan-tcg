@@ -1,4 +1,3 @@
-// ==================== タブ切り替え ====================
 function openTab(tabId){
   document.querySelectorAll('button.tab').forEach(b=>b.classList.remove('active'));
   event.currentTarget.classList.add('active');
@@ -6,14 +5,12 @@ function openTab(tabId){
   document.getElementById(tabId).classList.add('active');
 }
 
-// ==================== ページロード時の初期処理 ====================
 window.addEventListener("load", function(){
   updateReleaseCountdown();
   showDailyCard();
   showAllCards();
 });
 
-// ==================== 全カード一覧表示 ====================
 function showAllCards(){
   const container = document.getElementById("cardListAll");
   if(!cards || cards.length===0){
@@ -29,7 +26,6 @@ function showAllCards(){
   }).join('');
 }
 
-// ==================== デッキ作成 ====================
 let deck=[], territoryCardId=null;
 
 function updateReleaseCountdown(){
@@ -60,7 +56,6 @@ function showManualCard(){
   } else { alert("カードIDが見つかりません"); }
 }
 
-// ==================== 検索 ====================
 function search(){
   const name=document.getElementById("searchBox").value;
   const effect=document.getElementById("effectSearchBox").value;
@@ -114,7 +109,6 @@ function search(){
   }).join('');
 }
 
-// ==================== デッキ操作 ====================
 function addToDeck(id){
   const card = cards.find(c=>c.id===id); 
   if(!card) return;
@@ -181,7 +175,6 @@ Sortable.create(document.getElementById('deckImages'),{
   }
 });
 
-// ==================== デッキコード ====================
 function generateDeckCode(){
   if(deck.length===0){alert("デッキが空です"); return;}
   const idList=deck.join(",");
@@ -222,7 +215,6 @@ function toggleBackground(){
   else{ deck.classList.replace("mat-mode","white-mode"); }
 }
 
-// ==================== 投稿タブ ====================
 function loadRecipeDeck(){
   const code = document.getElementById("recipeDeckCode").value.trim();
   if(!code){ alert("デッキコードを入力してください"); return; }
@@ -248,7 +240,6 @@ function submitToTwitter(){
   window.open(url,"_blank");
 }
 
-// ==================== 推し5枚 ====================
 let favoriteFive = [];
 
 function generateRandomFive(){
@@ -302,7 +293,6 @@ ${names}
   window.open(url, "_blank");
 }
 
-// ==================== 推し5枚画像保存 ====================
 function downloadFavoriteImage(){
   if(favoriteFive.length !== 5){
     alert("5枚選んでください");
@@ -319,11 +309,9 @@ function downloadFavoriteImage(){
   canvas.width = cardWidth * 5 + margin * 2;
   canvas.height = cardHeight + 160;
 
-  // 背景
   ctx.fillStyle = "#ffffff";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // タイトル
   ctx.fillStyle = "#f19db5";
   ctx.font = "bold 40px sans-serif";
   ctx.textAlign = "center";
@@ -348,7 +336,6 @@ function downloadFavoriteImage(){
       loaded++;
 
       if(loaded === 5){
-        // ハッシュタグ
         ctx.fillStyle = "#333";
         ctx.font = "24px sans-serif";
         ctx.textAlign = "center";
@@ -367,7 +354,6 @@ function downloadFavoriteImage(){
   });
 }
 
-// ==================== デッキレシピ画像保存 ====================
 function downloadRecipeImage(){
   const code = document.getElementById("recipeDeckCode").value.trim();
   if(!code){
@@ -386,7 +372,6 @@ function downloadRecipeImage(){
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
 
-  // ===== サイズ設定 =====
   const cols = 10;
   const rows = 5;
   const cardWidth = 120;
@@ -397,17 +382,14 @@ function downloadRecipeImage(){
   canvas.width = cols * (cardWidth + margin) + padding * 2 - margin;
   canvas.height = rows * (cardHeight + margin) + padding * 2 + 80;
 
-  // 背景
   ctx.fillStyle = "white";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // タイトル
   ctx.fillStyle = "black";
   ctx.font = "bold 28px sans-serif";
   ctx.textAlign = "center";
   ctx.fillText("デッキレシピ", canvas.width / 2, 40);
 
-  // 画像読み込み
   const loadImages = deckIds.slice(0,50).map(id=>{
     return new Promise(resolve=>{
       const card = cards.find(c=>c.id===id);
@@ -429,7 +411,6 @@ function downloadRecipeImage(){
       ctx.drawImage(img, x, y, cardWidth, cardHeight);
     });
 
-    // デッキコード表示
     ctx.font = "16px sans-serif";
     ctx.textAlign = "left";
     ctx.fillText("デッキコード: " + code, 20, canvas.height - 20);
