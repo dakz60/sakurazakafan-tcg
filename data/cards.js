@@ -141,6 +141,6 @@
  { id: "p054", name: "み～んな!理子のとりこ♪", effect: "（自動）エースアタック時、山札を上から1枚見る。アタックしたユニットと異なる色でヒット1なら登場、違うならドロップ。各ターン1回まで。",color: "白", cost: 5, type: "territory", rarity: "PR",img:"images/000.jpg"},
  { id: "p055", name: "ヤミつきストレート！", effect: "（自動）エースアタック時、山札を上から1枚見る。アタックしたユニットと異なる色でヒット1なら登場、違うならドロップ。各ターン1回まで。",color: "白", cost: 5, type: "territory", rarity: "PR",img:"images/000.jpg"},
  { id: "p056", name: "ナギ・ブレイズ！", effect: "（自動）エースアタック時、山札を上から1枚見る。アタックしたユニットと異なる色でヒット1なら登場、違うならドロップ。各ターン1回まで。",color: "白", cost: 5, type: "territory", rarity: "PR",img:"images/000.jpg"}, 
- { id: "p057", name: "あいりの涙ほくろびーむ！", effect: "（自動）エースアタック時、山札を上から1枚見る。アタックしたユニットと異なる色でヒット1なら登場、違うならドロップ。各ターン1回まで。",color: "白", cost: 5, type: "territory", rarity: "PR",img:"images/000.jpg"},
+ { id: "p057", name: "あいりの涙ぼくろびーむ！", effect: "（自動）エースアタック時、山札を上から1枚見る。アタックしたユニットと異なる色でヒット1なら登場、違うならドロップ。各ターン1回まで。",color: "白", cost: 5, type: "territory", rarity: "PR",img:"images/000.jpg"},
  { id: "p057", name: "ゆーづのビッグボイス", effect: "（自動）エースアタック時、山札を上から1枚見る。アタックしたユニットと異なる色でヒット1なら登場、違うならドロップ。各ターン1回まで。",color: "白", cost: 5, type: "territory", rarity: "PR",img:"images/000.jpg"},
 ];
