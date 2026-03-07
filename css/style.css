@@ -238,46 +238,26 @@ hr {
     -moz-appearance: textfield;
 }
 /* ========== レスポンシブ調整 ========== */
+/* ========== 画像サイズだけ調整 ========== */
 
-/* =================== 基本PC表示 =================== */
-#deckImages {
-  display: grid;
-  grid-template-columns: repeat(10, 98px);
-  grid-template-rows: repeat(5, 140px);
-  gap: 1px;
-  justify-items: center;
-  align-items: center;
-}
-
+/* PC表示 */
 .cardAll img {
-  width: 98px;
-  height: 140px;
-  object-fit: cover;
-  border-radius: 5px;
+  width: 98px !important;
+  height: 140px !important;
 }
 
-/* =================== タブレット表示 =================== */
+/* タブレット表示 */
 @media screen and (max-width: 834px) {
-  #deckImages {
-    grid-template-columns: repeat(7, 80px);
-    grid-template-rows: auto;
-    gap: 2px;
-  }
   .cardAll img {
-    width: 80px;
-    height: 120px;
+    width: 80px !important;
+    height: 120px !important;
   }
 }
 
-/* =================== スマホ表示 =================== */
+/* スマホ表示 */
 @media screen and (max-width: 520px) {
-  #deckImages {
-    grid-template-columns: repeat(5, 60px);
-    grid-template-rows: auto;
-    gap: 2px;
-  }
   .cardAll img {
-    width: 60px;
-    height: 90px;
+    width: 60px !important;
+    height: 90px !important;
   }
 }
