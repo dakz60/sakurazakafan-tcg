@@ -267,3 +267,27 @@ function updateDeckStatus(){
     ショット：${shotCount}枚<br>
     テリトリー：${territory}`;
 }
+
+// 完成チェック
+function checkDeckRules(){
+  const totalCards=deck.length; const terr=territoryCardId?1:0;
+  let busterCount=0, shotCount=0;
+  deck.forEach(id=>{ const card=cards.find(c=>c.id===id); if(card?.subType?.includes("バスター")) busterCount++; if(card?.subType?.includes("ショット")) shotCount++; });
+  let msg="";
+  if(totalCards<40 || totalCards>50) msg+=`デッキ枚数は40～50枚である必要があります（現在${totalCards}枚）<br>`;
+  if(terr!==1) msg+=`テリトリーカードは1枚必要です（現在${terr}枚）<br>`;
+  if(busterCount!==12) msg+=`バスターカードは12枚必要です（現在${busterCount}枚）<br>`;
+  if(shotCount>12) msg+=`ショットカードは最大12枚です（現在${shotCount}枚）<br>`;
+  document.getElementById("deckCheckResult").innerHTML = msg || "咲け、咲け、櫻坂46";
+}
+
+// デッキドラッグ並び替え
+Sortable.create(document.getElementById('deckImages'),{animation:150,onEnd:function(evt){const moved=deck.splice(evt.oldIndex,1)[0];deck.splice(evt.newIndex,0,moved);}});
+
+// デッキコード生成・復元・コピー
+function generateDeckCode(){if(deck.length===0){alert("デッキが空です"); return;} const idList=deck.join(","); const territoryId=territoryCardId||"0"; document.getElementById("deckCodeBox").value=territoryId+"|"+idList; document.getElementById("deckCodeResult").textContent="デッキコード生成完了！";}
+function loadDeckFromCode(){const code=document.getElementById("deckCodeBox").value.trim(); if(!code){alert("コードを入力してください"); return;} try{const parts=code.split("|"); const territoryId=parts[0]; const deckIds=parts[1]?parts[1].split(","):[]; territoryCardId=territoryId!=="0"?territoryId:null; deck=deckIds.filter(id=>cards.some(c=>c.id===id)); updateDeckImages(); document.getElementById("deckCodeResult").textContent="デッキ復元完了！";}catch(e){alert("無効なコードです");}}
+function copyDeckCode(){const box=document.getElementById("deckCodeBox"); if(!box.value){alert("コピーするコードがありません"); return;} navigator.clipboard.writeText(box.value).then(()=>{document.getElementById("deckCodeResult").textContent="コピーしました！";}).catch(()=>{alert("コピーに失敗しました");});}
+
+// URLパラメータ復元
+window.addEventListener("load",function(){ const params=new URLSearchParams(window.location.search); const deckParam=params.get("deck"); if(deckParam){ document.getElementById("deckCodeBox").value=deckParam; loadDeckFromCode(); }});
