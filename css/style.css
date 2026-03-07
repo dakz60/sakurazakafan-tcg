@@ -1,4 +1,3 @@
-/* 基本スタイル */
 body {
   font-family: sans-serif;
   background: white;
@@ -91,19 +90,16 @@ hr {
   border-radius: 10px;
 }
 
-/* フレックスレイアウト */
 .flex-row {
   display: flex;
   gap: 40px;
   align-items: flex-start;
-  flex-wrap: wrap; /* 狭い画面で折り返す */
 }
 .flex-col {
   display: flex;
   flex-direction: column;
 }
 
-/* デッキコンテナ */
 #deckContainer {
   display: flex;
   gap: 20px;
@@ -113,8 +109,6 @@ hr {
   border-radius: 20px;
   box-shadow: 0 8px 20px rgba(0,0,0,0.2);
   min-height: 700px;
-  flex-wrap: wrap;
-  justify-content: center;
 }
 #deckContainer.white-mode {
   background: white;
@@ -126,11 +120,11 @@ hr {
   background-repeat: no-repeat;
 }
 
-/* デッキ画像グリッド */
 #deckImages {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-  gap: 5px;
+  grid-template-columns: repeat(10, 98px);
+  grid-template-rows: repeat(5, 140px);
+  gap: 1px;
   justify-items: center;
   align-items: center;
 }
@@ -138,28 +132,23 @@ hr {
   border-radius: 5px;
   border: 1px solid #ccc;
   object-fit: cover;
-  width: 100%;
-  height: auto;
-  max-height: 140px;
+  width: 98px;
+  height: 140px;
   cursor: grab;
 }
-
-/* テリトリー画像 */
 #territoryImage {
-  width: 100%;
-  max-width: 270px;
-  margin: 0 auto;
+  width: 180px;
+  min-width: 180px;
 }
 #territoryImage img {
-  width: 100%;
-  height: auto;
+  width: 270px;
+  height: 180px;
   border-radius: 5px;
   border: 1px solid #ccc;
   display: block;
   margin: 5px auto;
 }
 
-/* メッセージエリア */
 #releaseCountdown, #deckCheckResult, #deckCodeResult {
   text-align: center;
   font-weight: bold;
@@ -169,7 +158,6 @@ hr {
   color: rgb(241,50,50);
 }
 
-/* 検索セクション */
 .search-section {
   margin-bottom: 10px;
 }
@@ -182,34 +170,24 @@ hr {
   overflow-y: auto;
 }
 
-/* カード一覧・コレクション */
-#cardListAll, #collectionList {
+#cardListAll {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   justify-content: flex-start;
 }
 .cardAll {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: calc(20% - 10px); /* PC 5列基準 */
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  padding: 5px;
-  border-radius: 8px;
-  background: #f9f9f9;
+  width: 80px;
   text-align: center;
 }
 .cardAll img {
-  width: 100%;
-  height: auto;
-  max-height: 120px;
+  width: 80px;
+  height: 120px;
   object-fit: cover;
   border-radius: 5px;
+  border: 1px solid #ccc;
 }
 
-/* レシピデッキプレビュー */
 #recipeDeckPreview {
   display: flex;
   flex-wrap: wrap;
@@ -220,30 +198,42 @@ hr {
   text-align: center;
 }
 #recipeDeckPreview img {
-  width: 100%;
-  max-width: 60px;
-  height: auto;
+  width: 60px;
+  height: 90px;
+  object-fit: cover;
   border-radius: 3px;
   border: 1px solid #ccc;
 }
+#collectionList, #cardListAll {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
 
-/* 数字入力スピンボタン除去 */
+.cardAll {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  padding: 5px;
+  border-radius: 8px;
+  background: #f9f9f9;
+}
+
+.cardAll img {
+  width: 80px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 5px;
+}
 #collectionList input[type=number]::-webkit-outer-spin-button,
 #collectionList input[type=number]::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
+
 #collectionList input[type=number] {
     -moz-appearance: textfield;
 }
-
-/* レスポンシブ調整 */
-@media (max-width: 1200px) { .cardAll { width: calc(25% - 10px); } }
-@media (max-width: 900px) { .cardAll { width: calc(33.33% - 10px); } }
-@media (max-width: 600px) { 
-  .cardAll { width: calc(50% - 10px); }
-  body { font-size: 14px; padding: 10px; }
-  button.tab { padding: 8px 12px; margin-right: 3px; }
-  #deckContainer { padding: 10px; min-height: auto; }
-}
-@media (max-width: 400px) { .cardAll { width: 100%; } }
