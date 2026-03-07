@@ -237,44 +237,50 @@ hr {
 #collectionList input[type=number] {
     -moz-appearance: textfield;
 }
-/* タブレット*/
+/* ========== レスポンシブ調整 ========== */
+
+/* タブレット */
 @media screen and (max-width: 768px) {
   .cardAll {
-    width: 70px;
-    padding: 4px;
+    width: 70px !important;
+    padding: 4px !important;
   }
   .cardAll img {
-    width: 60px;
-    height: 90px;
+    width: 60px !important;
+    height: 90px !important;
   }
-  .cardAll div {
-    font-size: 16px;
+  .cardAll > div {
+    font-size: 16px !important;
   }
   #deckImages {
-    grid-template-columns: repeat(7, 80px);
+    grid-template-columns: repeat(7, 80px) !important;
     grid-template-rows: auto;
+    gap: 2px;
   }
   .flex-row {
     flex-direction: column;
     gap: 20px;
+  }
+  input, select, button, textarea {
+    font-size: 15px !important;
   }
 }
 
 /* スマホ */
 @media screen and (max-width: 480px) {
   .cardAll {
-    width: 60px;
-    padding: 3px;
+    width: 60px !important;
+    padding: 3px !important;
   }
   .cardAll img {
-    width: 50px;
-    height: 75px;
+    width: 50px !important;
+    height: 75px !important;
   }
-  .cardAll div {
-    font-size: 14px;
+  .cardAll > div {
+    font-size: 14px !important;
   }
   #deckImages {
-    grid-template-columns: repeat(5, 70px);
+    grid-template-columns: repeat(5, 70px) !important;
     grid-template-rows: auto;
     gap: 2px;
   }
@@ -283,8 +289,16 @@ hr {
     gap: 15px;
   }
   input, select, button, textarea {
-    font-size: 14px;
-    width: 100%;
-    margin-bottom: 5px;
+    font-size: 14px !important;
+    width: 100% !important;
+    margin-bottom: 5px !important;
+  }
+  #territoryImage {
+    width: 100% !important;
+    min-width: unset !important;
+  }
+  #territoryImage img {
+    width: 100% !important;
+    height: auto !important;
   }
 }
