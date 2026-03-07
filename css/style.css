@@ -204,3 +204,36 @@ hr {
   border-radius: 3px;
   border: 1px solid #ccc;
 }
+#collectionList, #cardListAll {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.cardAll {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100px;          /* カードの幅 */
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  padding: 5px;
+  border-radius: 8px;
+  background: #f9f9f9;
+}
+
+.cardAll img {
+  width: 80px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+#collectionList input[type=number]::-webkit-outer-spin-button,
+#collectionList input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+#collectionList input[type=number] {
+    -moz-appearance: textfield;
+}
