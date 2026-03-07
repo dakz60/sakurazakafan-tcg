@@ -237,3 +237,24 @@ hr {
 #collectionList input[type=number] {
     -moz-appearance: textfield;
 }
+/* PC: 10列表示 */
+#deckImages img {
+  width: 98px;
+  height: 140px;
+}
+
+/* タブレット: 7列表示 */
+@media screen and (max-width: 834px) {
+  #deckImages img {
+    width: 80px;
+    height: 120px;
+  }
+}
+
+/* スマホ: 5列表示 */
+@media screen and (max-width: 520px) {
+  #deckImages img {
+    width: 60px;
+    height: 90px;
+  }
+}
