@@ -237,27 +237,3 @@ hr {
 #collectionList input[type=number] {
     -moz-appearance: textfield;
 }
-/* ========== レスポンシブ調整 ========== */
-/* ========== 画像サイズだけ調整 ========== */
-
-/* PC表示 */
-.cardAll img {
-  width: 98px !important;
-  height: 140px !important;
-}
-
-/* タブレット表示 */
-@media screen and (max-width: 834px) {
-  .cardAll img {
-    width: 80px !important;
-    height: 120px !important;
-  }
-}
-
-/* スマホ表示 */
-@media screen and (max-width: 520px) {
-  .cardAll img {
-    width: 60px !important;
-    height: 90px !important;
-  }
-}
