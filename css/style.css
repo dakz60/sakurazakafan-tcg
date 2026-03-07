@@ -214,7 +214,7 @@ hr {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100px;          /* カードの幅 */
+  width: 100px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
   padding: 5px;
@@ -236,4 +236,55 @@ hr {
 
 #collectionList input[type=number] {
     -moz-appearance: textfield;
+}
+/* タブレット*/
+@media screen and (max-width: 768px) {
+  .cardAll {
+    width: 70px;
+    padding: 4px;
+  }
+  .cardAll img {
+    width: 60px;
+    height: 90px;
+  }
+  .cardAll div {
+    font-size: 16px;
+  }
+  #deckImages {
+    grid-template-columns: repeat(7, 80px);
+    grid-template-rows: auto;
+  }
+  .flex-row {
+    flex-direction: column;
+    gap: 20px;
+  }
+}
+
+/* スマホ */
+@media screen and (max-width: 480px) {
+  .cardAll {
+    width: 60px;
+    padding: 3px;
+  }
+  .cardAll img {
+    width: 50px;
+    height: 75px;
+  }
+  .cardAll div {
+    font-size: 14px;
+  }
+  #deckImages {
+    grid-template-columns: repeat(5, 70px);
+    grid-template-rows: auto;
+    gap: 2px;
+  }
+  .flex-row {
+    flex-direction: column;
+    gap: 15px;
+  }
+  input, select, button, textarea {
+    font-size: 14px;
+    width: 100%;
+    margin-bottom: 5px;
+  }
 }
