@@ -450,3 +450,4 @@ function downloadRecipeImage(){
 
 // URLパラメータ復元
 window.addEventListener("load",function(){ const params=new URLSearchParams(window.location.search); const deckParam=params.get("deck"); if(deckParam){ document.getElementById("deckCodeBox").value=deckParam; loadDeckFromCode(); }});
+}
