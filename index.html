@@ -14,6 +14,7 @@
   <button class="tab active" onclick="openTab('deck', this)">デッキ作成</button>
   <button class="tab" onclick="openTab('favorite', this)">推し5枚</button>
   <button class="tab" onclick="openTab('recipe', this)">デッキレシピ投稿</button>
+  <button class="tab" onclick="openTab('collection', this)">コレクション</button>
   <button class="tab" onclick="openTab('allcards', this)">カード一覧</button>
 </div>
 
@@ -180,6 +181,21 @@
   </form>
 </div>
 
+<div id="collection" class="tab-content">
+  <h2>コレクション</h2>
+  <div class="search-section">
+    <label>所持状況：
+      <select id="ownershipFilter" onchange="showCollection()">
+        <option value="all">全て</option>
+        <option value="owned">所持</option>
+        <option value="unowned">未所持</option>
+      </select>
+    </label>
+  </div>
+
+  <div id="collectionList"></div>
+</div>
+
 <!-- 全カード一覧タブ -->
 <div id="allcards" class="tab-content">
   <h2>カード一覧</h2>
@@ -193,3 +209,4 @@
 
 </body>
 </html>
+
