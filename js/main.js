@@ -289,5 +289,165 @@ function generateDeckCode(){if(deck.length===0){alert("デッキが空です"); 
 function loadDeckFromCode(){const code=document.getElementById("deckCodeBox").value.trim(); if(!code){alert("コードを入力してください"); return;} try{const parts=code.split("|"); const territoryId=parts[0]; const deckIds=parts[1]?parts[1].split(","):[]; territoryCardId=territoryId!=="0"?territoryId:null; deck=deckIds.filter(id=>cards.some(c=>c.id===id)); updateDeckImages(); document.getElementById("deckCodeResult").textContent="デッキ復元完了！";}catch(e){alert("無効なコードです");}}
 function copyDeckCode(){const box=document.getElementById("deckCodeBox"); if(!box.value){alert("コピーするコードがありません"); return;} navigator.clipboard.writeText(box.value).then(()=>{document.getElementById("deckCodeResult").textContent="コピーしました！";}).catch(()=>{alert("コピーに失敗しました");});}
 
+/* ==================== 投稿タブ ==================== */
+function loadRecipeDeck(){
+  const code = document.getElementById("recipeDeckCode").value.trim();
+  if(!code){ alert("デッキコードを入力してください"); return; }
+  try {
+    const parts = code.split("|");
+    const deckIds = parts[1] ? parts[1].split(",") : [];
+    const container = document.getElementById("recipeDeckPreview");
+     container.innerHTML = deckIds.map(id=>{
+    const card = cards.find(c=>c.id===id);
+  if(!card) return "";
+  return `<div style="display:inline-block; margin:1px;">
+            <img src="${card.img}" style="width:120px; height:170px; object-fit:cover; border-radius:1px;">
+          </div>`;
+}).join('');
+  } catch(e){ alert("無効なデッキコードです"); }
+}
+
+function submitToTwitter(){
+  const title = encodeURIComponent(document.querySelector('#recipe input[name="title"]').value);
+  const desc = encodeURIComponent(document.querySelector('#recipe textarea[name="description"]').value);
+  const code = encodeURIComponent(document.getElementById("recipeDeckCode").value);
+  const url = `https://twitter.com/intent/tweet?text=${title}%0A${desc}%0Aデッキコード:${code}`;
+  window.open(url,"_blank");
+}
+
+  let favoriteFive = [];
+
+function generateRandomFive(){
+  if(!cards || cards.length===0) return;
+  const shuffled = [...cards].sort(()=>0.5-Math.random());
+  favoriteFive = shuffled.slice(0,5);
+  renderFavoriteFive();
+}
+
+function showManualFive(){
+  const input = document.getElementById("favoriteManualIds").value.trim();
+  if(!input) return;
+  const ids = input.split(",").map(id=>id.trim());
+  favoriteFive = ids.map(id=>cards.find(c=>c.id===id)).filter(Boolean).slice(0,5);
+  renderFavoriteFive();
+}
+
+function renderFavoriteFive(){
+  const container = document.getElementById("favoriteDisplay");
+  container.innerHTML = "";
+
+  favoriteFive.forEach((card,index)=>{
+    const div = document.createElement("div");
+    div.innerHTML = `
+      <div style="text-align:center; font-weight:bold;">${index+1}</div>
+      <img src="${card.img}" style="width:140px; border-radius:8px;">
+      <div style="text-align:center; font-size:12px;">${card.id}</div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function tweetFavoriteFive(){
+  if(favoriteFive.length===0){
+    alert("カードを選んでください");
+    return;
+  }
+
+  const names = favoriteFive.map((c,i)=>`${i+1}. ${c.name}`).join("\n");
+
+  const text = `🌸〇〇の最強5枚‼🌸
+
+${names}
+
+#櫻坂TCG
+#櫻坂46
+#美しき衝突
+#櫻舞う`;
+
+  const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+  window.open(url, "_blank");
+}
+function downloadFavoriteImage(){
+  if(favoriteFive.length !== 5){
+    alert("5枚選んでください");
+    return;
+  }
+
+  const cardWidth = 220;
+  const cardHeight = 308;
+  const margin = 20;
+
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+
+  canvas.width = cardWidth * 5 + margin * 2;
+  canvas.height = cardHeight + 160;
+
+  // 背景
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // タイトル
+  ctx.fillStyle = "#f19db5";
+  ctx.font = "bold 40px sans-serif";
+  ctx.textAlign = "center";
+  ctx.fillText("🌸 〇〇の最強5枚‼ 🌸", canvas.width / 2, 50);
+
+  let loaded = 0;
+
+  favoriteFive.forEach((card, index)=>{
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.src = card.img;
+
+    img.onload = function(){
+      ctx.drawImage(
+        img,
+        margin + index * cardWidth,
+        80,
+        cardWidth,
+        cardHeight
+      );
+
+      loaded++;
+
+      if(loaded === 5){
+        // ハッシュタグ
+        ctx.fillStyle = "#333";
+        ctx.font = "24px sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText(
+          "#櫻坂TCG  #櫻坂46  #美しき衝突  #櫻舞う",
+          canvas.width / 2,
+          canvas.height - 30
+        );
+
+        const link = document.createElement("a");
+        link.download = "oshi5.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      }
+    };
+  });
+}
+
+function downloadRecipeImage(){
+  const code = document.getElementById("recipeDeckCode").value.trim();
+  if(!code){
+    alert("デッキコードを入力してください");
+    return;
+  }
+
+  const parts = code.split("|");
+  const deckIds = parts[1] ? parts[1].split(",") : [];
+
+  if(deckIds.length === 0){
+    alert("デッキが読み込まれていません");
+    return;
+  }
+
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+
 // URLパラメータ復元
 window.addEventListener("load",function(){ const params=new URLSearchParams(window.location.search); const deckParam=params.get("deck"); if(deckParam){ document.getElementById("deckCodeBox").value=deckParam; loadDeckFromCode(); }});
