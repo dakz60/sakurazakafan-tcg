@@ -184,7 +184,6 @@ function search(){
       <button onclick="addToDeck('${card.id}')">＋</button>
       <button onclick="removeFromDeck('${card.id}')">－</button></div></div>`;
   }).join('');
-}
 
 // --------------------- デッキ操作 ---------------------
 let deck = [], territoryCardId = null;
