@@ -1,273 +1,166 @@
-// タブ切り替え
+// ==================== タブ切り替え ====================
 function openTab(tabId){
-  document.querySelectorAll('button.tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('button.tab').forEach(b=>b.classList.remove('active'));
   event.currentTarget.classList.add('active');
-  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
   document.getElementById(tabId).classList.add('active');
-
-  if(tabId === 'collectionTab') showCollection();
 }
 
-// 初期ロード
+// ==================== ページロード時の初期処理 ====================
 window.addEventListener("load", function(){
   updateReleaseCountdown();
   showDailyCard();
   showAllCards();
-  showCollection();
 });
 
-// --------------------- カード表示 ---------------------
+// ==================== 全カード一覧表示 ====================
 function showAllCards(){
   const container = document.getElementById("cardListAll");
-  if(!cards || cards.length === 0){
-    container.textContent = "カードデータがありません";
-    return;
-  }
-  container.innerHTML = cards.map(c => `
-    <div class="cardAll">
-      <img src="${c.img}" alt="${c.name}"><br>
-      ${c.name}<br>
-      ID:${c.id}
-    </div>
-  `).join('');
-}
-
-function showCollection(){
-  const container = document.getElementById("collectionList");
   if(!cards || cards.length===0){
     container.textContent = "カードデータがありません";
     return;
   }
-
-  const ownership = document.getElementById("ownershipFilter")?.value || "all";
-
-  container.innerHTML = cards
-    .filter(card => {
-      const count = parseInt(localStorage.getItem("cardCount_" + card.id) || 0);
-      if(ownership === "owned") return count > 0;
-      if(ownership === "unowned") return count === 0;
-      return true; // all
-    })
-    .map(card => {
-      const count = localStorage.getItem("cardCount_" + card.id) || 0;
-
-      let bgStyle = '#eee';
-      let nameColor = '#000';
-      
-      if(memberColors[card.name]){
-        const colors = memberColors[card.name];
-        bgStyle = colors[0];
-        nameColor = (colors[0] === colors[1]) ? '#fff' : colors[1];
-      } else {
-        for(const member in memberColors){
-          if(card.name.includes(member)){
-            const colors = memberColors[member];
-            bgStyle = colors[0];
-            nameColor = (colors[0] === colors[1]) ? '#fff' : colors[1];
-            break;
-          }
-        }
-      }
-
-      return `
-<div class="cardAll" style="
-  display:flex; 
-  flex-direction:column; 
-  align-items:center; 
-  margin:2px; 
-  background:${bgStyle}; 
-  padding:18px; 
-  border-radius:10px;
-">
-  <img src="${card.img}" alt="${card.name}" style="width:110px; height:152px; border-radius:5px;">
-  <div style="
-    text-align:center; 
-    font-size:20px; 
-    margin-top:3px; 
-    color:${nameColor};
-  ">
-    ${card.name}
-  </div>
-  <input type="number" min="0" value="${count}" style="width:20px; text-align:center;"
-    onchange="updateCardCount('${card.id}', this.value)">
-</div>
-      `;
-    }).join('');
+  container.innerHTML = cards.map(c=>{
+    return `<div class="cardAll">
+      <img src="${c.img}" alt="${c.name}"><br>
+      ${c.name}<br>
+      ID:${c.id}
+    </div>`;
+  }).join('');
 }
 
-function updateCardCount(cardId, value){
-  const num = Math.max(0, parseInt(value) || 0);
-  localStorage.setItem("cardCount_" + cardId, num);
-}
+// ==================== デッキ作成 ====================
+let deck=[], territoryCardId=null;
 
-// --------------------- デイリーカード ---------------------
-function showDailyCard(){
-  if(!cards || cards.length===0) return;
-  const randomCard = cards[Math.floor(Math.random()*cards.length)];
-  const container = document.getElementById("dailyCard");
-  container.innerHTML = `<img src="${randomCard.img}" style="width:240px; display:block; margin:auto;">
-                         <div style="text-align:center; margin-top:10px;">${randomCard.name}</div>`;
-}
-function rerollDailyCard(){ showDailyCard(); }
-function showManualCard(){
-  const id = document.getElementById("manualCardId").value.trim();
-  const card = cards.find(c => c.id === id);
-  if(card){
-    const container = document.getElementById("dailyCard");
-    container.innerHTML = `<img src="${card.img}" style="width:240px; display:block; margin:auto;">
-                           <div style="text-align:center; margin-top:10px;">${card.name}</div>`;
-  } else { alert("カードIDが見つかりません"); }
-}
-
-// --------------------- 発売カウントダウン ---------------------
 function updateReleaseCountdown(){
   const releaseDate = new Date("2026-03-20");
   const today = new Date();
   const diff = Math.ceil((releaseDate - today)/(1000*60*60*24));
-  document.getElementById("releaseCountdown").textContent = diff > 0 ? `発売まであと${diff}日` : "発売日です！";
+  document.getElementById("releaseCountdown").textContent = diff>0 ? `発売まであと${diff}日` : "発売日です！";
 }
 
-// --------------------- 検索 ---------------------
+function showDailyCard(){
+  if(!cards || cards.length===0) return;
+  const randomCard = cards[Math.floor(Math.random()*cards.length)];
+  document.getElementById("dailyCard").innerHTML = `
+    <img src="${randomCard.img}" style="width:240px; display:block; margin:auto;">
+    <div style="text-align:center; margin-top:10px;">${randomCard.name}</div>
+  `;
+}
+function rerollDailyCard(){ showDailyCard(); }
+
+function showManualCard(){
+  const id = document.getElementById("manualCardId").value.trim();
+  const card = cards.find(c => c.id === id);
+  if(card){
+    document.getElementById("dailyCard").innerHTML = `
+      <img src="${card.img}" style="width:240px; display:block; margin:auto;">
+      <div style="text-align:center; margin-top:10px;">${card.name}</div>
+    `;
+  } else { alert("カードIDが見つかりません"); }
+}
+
+// ==================== 検索 ====================
 function search(){
-  const name = document.getElementById("searchBox").value;
-  const effect = document.getElementById("effectSearchBox").value;
-  const costMin = document.getElementById("costMin").value;
-  const costMax = document.getElementById("costMax").value;
-  const powerMin = document.getElementById("powerMin").value;
-  const powerMax = document.getElementById("powerMax").value;
-  const hitMin = document.getElementById("hitMin").value;
-  const hitMax = document.getElementById("hitMax").value;
-  const typeFilter = document.getElementById("typeFilter").value;
-  const colorFilter = document.getElementById("colorFilter").value;
-  const generationFilter = document.getElementById("generationFilter").value;
-  const subTypeFilter = document.getElementById("subTypeFilter").value;
-  const rarityFilter = document.getElementById("rarityFilter").value;
-  const result = document.getElementById("result");
+  const name=document.getElementById("searchBox").value;
+  const effect=document.getElementById("effectSearchBox").value;
+  const costMin=document.getElementById("costMin").value;
+  const costMax=document.getElementById("costMax").value;
+  const powerMin=document.getElementById("powerMin").value;
+  const powerMax=document.getElementById("powerMax").value;
+  const hitMin=document.getElementById("hitMin").value;
+  const hitMax=document.getElementById("hitMax").value;
+  const typeFilter=document.getElementById("typeFilter").value;
+  const colorFilter=document.getElementById("colorFilter").value;
+  const generationFilter=document.getElementById("generationFilter").value;
+  const subTypeFilter=document.getElementById("subTypeFilter").value;
+  const rarityFilter=document.getElementById("rarityFilter").value;
+  const result=document.getElementById("result");
 
-  let filtered = cards.filter(c => 
-    (!name || c.name.includes(name)) && 
-    (!effect || (c.effect && c.effect.includes(effect)))
-  );
+  let filtered = cards.filter(c=>(!name || c.name.includes(name)) && (!effect || (c.effect && c.effect.includes(effect))));
+  if(costMin!=="") filtered = filtered.filter(c => c.cost>=Number(costMin));
+  if(costMax!=="") filtered = filtered.filter(c => c.cost<=Number(costMax));
+  if(powerMin!=="") filtered = filtered.filter(c => c.power!==null && c.power>=Number(powerMin));
+  if(powerMax!=="") filtered = filtered.filter(c => c.power!==null && c.power<=Number(powerMax));
+  if(hitMin!=="") filtered = filtered.filter(c => c.hit!==null && c.hit>=Number(hitMin));
+  if(hitMax!=="") filtered = filtered.filter(c => c.hit!==null && c.hit<=Number(hitMax));
+  if(typeFilter!=="") filtered = filtered.filter(c => c.type===typeFilter);
+  if(colorFilter!=="") filtered = filtered.filter(c => c.color===colorFilter);  
+  if(generationFilter!=="") filtered = filtered.filter(c => c.generation===generationFilter);
+  if(rarityFilter!=="") filtered = filtered.filter(c => c.rarity===rarityFilter);
 
-  if(costMin !== "") filtered = filtered.filter(c => c.cost >= Number(costMin));
-  if(costMax !== "") filtered = filtered.filter(c => c.cost <= Number(costMax));
-  if(powerMin !== "") filtered = filtered.filter(c => c.power !== null && c.power >= Number(powerMin));
-  if(powerMax !== "") filtered = filtered.filter(c => c.power !== null && c.power <= Number(powerMax));
-  if(hitMin !== "") filtered = filtered.filter(c => c.hit !== null && c.hit >= Number(hitMin));
-  if(hitMax !== "") filtered = filtered.filter(c => c.hit !== null && c.hit <= Number(hitMax));
-  if(typeFilter !== "") filtered = filtered.filter(c => c.type === typeFilter);
-  if(colorFilter !== "") filtered = filtered.filter(c => c.color === colorFilter);
-  if(generationFilter !== "") filtered = filtered.filter(c => c.generation === generationFilter);
-  if(rarityFilter !== "") filtered = filtered.filter(c => c.rarity === rarityFilter);
+  if(subTypeFilter==="バスター" || subTypeFilter==="ショット") filtered = filtered.filter(c => c.subType && c.subType.includes(subTypeFilter));
+  else if(subTypeFilter==="その他") filtered = filtered.filter(c => (!c.subType || (c.subType.indexOf("バスター")===-1 && c.subType.indexOf("ショット")===-1)) && c.type!=="territory");
 
-  if(subTypeFilter === "バスター" || subTypeFilter === "ショット") 
-    filtered = filtered.filter(c => c.subType && c.subType.includes(subTypeFilter));
-  else if(subTypeFilter === "その他") 
-    filtered = filtered.filter(c => (!c.subType || (c.subType.indexOf("バスター")===-1 && c.subType.indexOf("ショット")===-1)) && c.type !== "territory");
+  if(filtered.length===0){ result.textContent="見つかりませんでした"; return; }
 
-  if(filtered.length === 0){ result.textContent = "見つかりませんでした"; return; }
-
-  result.innerHTML = filtered.map(card => {
-    let colorClass = '';
+  result.innerHTML = filtered.map(card=>{
+    let colorClass='';
     if(card.color==='白') colorClass='card-white';
     else if(card.color==='赤') colorClass='card-red';
     else if(card.color==='青') colorClass='card-blue';
     else if(card.color==='黒') colorClass='card-black';
-
-    const imgTag = `<img src="${card.img}" alt="${card.name}" style="width:85px; height:auto; border-radius:5px; margin-right:5px;">`;
-    const info = (card.type==='command' || card.type==='territory') 
-      ? `コスト:${card.cost} | 効果:${card.effect||'-'} | レアリティ:${card.rarity||'-'} | 期別:${card.generation||'-'} | トリガー:${card.subType ? card.subType.join(",") : '-'}` 
-      : `コスト:${card.cost} | 効果:${card.effect||'-'} | パワー:${card.power||'-'} | ヒット:${card.hit||'-'} | レアリティ:${card.rarity||'-'} | 期別:${card.generation||'-'} | トリガー:${card.subType ? card.subType.join(",") : '-'}`;
-
+    const imgTag=`<img src="${card.img}" alt="${card.name}" style="width:85px; height:auto; border-radius:5px; margin-right:5px;">`;
+    let info='';
+    if(card.type==='command' || card.type==='territory'){
+      info=`コスト:${card.cost} | 効果:${card.effect||'-'} | レアリティ:${card.rarity||'-'} | 期別:${card.generation||'-'} | トリガー:${card.subType ? card.subType.join(",") : '-'}`;
+    }else{
+      info=`コスト:${card.cost} | 効果:${card.effect||'-'} | パワー:${card.power||'-'} | ヒット:${card.hit||'-'} | レアリティ:${card.rarity||'-'} | 期別:${card.generation||'-'} | トリガー:${card.subType ? card.subType.join(",") : '-'}`;
+    }
     return `<div class="${colorClass}" style="display:flex; align-items:center; margin-bottom:5px;">
       ${imgTag}<div>${card.name} | ${info}<br>
       <button onclick="addToDeck('${card.id}')">＋</button>
       <button onclick="removeFromDeck('${card.id}')">－</button></div></div>`;
   }).join('');
+}
 
-// --------------------- デッキ操作 ---------------------
-let deck = [], territoryCardId = null;
-
+// ==================== デッキ操作 ====================
 function addToDeck(id){
-  const card = cards.find(c => c.id===id);
+  const card = cards.find(c=>c.id===id); 
   if(!card) return;
-
   if(card.type==='territory'){ territoryCardId = id; updateDeckImages(); updateDeckStatus(); return; }
 
-  const sameSpecCount = deck.filter(d => {
-    const c = cards.find(x => x.id===d);
+  const sameSpecCount = deck.filter(d=>{
+    const c = cards.find(x=>x.id===d);
     if(!c) return false;
     return (c.name===card.name && c.type===card.type && c.cost===card.cost && c.power===card.power && c.hit===card.hit && c.color===card.color && JSON.stringify(c.subType||[])===JSON.stringify(card.subType||[]) && c.generation===card.generation);
   }).length;
+  if(sameSpecCount>=4){ alert("同じカードは4枚までです"); return; }
+  if(deck.length>=50){ alert("デッキは50枚までです"); return; }
 
-  if(sameSpecCount >= 4){ alert("同じカードは4枚までです"); return; }
-  if(deck.length >= 50){ alert("デッキは50枚までです"); return; }
-
-  deck.push(id);
-  updateDeckImages();
-  updateDeckStatus();
+  deck.push(id); updateDeckImages(); updateDeckStatus();
 }
-
-function removeFromDeck(id){
-  const index = deck.indexOf(id);
-  if(index !== -1) deck.splice(index,1);
-  if(territoryCardId === id) territoryCardId = null;
-  updateDeckImages();
-  updateDeckStatus();
+function removeFromDeck(id){ 
+  const index=deck.indexOf(id); 
+  if(index!==-1) deck.splice(index,1); 
+  if(territoryCardId===id) territoryCardId=null; 
+  updateDeckImages(); updateDeckStatus(); 
 }
 
 function updateDeckImages(){
-  const deckDiv = document.getElementById("deckImages");
-  deckDiv.innerHTML = "";
-  deck.slice(0,50).forEach(cardId => {
-    const card = cards.find(c => c.id===cardId);
-    if(!card) return;
-    const img = document.createElement("img");
-    img.src = card.img; img.alt = card.name;
-    img.onclick = () => removeFromDeck(card.id);
-    deckDiv.appendChild(img);
+  const deckDiv=document.getElementById("deckImages"); deckDiv.innerHTML="";
+  deck.slice(0,50).forEach(cardId=>{
+    const card=cards.find(c=>c.id===cardId); if(!card) return;
+    const img=document.createElement("img"); img.src=card.img; img.alt=card.name; img.onclick=()=>removeFromDeck(card.id); deckDiv.appendChild(img);
   });
+  for(let i=deck.length;i<50;i++){ const ph=document.createElement("div"); ph.style.width="110px"; ph.style.height="152px"; deckDiv.appendChild(ph); }
 
-  // 空欄
-  for(let i=deck.length;i<50;i++){
-    const ph = document.createElement("div");
-    ph.style.width="110px"; ph.style.height="152px";
-    deckDiv.appendChild(ph);
-  }
-
-  // テリトリー
-  const terrDiv = document.getElementById("territoryImage");
-  terrDiv.innerHTML = "";
-  if(territoryCardId){
-    const card = cards.find(c => c.id===territoryCardId);
-    if(card){
-      const img = document.createElement("img");
-      img.src = card.img; img.alt = card.name;
-      img.onclick = () => { territoryCardId=null; updateDeckImages(); updateDeckStatus(); };
-      terrDiv.appendChild(img);
-    }
-  }
+  const terrDiv=document.getElementById("territoryImage"); terrDiv.innerHTML="";
+  if(territoryCardId){ const card=cards.find(c=>c.id===territoryCardId); if(card){ const img=document.createElement("img"); img.src=card.img; img.alt=card.name; img.onclick=()=>{territoryCardId=null; updateDeckImages(); updateDeckStatus();}; terrDiv.appendChild(img); }}
 }
 
 function updateDeckStatus(){
-  let unitCount=0, commandCount=0, busterCount=0, shotCount=0;
-  deck.forEach(id => {
-    const card = cards.find(c => c.id===id);
-    if(!card) return;
-    if(card.type?.includes("unit")) unitCount++;
-    if(card.type==="command") commandCount++;
-    if(card.subType?.includes("バスター")) busterCount++;
-    if(card.subType?.includes("ショット")) shotCount++;
-  });
-  const territory = territoryCardId ? "あり" : "なし";
-  document.getElementById("deckStatus").innerHTML = `ユニット：${unitCount}枚<br>
+  let unitCount=0, commandCount=0, busterCount=0, shotCount=0, territory=territoryCardId?"あり":"なし";
+  deck.forEach(id=>{ const card=cards.find(c=>c.id===id); if(!card) return; if(card.type && card.type.includes("unit")) unitCount++; if(card.type==="command") commandCount++; if(card.subType?.includes("バスター")) busterCount++; if(card.subType?.includes("ショット")) shotCount++; });
+  document.getElementById("deckStatus").innerHTML = `
+    ユニット：${unitCount}枚<br>
     コマンド：${commandCount}枚<br>
     バスター：${busterCount}枚<br>
     ショット：${shotCount}枚<br>
-    テリトリー：${territory}`;
+    テリトリー：${territory}
+  `;
 }
 
-// 完成チェック
 function checkDeckRules(){
   const totalCards=deck.length; const terr=territoryCardId?1:0;
   let busterCount=0, shotCount=0;
@@ -280,15 +173,56 @@ function checkDeckRules(){
   document.getElementById("deckCheckResult").innerHTML = msg || "咲け、咲け、櫻坂46";
 }
 
-// デッキドラッグ並び替え
-Sortable.create(document.getElementById('deckImages'),{animation:150,onEnd:function(evt){const moved=deck.splice(evt.oldIndex,1)[0];deck.splice(evt.newIndex,0,moved);}});
+Sortable.create(document.getElementById('deckImages'),{
+  animation:150,
+  onEnd:function(evt){
+    const moved=deck.splice(evt.oldIndex,1)[0];
+    deck.splice(evt.newIndex,0,moved);
+  }
+});
 
-// デッキコード生成・復元・コピー
-function generateDeckCode(){if(deck.length===0){alert("デッキが空です"); return;} const idList=deck.join(","); const territoryId=territoryCardId||"0"; document.getElementById("deckCodeBox").value=territoryId+"|"+idList; document.getElementById("deckCodeResult").textContent="デッキコード生成完了！";}
-function loadDeckFromCode(){const code=document.getElementById("deckCodeBox").value.trim(); if(!code){alert("コードを入力してください"); return;} try{const parts=code.split("|"); const territoryId=parts[0]; const deckIds=parts[1]?parts[1].split(","):[]; territoryCardId=territoryId!=="0"?territoryId:null; deck=deckIds.filter(id=>cards.some(c=>c.id===id)); updateDeckImages(); document.getElementById("deckCodeResult").textContent="デッキ復元完了！";}catch(e){alert("無効なコードです");}}
-function copyDeckCode(){const box=document.getElementById("deckCodeBox"); if(!box.value){alert("コピーするコードがありません"); return;} navigator.clipboard.writeText(box.value).then(()=>{document.getElementById("deckCodeResult").textContent="コピーしました！";}).catch(()=>{alert("コピーに失敗しました");});}
+// ==================== デッキコード ====================
+function generateDeckCode(){
+  if(deck.length===0){alert("デッキが空です"); return;}
+  const idList=deck.join(",");
+  const territoryId=territoryCardId||"0";
+  document.getElementById("deckCodeBox").value=territoryId+"|"+idList;
+  document.getElementById("deckCodeResult").textContent="デッキコード生成完了！";
+}
 
-/* ==================== 投稿タブ ==================== */
+function loadDeckFromCode(){
+  const code=document.getElementById("deckCodeBox").value.trim();
+  if(!code){alert("コードを入力してください"); return;}
+  try{
+    const parts=code.split("|");
+    const territoryId=parts[0];
+    const deckIds=parts[1]?parts[1].split(","):[];
+    territoryCardId=territoryId!=="0"?territoryId:null;
+    deck=deckIds.filter(id=>cards.some(c=>c.id===id));
+    updateDeckImages();
+    document.getElementById("deckCodeResult").textContent="デッキ復元完了！";
+  }catch(e){alert("無効なコードです");}
+}
+
+function copyDeckCode(){
+  const box=document.getElementById("deckCodeBox");
+  if(!box.value){alert("コピーするコードがありません"); return;}
+  navigator.clipboard.writeText(box.value).then(()=>{document.getElementById("deckCodeResult").textContent="コピーしました！";}).catch(()=>{alert("コピーに失敗しました");});
+}
+
+window.addEventListener("load",function(){
+  const params=new URLSearchParams(window.location.search);
+  const deckParam=params.get("deck");
+  if(deckParam){ document.getElementById("deckCodeBox").value=deckParam; loadDeckFromCode(); }
+});
+
+function toggleBackground(){
+  const deck = document.getElementById("deckContainer");
+  if(deck.classList.contains("white-mode")){ deck.classList.replace("white-mode","mat-mode"); }
+  else{ deck.classList.replace("mat-mode","white-mode"); }
+}
+
+// ==================== 投稿タブ ====================
 function loadRecipeDeck(){
   const code = document.getElementById("recipeDeckCode").value.trim();
   if(!code){ alert("デッキコードを入力してください"); return; }
@@ -296,13 +230,13 @@ function loadRecipeDeck(){
     const parts = code.split("|");
     const deckIds = parts[1] ? parts[1].split(",") : [];
     const container = document.getElementById("recipeDeckPreview");
-     container.innerHTML = deckIds.map(id=>{
-    const card = cards.find(c=>c.id===id);
-  if(!card) return "";
-  return `<div style="display:inline-block; margin:1px;">
-            <img src="${card.img}" style="width:120px; height:170px; object-fit:cover; border-radius:1px;">
-          </div>`;
-}).join('');
+    container.innerHTML = deckIds.map(id=>{
+      const card = cards.find(c=>c.id===id);
+      if(!card) return "";
+      return `<div style="display:inline-block; margin:1px;">
+                <img src="${card.img}" style="width:120px; height:170px; object-fit:cover; border-radius:1px;">
+              </div>`;
+    }).join('');
   } catch(e){ alert("無効なデッキコードです"); }
 }
 
@@ -314,7 +248,8 @@ function submitToTwitter(){
   window.open(url,"_blank");
 }
 
-  let favoriteFive = [];
+// ==================== 推し5枚 ====================
+let favoriteFive = [];
 
 function generateRandomFive(){
   if(!cards || cards.length===0) return;
@@ -366,6 +301,8 @@ ${names}
   const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
   window.open(url, "_blank");
 }
+
+// ==================== 推し5枚画像保存 ====================
 function downloadFavoriteImage(){
   if(favoriteFive.length !== 5){
     alert("5枚選んでください");
@@ -430,6 +367,7 @@ function downloadFavoriteImage(){
   });
 }
 
+// ==================== デッキレシピ画像保存 ====================
 function downloadRecipeImage(){
   const code = document.getElementById("recipeDeckCode").value.trim();
   if(!code){
@@ -447,15 +385,76 @@ function downloadRecipeImage(){
 
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
-    canvas.width = 800;
-  canvas.height = 600;
-  ctx.fillStyle = "#fff";
+
+  // ===== サイズ設定 =====
+  const cols = 10;
+  const rows = 5;
+  const cardWidth = 120;
+  const cardHeight = 170;
+  const margin = 10;
+  const padding = 30;
+
+  canvas.width = cols * (cardWidth + margin) + padding * 2 - margin;
+  canvas.height = rows * (cardHeight + margin) + padding * 2 + 80;
+
+  // 背景
+  ctx.fillStyle = "white";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  const link = document.createElement("a");
-  link.download = "deck.png";
-  link.href = canvas.toDataURL("image/png");
-  link.click();
+  // タイトル
+  ctx.fillStyle = "black";
+  ctx.font = "bold 28px sans-serif";
+  ctx.textAlign = "center";
+  ctx.fillText("デッキレシピ", canvas.width / 2, 40);
+
+  // 画像読み込み
+  const loadImages = deckIds.slice(0,50).map(id=>{
+    return new Promise(resolve=>{
+      const card = cards.find(c=>c.id===id);
+      if(!card){ resolve(null); return; }
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+      img.src = card.img;
+      img.onload = ()=>resolve(img);
+    });
+  });
+
+  Promise.all(loadImages).then(images=>{
+    images.forEach((img,i)=>{
+      if(!img) return;
+      const row = Math.floor(i / cols);
+      const col = i % cols;
+      const x = padding + col * (cardWidth + margin);
+      const y = padding + 40 + row * (cardHeight + margin);
+      ctx.drawImage(img, x, y, cardWidth, cardHeight);
+    });
+
+    // デッキコード表示
+    ctx.font = "16px sans-serif";
+    ctx.textAlign = "left";
+    ctx.fillText("デッキコード: " + code, 20, canvas.height - 20);
+
+    const link = document.createElement("a");
+    link.download = "deck_recipe.png";
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+  });
 }
-// URLパラメータ復元
-window.addEventListener("load",function(){ const params=new URLSearchParams(window.location.search); const deckParam=params.get("deck"); if(deckParam){ document.getElementById("deckCodeBox").value=deckParam; loadDeckFromCode(); }});
+
+function showCollectionCards(){
+
+ const owned = JSON.parse(localStorage.getItem("ownedCards") || "[]");
+
+ const unowned = cards.filter(c => !owned.includes(c.id));
+
+ const list = document.getElementById("collectionList");
+ list.innerHTML="";
+
+ unowned.forEach(card=>{
+   const img=document.createElement("img");
+   img.src=card.img;
+   img.width=80;
+   list.appendChild(img);
+ });
+
+}
