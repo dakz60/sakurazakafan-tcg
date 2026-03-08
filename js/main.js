@@ -4,13 +4,20 @@ function openTab(tabId){
   event.currentTarget.classList.add('active');
   document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
   document.getElementById(tabId).classList.add('active');
+  if(tabId === 'collection') showCollection();
 }
-
 // ==================== ページロード時の初期処理 ====================
 window.addEventListener("load", function(){
   updateReleaseCountdown();
   showDailyCard();
   showAllCards();
+  showCollection();
+  const params = new URLSearchParams(window.location.search);
+  const deckParam = params.get("deck");
+  if(deckParam){
+    document.getElementById("deckCodeBox").value = deckParam;
+    loadDeckFromCode();
+  }
 });
 
 // ==================== 全カード一覧表示 ====================
@@ -27,6 +34,77 @@ function showAllCards(){
       ID:${c.id}
     </div>`;
   }).join('');
+}
+
+function showCollection(){
+  const container = document.getElementById("collectionList");
+  if(!cards || cards.length===0){
+    container.textContent = "カードデータがありません";
+    return;
+  }
+
+  const ownership = document.getElementById("ownershipFilter")?.value || "all";
+
+  container.innerHTML = cards
+    .filter(card => {
+      const count = parseInt(localStorage.getItem("cardCount_" + card.id) || 0);
+      if(ownership === "owned") return count > 0;
+      if(ownership === "unowned") return count === 0;
+      return true; // all
+    })
+    .map(card => {
+      const count = localStorage.getItem("cardCount_" + card.id) || 0;
+
+      // 背景・文字色決定
+      let bgStyle = '#eee';   // デフォルト背景
+      let nameColor = '#000'; // デフォルト文字
+
+      // メンバーカラーが直接ある場合
+      if(memberColors[card.name]){
+        const colors = memberColors[card.name];
+        bgStyle = colors[0];
+        nameColor = (colors[0] === colors[1]) ? '#fff' : colors[1];
+      } else {
+        // 名前にメンバー名が含まれている場合を検索（2人カード対応）
+        for(const member in memberColors){
+          if(card.name.includes(member)){
+            const colors = memberColors[member];
+            bgStyle = colors[0]; // 背景は1人目の色
+            nameColor = (colors[0] === colors[1]) ? '#fff' : colors[1];
+            break; // 最初に見つけたメンバーの色を使う
+          }
+        }
+      }
+
+      return `
+<div class="cardAll" style="
+  display:flex; 
+  flex-direction:column; 
+  align-items:center; 
+  margin:2px; 
+  background:${bgStyle}; 
+  padding:18px; 
+  border-radius:10px;
+">
+  <img src="${card.img}" alt="${card.name}" style="width:110px; height:152px; border-radius:5px;">
+  <div style="
+    text-align:center; 
+    font-size:20px; 
+    margin-top:3px; 
+    color:${nameColor};
+  ">
+    ${card.name}
+  </div>
+  <input type="number" min="0" value="${count}" style="width:20px; text-align:center;"
+    onchange="updateCardCount('${card.id}', this.value)">
+</div>
+      `;
+    }).join('');
+}
+
+function updateCardCount(cardId, value){
+  const num = Math.max(0, parseInt(value) || 0);
+  localStorage.setItem("cardCount_" + cardId, num);
 }
 
 // ==================== デッキ作成 ====================
