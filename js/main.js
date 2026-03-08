@@ -38,7 +38,7 @@ function showAllCards(){
 
 function showCollection(){
   const container = document.getElementById("collectionList");
-  if(!cards || cards.length===0){
+  if(!cards || cards.length === 0){
     container.textContent = "カードデータがありません";
     return;
   }
@@ -53,25 +53,27 @@ function showCollection(){
       return true; // all
     })
     .map(card => {
-      const count = localStorage.getItem("cardCount_" + card.id) || 0;
+      const count = parseInt(localStorage.getItem("cardCount_" + card.id) || 0);
 
-      // 背景・文字色決定
+      // 背景・文字色の決定
       let bgStyle = '#eee';   // デフォルト背景
       let nameColor = '#000'; // デフォルト文字
 
-      // メンバーカラーが直接ある場合
-      if(memberColors[card.name]){
-        const colors = memberColors[card.name];
-        bgStyle = colors[0];
-        nameColor = (colors[0] === colors[1]) ? '#fff' : colors[1];
-      } else {
-        // 名前にメンバー名が含まれている場合を検索（2人カード対応）
-        for(const member in memberColors){
-          if(card.name.includes(member)){
-            const colors = memberColors[member];
-            bgStyle = colors[0]; // 背景は1人目の色
-            nameColor = (colors[0] === colors[1]) ? '#fff' : colors[1];
-            break; // 最初に見つけたメンバーの色を使う
+      if(typeof memberColors !== "undefined"){
+        // メンバーカラーが直接ある場合
+        if(memberColors[card.name]){
+          const colors = memberColors[card.name];
+          bgStyle = colors[0];
+          nameColor = (colors[0] === colors[1]) ? '#fff' : colors[1];
+        } else {
+          // 名前にメンバー名が含まれている場合を検索（2人カード対応）
+          for(const member in memberColors){
+            if(card.name.includes(member)){
+              const colors = memberColors[member];
+              bgStyle = colors[0];
+              nameColor = (colors[0] === colors[1]) ? '#fff' : colors[1];
+              break;
+            }
           }
         }
       }
@@ -81,26 +83,39 @@ function showCollection(){
   display:flex; 
   flex-direction:column; 
   align-items:center; 
-  margin:2px; 
+  margin:4px; 
   background:${bgStyle}; 
-  padding:18px; 
+  padding:12px; 
   border-radius:10px;
+  width:120px;
 ">
   <img src="${card.img}" alt="${card.name}" style="width:110px; height:152px; border-radius:5px;">
   <div style="
     text-align:center; 
-    font-size:20px; 
-    margin-top:3px; 
+    font-size:16px; 
+    margin-top:6px; 
     color:${nameColor};
+    font-weight:bold;
   ">
     ${card.name}
   </div>
-  <input type="number" min="0" value="${count}" style="width:20px; text-align:center;"
+  <input type="number" min="0" value="${count}" style="width:40px; text-align:center; margin-top:4px;"
     onchange="updateCardCount('${card.id}', this.value)">
 </div>
       `;
     }).join('');
 }
+
+function updateCardCount(cardId, value){
+  const num = Math.max(0, parseInt(value) || 0);
+  localStorage.setItem("cardCount_" + cardId, num);
+  showCollection(); // 更新後に即座に反映
+}
+
+// 初期ロード時にも呼ぶ
+window.addEventListener("load", function(){
+  showCollection();
+});
 
 function updateCardCount(cardId, value){
   const num = Math.max(0, parseInt(value) || 0);
