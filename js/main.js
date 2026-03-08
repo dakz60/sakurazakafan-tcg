@@ -447,6 +447,15 @@ function downloadRecipeImage(){
 
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
+    canvas.width = 800;
+  canvas.height = 600;
+  ctx.fillStyle = "#fff";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  const link = document.createElement("a");
+  link.download = "deck.png";
+  link.href = canvas.toDataURL("image/png");
+  link.click();
 }
 // URLパラメータ復元
 window.addEventListener("load",function(){ const params=new URLSearchParams(window.location.search); const deckParam=params.get("deck"); if(deckParam){ document.getElementById("deckCodeBox").value=deckParam; loadDeckFromCode(); }});
