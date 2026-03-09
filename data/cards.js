@@ -35,7 +35,7 @@
  { id: "043", name: "Nobody's fault", effect: "相手のパワー【10000】以下のユニット1枚を対象とする。相手は1枚引き、対象はエナジーゾーンに置く。" ,color: "赤", cost: 3, type: "command",subType: ["ショット"], rarity: "N",img:"images/000.jpg"},
  { id: "044", name: "摩擦係数", effect: "そのターン中、あなたのユニット全てのパワーを【+3000】 。そのターン中、相手のユニット全ては可能限りブロックする。", color: "赤", cost: 1, type: "command", rarity: "N", img:"images/000.jpg" },
  { id: "046", name: "愛し合いなさい", effect: "山札をシャッフルして上から1枚ライフの先頭に置く。", color: "赤", cost: 2, type: "command", subType: ["ショット"], rarity: "N", img:"images/000.jpg" },
- { id: "047", name: "櫻坂の詩", effect: "エンドフェイス開始時、このターンあなたのユニットが【ブライト】していたら、一枚引き、相手に一ダメ。（トリガーも発動）", color: "白", cost: 5, type: "territory", subType: ["テリトリー"], rarity: "N", img:"images/000.jpg" },
+ { id: "047", name: "櫻坂の詩", effect: "エンドフェイス開始時、このターンあなたのユニットが【ブライト】していたら、1枚引き、相手に1ダメ。（トリガーも発動）", color: "白", cost: 5, type: "territory", subType: ["テリトリー"], rarity: "N", img:"images/000.jpg" },
  { id: "049",name: "井上梨名＆武元唯衣", color: "白", cost: 5, power: 4500, hit: 1, suit: "♢", type: "unit/buster",subType: ["バスター"], rarity: "R", generation: "2期" ,img:"images/000.jpg" },
  { id: "050",name: "遠藤光莉＆遠藤理子", color: "赤", cost: 7, power: 7500, hit: 2, suit: "♡", type: "unit/buster",subType: ["バスター"], rarity: "R", generation: "2期＆3期"  ,img:"images/000.jpg"},
  { id: "051", name: "大園玲＆村山美羽", color: "黒", cost: 6, power: 6500, hit: 2, suit: "♢♡", type: "unit", rarity: "R", generation: "2期＆3期"  ,img:"images/000.jpg"},  
