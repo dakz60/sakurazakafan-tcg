@@ -146,5 +146,6 @@
  { id: "p058", name: "中嶋優月「ゆーづのビッグボイス」", effect: "（自動）エースアタック時、山札を上から1枚見る。アタックしたユニットと異なる色でヒット1なら登場、違うならドロップ。各ターン1回まで。",color: "白", cost: 5, type: "territory", rarity: "PR",img:"images/000.jpg"},
  { id: "p059", name: "的野美青「的野無双クラッシュ!」", effect: "（自動）エースアタック時、山札を上から1枚見る。アタックしたユニットと異なる色でヒット1なら登場、違うならドロップ。各ターン1回まで。",color: "白", cost: 5, type: "territory", rarity: "PR",img:"images/000.jpg"}, 
  { id: "p060", name: "向井純葉「いとは～と!!」", effect: "（自動）エースアタック時、山札を上から1枚見る。アタックしたユニットと異なる色でヒット1なら登場、違うならドロップ。各ターン1回まで。",color: "白", cost: 5, type: "territory", rarity: "PR",img:"images/000.jpg"},
- { id: "p061", name: "村井優「むらいゆうぃんく」", effect: "（自動）エースアタック時、山札を上から1枚見る。アタックしたユニットと異なる色でヒット1なら登場、違うならドロップ。各ターン1回まで。",color: "白", cost: 5, type: "territory", rarity: "PR",img:"images/000.jpg"}
+ { id: "p061", name: "村井優「むらいゆうぃんく」", effect: "（自動）エースアタック時、山札を上から1枚見る。アタックしたユニットと異なる色でヒット1なら登場、違うならドロップ。各ターン1回まで。",color: "白", cost: 5, type: "territory", rarity: "PR",img:"images/000.jpg"},
+ { id: "p062", name: "村山美羽「猫パンチ」", effect: "（自動）エースアタック時、山札を上から1枚見る。アタックしたユニットと異なる色でヒット1なら登場、違うならドロップ。各ターン1回まで。",color: "白", cost: 5, type: "territory", rarity: "PR",img:"images/000.jpg"}
 ];
