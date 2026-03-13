@@ -28,6 +28,7 @@
  { id: "027", name: "Nightmare症候群", effect: "エース全てのパワーを【+3000】、ヒットを+1。", color: "黒", cost: 4, type: "command", rarity: "N", img:"images/000.jpg" },
  { id: "028", name: "ビルディバイド応援大使", effect: "あなたのドロップゾーンのエースカードを1枚手札に戻す。" ,color: "黒", cost: 3, type: "command",subType: ["ショット"], rarity: "N",img:"images/000.jpg"}, 
  { id: "029", name: "無念", effect: "相手のユニットを1枚対象とし、そのターン中、対象のパワーを【-3000】。このターン対象がドロップした時、1枚引く。", color: "黒", cost: 1, type: "command", subType: ["ショット"], rarity: "N", img:"images/000.jpg" },
+ { id: "030", name: "ドローン旋回中", effect: "ユニットを2枚まで対象とし、1枚目の対象に【5000】ダメ、そのターン中、2枚目の対象のパワーを【+5000】。" ,color: "黒", cost: 3, type: "command",subType: ["ショット"], rarity: "N",img:"images/000.jpg"}, 
  { id: "031", name: "夏の近道", effect: "相手のユニット全てのヒットを-1するか、あなたのユニット全てのヒットを+1。" ,color: "青", cost: 4, type: "command",subType: ["ショット"], rarity: "N",img:"images/000.jpg"},
  { id: "032", name: "マモリビト", effect:"ユニット1枚対象とし、1枚引き、対象のパワーを【+5000】。" ,color: "青", cost: 3, type: "command",subType: ["ショット"], rarity: "N",img:"images/000.jpg"},
  { id: "034", name: "もう一曲欲しいのかい？", effect: "ユニットを1枚対象。対象に【6000】ダメ。ライフがレッドゾーンなら、もう1回。", color: "青", cost: 5, type: "command",subType: ["ショット"], rarity: "N", img:"images/000.jpg" },
@@ -147,5 +148,6 @@
  { id: "p059", name: "的野美青「的野無双クラッシュ!」", effect: "（自動）エースアタック時、山札を上から1枚見る。アタックしたユニットと異なる色でヒット1なら登場、違うならドロップ。各ターン1回まで。",color: "白", cost: 5, type: "territory", rarity: "PR",img:"images/000.jpg"}, 
  { id: "p060", name: "向井純葉「いとは～と!!」", effect: "（自動）エースアタック時、山札を上から1枚見る。アタックしたユニットと異なる色でヒット1なら登場、違うならドロップ。各ターン1回まで。",color: "白", cost: 5, type: "territory", rarity: "PR",img:"images/000.jpg"},
  { id: "p061", name: "村井優「むらいゆうぃんく」", effect: "（自動）エースアタック時、山札を上から1枚見る。アタックしたユニットと異なる色でヒット1なら登場、違うならドロップ。各ターン1回まで。",color: "白", cost: 5, type: "territory", rarity: "PR",img:"images/000.jpg"},
- { id: "p062", name: "村山美羽「猫パンチ」", effect: "（自動）エースアタック時、山札を上から1枚見る。アタックしたユニットと異なる色でヒット1なら登場、違うならドロップ。各ターン1回まで。",color: "白", cost: 5, type: "territory", rarity: "PR",img:"images/000.jpg"}
+ { id: "p062", name: "村山美羽「猫パンチ」", effect: "（自動）エースアタック時、山札を上から1枚見る。アタックしたユニットと異なる色でヒット1なら登場、違うならドロップ。各ターン1回まで。",color: "白", cost: 5, type: "territory", rarity: "PR",img:"images/000.jpg"},
+ { id: "p063", name: "山下瞳月「しーアタック♡」", effect: "（自動）エースアタック時、山札を上から1枚見る。アタックしたユニットと異なる色でヒット1なら登場、違うならドロップ。各ターン1回まで。",color: "白", cost: 5, type: "territory", rarity: "PR",img:"images/000.jpg"},
 ];
