@@ -86,6 +86,7 @@
  { id: "169", name: "田村保乃「流れ弾」", effect: "（永続）「同色のコマンド」でも【ブライト】できる。（自動）アタックフェイズ開始時、【ブライト】を持つユニットがいるなら、1枚引く。", color: "白", cost: 5, type: "territory", rarity: "BT", generation: "2期", img: "images/000.jpg" },
  { id: "170", name: "藤吉夏鈴「Start over.」", effect: "（永続）「同色のコマンド」でも【ブライト】できる。（自動）アタックフェイズ開始時、あなたの【ブライト】を持つユニットがいるなら、1枚引く。", color: "白", cost: 5, type: "territory", rarity: "BT", generation: "2期", img: "images/000.jpg" },
  { id: "172", name: "守屋麗奈「桜月」" , effect: "エースアタック時、山札を上から1枚見る。アタックしたユニットと異なる色でヒット1なら登場、違うならドロップ。各ターン1回まで。",color: "白", cost: 5, type: "territory", rarity: "BT", generation: "2期"  ,img:"images/000.jpg"},
+ { id: "173", name: "山崎天「何歳のころに戻りたいのか?」" , effect: "エースアタック時、山札を上から1枚見る。アタックしたユニットと異なる色でヒット1なら登場、違うならドロップ。各ターン1回まで。",color: "白", cost: 5, type: "territory", rarity: "BT", generation: "2期"  ,img:"images/000.jpg"},
  { id: "175", name: "山下瞳月「自業自得」" ,effect: "アタックフェイズ開始時、【ブライト】を持つユニットがいるなら、1枚引く。", color: "白", cost: 5, type: "territory", rarity: "BT", generation: "3期" ,img:"images/000.jpg" },
  { id: "p001", name: "井上梨名",color: "黒", cost: 5, power: 5000, hit: 1, suit: "♤", type: "unit/buster", subType: ["バスター"], rarity: "PR", generation: "2期", img: "images/000.jpg" },
  { id: "p002", name: "遠藤光莉", color: "青", cost: 7, power: 7000, hit: 1, suit: "♢", type: "unit/buster",subType: ["バスター"], rarity: "PR", generation: "2期", img: "images/000.jpg" },
