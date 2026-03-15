@@ -33,6 +33,7 @@
  { id: "032", name: "マモリビト", effect:"ユニット1枚対象とし、1枚引き、対象のパワーを【+5000】。" ,color: "青", cost: 3, type: "command",subType: ["ショット"], rarity: "N",img:"images/000.jpg"},
  { id: "034", name: "もう一曲欲しいのかい？", effect: "ユニットを1枚対象。対象に【6000】ダメ。ライフがレッドゾーンなら、もう1回。", color: "青", cost: 5, type: "command",subType: ["ショット"], rarity: "N", img:"images/000.jpg" },
  { id: "038", name: "TOKYO SNOW", effect: "エース全てのパワーを【+3000】、ヒットを+1。", color: "白", cost: 2, type: "command", rarity: "N", img:"images/000.jpg" },
+ { id: "041", name: "I'm in", effect: "エナジーから、黒、青、白、赤のエースカードをそれぞれ1枚まで手札に戻す。", color: "赤", cost:1, type: "command", rarity: "N", img:"images/000.jpg" },
  { id: "043", name: "Nobody's fault", effect: "相手のパワー【10000】以下のユニット1枚を対象とする。相手は1枚引き、対象はエナジーゾーンに置く。" ,color: "赤", cost: 3, type: "command",subType: ["ショット"], rarity: "N",img:"images/000.jpg"},
  { id: "044", name: "摩擦係数", effect: "そのターン中、あなたのユニット全てのパワーを【+3000】 。そのターン中、相手のユニット全ては可能限りブロックする。", color: "赤", cost: 1, type: "command", rarity: "N", img:"images/000.jpg" },
  { id: "046", name: "愛し合いなさい", effect: "山札をシャッフルして上から1枚ライフの先頭に置く。", color: "赤", cost: 2, type: "command", subType: ["ショット"], rarity: "N", img:"images/000.jpg" },
