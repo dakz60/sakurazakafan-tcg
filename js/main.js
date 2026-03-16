@@ -168,6 +168,7 @@ function search(){
   const generationFilter=document.getElementById("generationFilter").value;
   const subTypeFilter=document.getElementById("subTypeFilter").value;
   const rarityFilter=document.getElementById("rarityFilter").value;
+  const keyWordFilter=document.getElementById("keyWordFilter").value;
   const result=document.getElementById("result");
 
   let filtered = cards.filter(c=>(!name || c.name.includes(name)) && (!effect || (c.effect && c.effect.includes(effect))));
@@ -177,7 +178,7 @@ function search(){
   if(powerMax!=="") filtered = filtered.filter(c => c.power!==null && c.power<=Number(powerMax));
   if(hitMin!=="") filtered = filtered.filter(c => c.hit!==null && c.hit>=Number(hitMin));
   if(hitMax!=="") filtered = filtered.filter(c => c.hit!==null && c.hit<=Number(hitMax));
-if(typeFilter !== ""){
+  if(typeFilter !== ""){
   filtered = filtered.filter(c => {
     if(!c.type) return false;
 
@@ -193,6 +194,11 @@ if(typeFilter !== ""){
 
     return c.type === typeFilter;
   });
+}
+  if(keyWordFilter !==""){
+    filtered = filtered.filter(c =>
+      c.keyWord && c.keyWord.includes(keyWordFilter)
+     );
 }
   if(colorFilter!=="") filtered = filtered.filter(c => c.color===colorFilter);  
   if(generationFilter!=="") filtered = filtered.filter(c => c.generation===generationFilter);
