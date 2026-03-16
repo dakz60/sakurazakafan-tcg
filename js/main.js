@@ -178,9 +178,12 @@ function search(){
   if(hitMin!=="") filtered = filtered.filter(c => c.hit!==null && c.hit>=Number(hitMin));
   if(hitMax!=="") filtered = filtered.filter(c => c.hit!==null && c.hit<=Number(hitMax));
   if(typeFilter !== ""){
-  filtered = filtered.filter(c => {
+  filtered = filtered.filter(c=>{
     if(typeFilter === "unit"){
-      return c.type === "unit" || c.type === "unit/ace";
+      return c.type.includes("unit");
+    }
+    if(typeFilter === "ace"){
+      return c.type.includes("ace");
     }
     return c.type === typeFilter;
   });
