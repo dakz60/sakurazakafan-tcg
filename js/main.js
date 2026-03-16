@@ -179,13 +179,11 @@ function search(){
   if(hitMax!=="") filtered = filtered.filter(c => c.hit!==null && c.hit<=Number(hitMax));
   if(typeFilter !== ""){
   filtered = filtered.filter(c=>{
-    if(typeFilter === "unit"){
-      return c.type.includes("unit");
-    }
-    if(typeFilter === "ace"){
-      return c.type.includes("ace");
-    }
-    return c.type === typeFilter;
+    if(!c.type) return false;
+
+    const types = c.type.split("/"); // "unit/ace" → ["unit","ace"]
+
+    return types.includes(typeFilter);
   });
 }
   if(colorFilter!=="") filtered = filtered.filter(c => c.color===colorFilter);  
