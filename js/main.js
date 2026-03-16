@@ -177,7 +177,14 @@ function search(){
   if(powerMax!=="") filtered = filtered.filter(c => c.power!==null && c.power<=Number(powerMax));
   if(hitMin!=="") filtered = filtered.filter(c => c.hit!==null && c.hit>=Number(hitMin));
   if(hitMax!=="") filtered = filtered.filter(c => c.hit!==null && c.hit<=Number(hitMax));
-  if(typeFilter!=="") filtered = filtered.filter(c => c.type===typeFilter);
+  if(typeFilter !== ""){
+  filtered = filtered.filter(c => {
+    if(typeFilter === "unit"){
+      return c.type === "unit" || c.type === "unit/ace";
+    }
+    return c.type === typeFilter;
+  });
+}
   if(colorFilter!=="") filtered = filtered.filter(c => c.color===colorFilter);  
   if(generationFilter!=="") filtered = filtered.filter(c => c.generation===generationFilter);
   if(rarityFilter!=="") filtered = filtered.filter(c => c.rarity===rarityFilter);
