@@ -36,6 +36,7 @@
  { id: "041", name: "I'm in", effect: "エナジーから、黒、青、白、赤のエースカードをそれぞれ1枚まで手札に戻す。", color: "赤", cost:1, type: "command", rarity: "N", img:"images/000.jpg" },
  { id: "043", name: "Nobody's fault", effect: "相手のパワー【10000】以下のユニット1枚を対象とする。相手は1枚引き、対象はエナジーゾーンに置く。" ,color: "赤", cost: 3, type: "command",subType: ["ショット"], rarity: "N",img:"images/000.jpg"},
  { id: "044", name: "摩擦係数", effect: "そのターン中、あなたのユニット全てのパワーを【+3000】 。そのターン中、相手のユニット全ては可能限りブロックする。", color: "赤", cost: 1, type: "command", rarity: "N", img:"images/000.jpg" },
+ { id: "045", name: "コンビナート", effect: "（永続）「同色のコマンド」でも【ブライト】できる。（自動）アタックフェイズ開始時、【ブライト】を持つユニットがいるなら、1枚引く。", color: "白", cost: 5, type: "territory", rarity: "N", generation: "2期" ,img:"images/000.jpg"},
  { id: "046", name: "愛し合いなさい", effect: "山札をシャッフルして上から1枚ライフの先頭に置く。", color: "赤", cost: 2, type: "command", subType: ["ショット"], rarity: "N", img:"images/000.jpg" },
  { id: "047", name: "櫻坂の詩", effect: "エンドフェイス開始時、このターンあなたのユニットが【ブライト】していたら、1枚引き、相手に1ダメ。（トリガーも発動）", color: "白", cost: 5, type: "territory", subType: ["テリトリー"], rarity: "N", img:"images/000.jpg" },
  { id: "049",name: "井上梨名＆武元唯衣", color: "白", cost: 5, power: 4500, hit: 1, suit: "♢", type: "unit/buster",subType: ["バスター"], rarity: "R", generation: "2期" ,img:"images/000.jpg" },
