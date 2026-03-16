@@ -177,13 +177,21 @@ function search(){
   if(powerMax!=="") filtered = filtered.filter(c => c.power!==null && c.power<=Number(powerMax));
   if(hitMin!=="") filtered = filtered.filter(c => c.hit!==null && c.hit>=Number(hitMin));
   if(hitMax!=="") filtered = filtered.filter(c => c.hit!==null && c.hit<=Number(hitMax));
-  if(typeFilter !== ""){
-  filtered = filtered.filter(c=>{
+if(typeFilter !== ""){
+  filtered = filtered.filter(c => {
     if(!c.type) return false;
 
     const types = c.type.split("/"); // "unit/ace" → ["unit","ace"]
 
-    return types.includes(typeFilter);
+    if(typeFilter === "unit"){
+      return types.includes("unit");
+    }
+
+    if(typeFilter === "ace"){
+      return types.includes("ace");
+    }
+
+    return c.type === typeFilter;
   });
 }
   if(colorFilter!=="") filtered = filtered.filter(c => c.color===colorFilter);  
