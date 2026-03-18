@@ -177,11 +177,11 @@ hr {
   justify-content: flex-start;
 }
 .cardAll {
-  width: 90px;
+  width: 80px;
   text-align: center;
 }
 .cardAll img {
-  width: 90px;
+  width: 80px;
   height: 120px;
   object-fit: cover;
   border-radius: 5px;
@@ -223,7 +223,7 @@ hr {
 }
 
 .cardAll img {
-  width: 90px;
+  width: 80px;
   height: 120px;
   object-fit: cover;
   border-radius: 5px;
