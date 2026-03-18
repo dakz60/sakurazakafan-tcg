@@ -38,6 +38,7 @@
  { id: "037", name: "五月雨よ", effect: "相手のパワー[6000]以下のユニットを1枚対象とし、対象を手札に戻す。", color: "白", cost: 1, type: "command",subType: ["ショット"], rarity: "N", img:"images/37.jpg" },
  { id: "038", name: "TOKYO SNOW", effect: "エース全てのパワーを【+3000】、ヒットを+1。", color: "白", cost: 2, type: "command", rarity: "N", img:"images/38.jpg" },
  { id: "039", name: "何度 LOVE SONGの歌詞を読み返しただろう", effect: "ヒット1以下か、[デコイ]を持つユニットを1枚対象とし、対象の手札に戻す。あなたのライフがレッドゾーンなら、もう1回行う。", color: "白", cost: 5, type: "command",subType: ["ショット"], rarity: "N", img:"images/39.jpg" },
+ { id: "040", name: "愛し合いなさい", effect: "山札をシャッフルして上から1枚ライフの先頭に置く。", color: "赤", cost: 2, type: "command",subType: ["ショット"], rarity: "N", img:"images/40.jpg" },
  { id: "041", name: "I'm in", effect: "エナジーから、黒、青、白、赤のエースカードをそれぞれ1枚まで手札に戻す。", color: "赤", cost:1, type: "command", rarity: "N", img:"images/41.jpg" },
  { id: "042", name: "なぜ恋をして来なかったんだろう?", effect: "エナジーからコスト3以下のユニットカードを1枚まで登場させる。あなたのライフがレッドゾーンなら、もう１回行う。", color: "赤", cost:5, type: "command", subType: ["ショット"], rarity: "N", img:"images/42.jpg" },
  { id: "043", name: "Nobody's fault", effect: "相手のパワー【10000】以下のユニット1枚を対象とする。相手は1枚引き、対象はエナジーゾーンに置く。" ,color: "赤", cost: 3, type: "command",subType: ["ショット"], rarity: "N",img:"images/43.jpg"},
