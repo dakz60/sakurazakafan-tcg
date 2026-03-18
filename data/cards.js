@@ -23,7 +23,7 @@
  { id: "022",name: "村井優", color: "黒", cost: 2, power: 3000, hit: 1, suit: "♤♧", type: "unit", rarity: "N", generation: "3期"  ,img:"images/22.jpg"},
  { id: "023",name: "村山美羽", color: "青", cost: 3, power: 4000, hit: 1, suit: "♡♢", type: "unit", rarity: "N", generation: "3期"  ,img:"images/23.jpg"},
  { id: "024",name: "山下瞳月", color: "白", cost: 2, power: 3000, hit: 1, suit: "♡♢", type: "unit", rarity: "N", generation: "3期"  ,img:"images/24.jpg"},
- { id: "025", name: "Addiction", effect: "ターン中、相手ユニット全てのパワーを【-3000】ヒットを-1。ライフがレッドゾーンなら、もう1回行う。" ,color: "黒", cost: 3, type: "command",subType: ["ショット"], rarity: "N",img:"images/25.jpg"},
+ { id: "025", name: "Addiction", effect: "ターン中、相手ユニット全てのパワーを【-3000】ヒットを-1。ライフがレッドゾーンなら、もう1回行う。" ,color: "黒", cost: 5, type: "command",subType: ["ショット"], rarity: "N",img:"images/25.jpg"},
  { id: "026", name: "Dead end", effect: "相手のコスト4以下のユニットの全てをドロップ。", color: "黒", cost: 6, type: "command", subType: ["ショット"], rarity: "N", img:"images/26.jpg" },
  { id: "027", name: "Nightmare症候群", effect: "エース全てのパワーを【+3000】、ヒットを+1。", color: "黒", cost: 4, type: "command", rarity: "N", img:"images/27.jpg" },
  { id: "028", name: "ビルディバイド応援大使", effect: "あなたのドロップゾーンのエースカードを1枚手札に戻す。" ,color: "黒", cost: 3, type: "command",subType: ["ショット"], rarity: "N",img:"images/28.jpg"}, 
