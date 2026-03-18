@@ -56,17 +56,17 @@ function showCollection(){
       const count = parseInt(localStorage.getItem("cardCount_" + card.id) || 0);
 
       // 背景・文字色の決定
-      let bgStyle = '#eee';   // デフォルト背景
-      let nameColor = '#000'; // デフォルト文字
+      let bgStyle = '#eee';   // 背景
+      let nameColor = '#000'; // 文字
 
       if(typeof memberColors !== "undefined"){
-        // メンバーカラーが直接ある場合
+        // メンカラある場合
         if(memberColors[card.name]){
           const colors = memberColors[card.name];
           bgStyle = colors[0];
           nameColor = (colors[0] === colors[1]) ? '#fff' : colors[1];
         } else {
-          // 名前にメンバー名が含まれている場合を検索（2人カード対応）
+          // 名前にメンバー名が含まれている場合
           for(const member in memberColors){
             if(card.name.includes(member)){
               const colors = memberColors[member];
@@ -109,10 +109,9 @@ function showCollection(){
 function updateCardCount(cardId, value){
   const num = Math.max(0, parseInt(value) || 0);
   localStorage.setItem("cardCount_" + cardId, num);
-  showCollection(); // 更新後に即座に反映
+  showCollection();
 }
 
-// 初期ロード時にも呼ぶ
 window.addEventListener("load", function(){
   showCollection();
 });
@@ -285,7 +284,7 @@ function checkDeckRules(){
   if(terr!==1) msg+=`テリトリーカードは1枚必要です（現在${terr}枚）<br>`;
   if(busterCount!==12) msg+=`バスターカードは12枚必要です（現在${busterCount}枚）<br>`;
   if(shotCount>12) msg+=`ショットカードは最大12枚です（現在${shotCount}枚）<br>`;
-  document.getElementById("deckCheckResult").innerHTML = msg || "咲け、咲け、櫻坂46";
+  document.getElementById("deckCheckResult").innerHTML = msg || "カードゲームでも、咲け";
 }
 
 Sortable.create(document.getElementById('deckImages'),{
