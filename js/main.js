@@ -56,17 +56,17 @@ function showCollection(){
       const count = parseInt(localStorage.getItem("cardCount_" + card.id) || 0);
 
       // 背景・文字色の決定
-      let bgStyle = '#eee';   // 背景
-      let nameColor = '#000'; // 文字
+      let bgStyle = '#eee';   // デフォルト背景
+      let nameColor = '#000'; // デフォルト文字
 
       if(typeof memberColors !== "undefined"){
-        // メンカラある場合
+        // メンバーカラーが直接ある場合
         if(memberColors[card.name]){
           const colors = memberColors[card.name];
           bgStyle = colors[0];
           nameColor = (colors[0] === colors[1]) ? '#fff' : colors[1];
         } else {
-          // 名前にメンバー名が含まれている場合
+          // 名前にメンバー名が含まれている場合を検索（2人カード対応）
           for(const member in memberColors){
             if(card.name.includes(member)){
               const colors = memberColors[member];
@@ -109,9 +109,10 @@ function showCollection(){
 function updateCardCount(cardId, value){
   const num = Math.max(0, parseInt(value) || 0);
   localStorage.setItem("cardCount_" + cardId, num);
-  showCollection();
+  showCollection(); // 更新後に即座に反映
 }
 
+// 初期ロード時にも呼ぶ
 window.addEventListener("load", function(){
   showCollection();
 });
@@ -168,9 +169,10 @@ function search(){
   const subTypeFilter=document.getElementById("subTypeFilter").value;
   const rarityFilter=document.getElementById("rarityFilter").value;
   const keyWordFilter=document.getElementById("keyWordFilter").value;
+  const cardId = document.getElementById("cardIdSearchBox").value;
   const result=document.getElementById("result");
 
-  let filtered = cards.filter(c=>(!name || c.name.includes(name)) && (!effect || (c.effect && c.effect.includes(effect))));
+  let filtered = cards.filter(c=>(!name || c.name.includes(name)) && (!effect || (c.effect && c.effect.includes(effect))) && (!cardId || c.id.includes(cardId)));
   if(costMin!=="") filtered = filtered.filter(c => c.cost>=Number(costMin));
   if(costMax!=="") filtered = filtered.filter(c => c.cost<=Number(costMax));
   if(powerMin!=="") filtered = filtered.filter(c => c.power!==null && c.power>=Number(powerMin));
@@ -215,12 +217,12 @@ function search(){
     else if(card.color==='青') colorClass='card-blue';
     else if(card.color==='黒') colorClass='card-black';
     const imgTag=`<img src="${card.img}" alt="${card.name}" style="width:85px; height:auto; border-radius:5px; margin-right:5px;">`;
-    let info='';
-    if(card.type==='command' || card.type==='territory'){
-      info=`コスト:${card.cost} | 効果:${card.effect||'-'} | レアリティ:${card.rarity||'-'} | 期別:${card.generation||'-'} | トリガー:${card.subType ? card.subType.join(",") : '-'}`;
-    }else{
-      info=`コスト:${card.cost} | 効果:${card.effect||'-'} | パワー:${card.power||'-'} | ヒット:${card.hit||'-'} | レアリティ:${card.rarity||'-'} | 期別:${card.generation||'-'} | トリガー:${card.subType ? card.subType.join(",") : '-'}`;
-    }
+   let info='';
+   if(card.type==='command' || card.type==='territory'){
+info=`コスト:${card.cost} | 効果:${card.effect||'-'} | レアリティ:${card.rarity||'-'} | 期別:${card.generation||'-'} | トリガー:${card.subType ? card.subType.join(",") : '-'} | キーワード:${card.keyWord || '-'} | カードID:${card.id}`;
+   }else{
+info=`コスト:${card.cost} | 効果:${card.effect||'-'} | パワー:${card.power||'-'} | ヒット:${card.hit||'-'} | レアリティ:${card.rarity||'-'} | 期別:${card.generation||'-'} | トリガー:${card.subType ? card.subType.join(",") : '-'} | キーワード:${card.keyWord || '-'} | カードID:${card.id}`;
+}
     return `<div class="${colorClass}" style="display:flex; align-items:center; margin-bottom:5px;">
       ${imgTag}<div>${card.name} | ${info}<br>
       <button onclick="addToDeck('${card.id}')">＋</button>
@@ -284,7 +286,7 @@ function checkDeckRules(){
   if(terr!==1) msg+=`テリトリーカードは1枚必要です（現在${terr}枚）<br>`;
   if(busterCount!==12) msg+=`バスターカードは12枚必要です（現在${busterCount}枚）<br>`;
   if(shotCount>12) msg+=`ショットカードは最大12枚です（現在${shotCount}枚）<br>`;
-  document.getElementById("deckCheckResult").innerHTML = msg || "カードゲームでも、咲け";
+  document.getElementById("deckCheckResult").innerHTML = msg || "咲け、咲け、櫻坂46";
 }
 
 Sortable.create(document.getElementById('deckImages'),{
