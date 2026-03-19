@@ -31,7 +31,7 @@
  { id: "030", name: "ドローン旋回中", effect: "ユニットを2枚まで対象とし、1枚目の対象に【5000】ダメ、そのターン中、2枚目の対象のパワーを【+5000】。" ,color: "青", cost: 2, type: "command",subType: ["ショット"], rarity: "N",img:"images/30.jpg"}, 
  { id: "031", name: "夏の近道", effect: "相手のユニット全てのヒットを-1するか、あなたのユニット全てのヒットを+1。" ,color: "青", cost: 4, type: "command",subType: ["ショット"], rarity: "N",img:"images/31.jpg"},
  { id: "032", name: "マモリビト", effect:"ユニット1枚対象とし、1枚引き、対象のパワーを【+5000】。" ,color: "青", cost: 3, type: "command",subType: ["ショット"], rarity: "N",img:"images/32.jpg"},
- { id: "033", name: "マンホールの蓋の上", effect:"あなたのフィールドにいるユニットの色1つに「つき、相手のユニットを1枚まで対象とし、対象をレストする。" ,color: "青", cost: 1, type: "command", rarity: "N",img:"images/33.jpg"},
+ { id: "033", name: "マンホールの蓋の上", effect:"あなたのフィールドにいるユニットの色1つにつき、相手のユニットを1枚まで対象とし、対象をレストする。" ,color: "青", cost: 1, type: "command", rarity: "N",img:"images/33.jpg"},
  { id: "034", name: "もう一曲欲しいのかい？", effect: "ユニットを1枚対象。対象に【6000】ダメ。ライフがレッドゾーンなら、もう1回。", color: "青", cost: 5, type: "command",subType: ["ショット"], rarity: "N", img:"images/34.jpg" },
  { id: "035", name: "縁起担ぎ", effect: "山札から3枚公開し、その中のユニットカードを1枚対まで手札に加え、残りをドロップする。", color: "白", cost: 3, type: "command",subType: ["ショット"], rarity: "N", img:"images/35.jpg" },
  { id: "036", name: "Cool", effect: "相手のスタンドしているユニット全てを手札に戻す。", color: "白", cost: 1, type: "command", rarity: "N", img:"images/36.jpg" },
