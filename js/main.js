@@ -109,10 +109,9 @@ function showCollection(){
 function updateCardCount(cardId, value){
   const num = Math.max(0, parseInt(value) || 0);
   localStorage.setItem("cardCount_" + cardId, num);
-  showCollection(); // 更新後に即座に反映
+  showCollection();
 }
 
-// 初期ロード時にも呼ぶ
 window.addEventListener("load", function(){
   showCollection();
 });
@@ -141,7 +140,7 @@ function updateReleaseCountdown(){
   } else if(diff === 0){
     text = "本日発売！";
   } else {
-    text = `発売から${diff}日経過`;
+    text = `発売から${diff}日!!`;
   }
 
   document.getElementById("releaseCountdown").textContent = text;
