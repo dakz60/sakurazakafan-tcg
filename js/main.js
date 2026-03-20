@@ -126,10 +126,25 @@ function updateCardCount(cardId, value){
 let deck=[], territoryCardId=null;
 
 function updateReleaseCountdown(){
-  const releaseDate = new Date("2026-03-20");
+  const releaseDate = new Date(2026, 2, 20);
   const today = new Date();
-  const diff = Math.ceil((releaseDate - today)/(1000*60*60*24));
-  document.getElementById("releaseCountdown").textContent = diff>0 ? `発売まであと${diff}日` : "発売日です！";
+
+  releaseDate.setHours(0,0,0,0);
+  today.setHours(0,0,0,0);
+
+  const diff = Math.floor((today - releaseDate) / (1000 * 60 * 60 * 24));
+
+  let text = "";
+
+  if(diff < 0){
+    text = `発売まであと${Math.abs(diff)}日`;
+  } else if(diff === 0){
+    text = "本日発売！";
+  } else {
+    text = `発売から${diff}日経過`;
+  }
+
+  document.getElementById("releaseCountdown").textContent = text;
 }
 
 function showDailyCard(){
