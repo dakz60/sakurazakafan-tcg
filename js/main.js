@@ -12,6 +12,7 @@ window.addEventListener("load", function(){
   showDailyCard();
   showAllCards();
   showCollection();
+  setupSearchSuggestions(); 
   const params = new URLSearchParams(window.location.search);
   const deckParam = params.get("deck");
   if(deckParam){
@@ -587,4 +588,14 @@ function showCollectionCards(){
    list.appendChild(img);
  });
 
+}
+function setupSearchSuggestions(){
+  const dataList = document.getElementById("cardList");
+  if(!cards || cards.length === 0) return;
+
+  const uniqueNames = [...new Set(cards.map(c => c.name))];
+
+  dataList.innerHTML = uniqueNames.map(name => {
+    return `<option value="${name}">`;
+  }).join('');
 }
