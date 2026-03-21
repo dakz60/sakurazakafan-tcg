@@ -149,5 +149,6 @@
  { id: "p016", name: "小田倉麗奈", color: "白", cost: 5, power: 5000, hit: 1, suit: "♤", type: "unit/buster",subType: ["バスター"],keyWord: ["ブライト","ブリッツ","パワー"], rarity: "PR", generation: "3期", img: "images/16PR.jpg" },
  { id: "p027", name: "勝又春",effect: "エナジーが4色なら、コストを1減らしてプレイできる。" , color: "赤", cost: 4, power: 4500, hit: 1, suit: "♢", type: "unit", rarity: "PR", generation: "4期"  ,img:"images/27PR.jpg"},
  { id: "p034", name: "松田里奈",effect: "（永続）あなたが【松田里奈】なら、あなたのターン中、このユニットのヒットを+4、パワーを6倍にする。" , color: "赤", cost: 4, power: 4500, hit: 1, suit: "♢", type: "unit/buster", subType: ["バスター"],keyWord: ["ブライト","回復","ドロップ時"], rarity: "PR", generation: "2期", img:"images/34PR.jpg" },
+ { id: "p044",name: "幸阪茉里乃「幸阪パワー！」", effect: "（永続）「同色のコマンド」でも【ブライト】できる。（自動）アタックフェイズ開始時、【ブライト】を持つユニットがいるなら、1枚引く。", color: "白", cost: 5, type: "territory", rarity: "PR", generation: "2期" ,img:"images/44PR.jpg"},
  { id: "p055", name: "小田倉麗奈「ヤミつきストレート！」", effect: "（自動）エースアタック時、山札を上から1枚見る。アタックしたユニットと異なる色でヒット1なら登場、違うならドロップ。各ターン1回まで。",color: "白", cost: 5, type: "territory", rarity: "PR",img:"images/55PR.jpg"}
 ];
