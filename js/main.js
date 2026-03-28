@@ -221,7 +221,9 @@ function search(){
   if(generationFilter!=="") filtered = filtered.filter(c => c.generation===generationFilter);
   if(rarityFilter!=="") filtered = filtered.filter(c => c.rarity===rarityFilter);
 if(suitFilter !== ""){
-  filtered = filtered.filter(c => c.suit === suitFilter);
+  filtered = filtered.filter(c => 
+    c.suit && c.suit.includes(suitFilter)
+  );
 }
   if(subTypeFilter==="バスター" || subTypeFilter==="ショット") filtered = filtered.filter(c => c.subType && c.subType.includes(subTypeFilter));
   else if(subTypeFilter==="その他") filtered = filtered.filter(c => (!c.subType || (c.subType.indexOf("バスター")===-1 && c.subType.indexOf("ショット")===-1)) && c.type!=="territory");
