@@ -90,7 +90,7 @@ function showCollection(){
   border-radius:10px;
   width:120px;
 ">
-  <img src="${card.img}" alt="${card.name}" style="width:110px; height:152px; border-radius:5px;">
+  <img src="${card.img}" loading="lazy" alt="${card.name}" style="width:110px; height:152px; border-radius:5px;">
   <div style="
     text-align:center; 
     font-size:16px; 
