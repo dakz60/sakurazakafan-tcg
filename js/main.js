@@ -10,8 +10,6 @@ function openTab(tabId){
 window.addEventListener("load", function(){
   updateReleaseCountdown();
   showDailyCard();
-  showAllCards();
-  showCollection();
   setupSearchSuggestions(); 
   const params = new URLSearchParams(window.location.search);
   const deckParam = params.get("deck");
