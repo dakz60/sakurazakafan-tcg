@@ -180,6 +180,7 @@ function search(){
   const hitMax=document.getElementById("hitMax").value;
   const typeFilter=document.getElementById("typeFilter").value;
   const colorFilter=document.getElementById("colorFilter").value;
+  const suitFilter = document.getElementById("suitFilter").value;
   const generationFilter=document.getElementById("generationFilter").value;
   const subTypeFilter=document.getElementById("subTypeFilter").value;
   const rarityFilter=document.getElementById("rarityFilter").value;
@@ -219,7 +220,9 @@ function search(){
   if(colorFilter!=="") filtered = filtered.filter(c => c.color===colorFilter);  
   if(generationFilter!=="") filtered = filtered.filter(c => c.generation===generationFilter);
   if(rarityFilter!=="") filtered = filtered.filter(c => c.rarity===rarityFilter);
-
+if(suitFilter !== ""){
+  filtered = filtered.filter(c => c.suit === suitFilter);
+}
   if(subTypeFilter==="バスター" || subTypeFilter==="ショット") filtered = filtered.filter(c => c.subType && c.subType.includes(subTypeFilter));
   else if(subTypeFilter==="その他") filtered = filtered.filter(c => (!c.subType || (c.subType.indexOf("バスター")===-1 && c.subType.indexOf("ショット")===-1)) && c.type!=="territory");
 
