@@ -231,7 +231,7 @@ function search(){
     else if(card.color==='赤') colorClass='card-red';
     else if(card.color==='青') colorClass='card-blue';
     else if(card.color==='黒') colorClass='card-black';
-    const imgTag=`<img src="${card.img}" alt="${card.name}" style="width:85px; height:auto; border-radius:5px; margin-right:5px;">`;
+    const imgTag=`<img src="${card.img}" loading="lazy" alt="${card.name}" style="width:85px; height:auto; border-radius:5px; margin-right:5px;">`;
    let info='';
    if(card.type==='command' || card.type==='territory'){
 info=`コスト:${card.cost} | 効果:${card.effect||'-'} | レアリティ:${card.rarity||'-'} | 期別:${card.generation||'-'} | トリガー:${card.subType ? card.subType.join(",") : '-'} | キーワード:${card.keyWord || '-'} | カードID:${card.id}`;
