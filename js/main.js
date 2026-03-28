@@ -30,7 +30,7 @@ function showAllCards(){
   }
   container.innerHTML = cards.map(c=>{
     return `<div class="cardAll">
-      <img src="${c.img}" alt="${c.name}"><br>
+      <img src="${c.img}" alt="${c.name}" loading="lazy"><br>
       ${c.name}<br>
       ID:${c.id}
     </div>`;
