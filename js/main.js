@@ -4,7 +4,9 @@ function openTab(tabId){
   event.currentTarget.classList.add('active');
   document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
   document.getElementById(tabId).classList.add('active');
+
   if(tabId === 'collection') showCollection();
+  if(tabId === 'allcards') showAllCards();
 }
 // ==================== ページロード時の初期処理 ====================
 window.addEventListener("load", function(){
