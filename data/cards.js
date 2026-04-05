@@ -152,6 +152,7 @@
  { id: "p002", name: "遠藤光莉", color: "青", cost: 7, power: 7000, hit: 1, suit: "♡", type: "unit/buster",subType: ["バスター"], rarity: "PR", generation: "2期", img: "images/2PR.jpg" },
  { id: "p003", name: "大園玲", color: "白", cost: 7, power: 7000, hit: 1, suit: "♢", type: "unit/buster", subType: ["バスター"], rarity: "PR", generation: "2期", img: "images/3PR.jpg" },
  { id: "p004", name: "大沼晶保", color: "青", cost: 5, power: 5000, hit: 1, suit: "♡", type: "unit/buster", subType: ["バスター"],keyWord: ["ブライト","ブリッツ","パワー"], rarity: "PR", generation: "2期", img: "images/4PR.jpg" },
+ { id: "p006", name: "武元唯衣" , color: "白", cost: 4, power: 4000, hit: 1, suit: "♧", type: "unit", rarity: "PR", generation: "2期", img: "images/6PR.jpg" },
  { id: "p012", name: "守屋麗奈",effect: "ユニットが【ブライト】した時、そのターン中、このユニットのヒットを+1。各ターン1回まで。" , color: "黒", cost: 5, power: 5000, hit: 1, suit: "♧", type: "unit", rarity: "PR", generation: "2期", img: "images/12PR.jpg" },
  { id: "p014", name: "石森璃花",effect: "ユニットが【ブライト】した時、そのターン中、このユニットのヒットを+1。各ターン1回まで。" , color: "白", cost: 5, power: 5000, hit: 1, suit: "♤", type: "unit", rarity: "PR", generation: "3期", img: "images/14PR.jpg" },
  { id: "p015", name: "遠藤理子", color: "赤", cost: 4, power: 4000, hit: 1, suit: "♧", type: "unit/buster",subType: ["バスター"],keyWord:["ブライト","ブリッツ","パワー","解放中"], rarity: "PR", generation: "3期", img: "images/15PR.jpg" },
