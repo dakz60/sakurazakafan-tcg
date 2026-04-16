@@ -241,41 +241,6 @@
   <button onclick="postTrade()">投稿</button>
 </div>
 
-<!-- 掲示板 -->
-<div id="board" class="tab-content">
-  <h2>掲示板</h2>
-
-  <label>地域：
-    <select id="filterRegion" onchange="showBoard()">
-      <option value="">すべて</option>
-      <option>北海道</option>
-      <option>東北</option>
-      <option>関東</option>
-      <option>中部</option>
-      <option>近畿</option>
-      <option>中国・四国</option>
-      <option>九州</option>
-    </select>
-  </label>
-
-  <label>現地：
-    <select id="filterPlace" onchange="showBoard()">
-      <option value="">すべて</option>
-      <option>京都リアミ</option>
-      <option>幕張リアミ</option>
-      <option>バクラ</option>
-      <option>ツアー静岡</option>
-      <option>ツアー兵庫</option>
-      <option>ツアー広島</option>
-      <option>ツアー千葉</option>
-      <option>ツアー宮城</option>
-      <option>ツアー香川</option>
-    </select>
-  </label>
-
-  <div id="boardList"></div>
-</div>
-  
 <!-- JS読み込み -->
 <script src="data/cards.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
