@@ -12,8 +12,6 @@
 <!-- タブ -->
 <div>
   <button class="tab active" onclick="openTab('deck', this)">デッキ作成</button>
-  <button class="tab" onclick="openTab('favorite', this)">推し5枚</button>
-  <button class="tab" onclick="openTab('recipe', this)">デッキレシピ投稿</button>
   <button class="tab" onclick="openTab('collection', this)">コレクション</button>
   <button class="tab" onclick="openTab('allcards', this)">カード一覧</button>
 </div>
@@ -163,51 +161,6 @@
   <button onclick="loadDeckFromCode()">デッキ復元</button>
   <button onclick="copyDeckCode()">コピー</button>
   <div id="deckCodeResult"></div>
-</div>
-
-<!-- 推し5枚タブ -->
-<div id="favorite" class="tab-content">
-  <h2>🌸 〇〇の最強5枚‼ 🌸</h2>
-
-  <div style="text-align:center; margin-bottom:15px;">
-    <button onclick="generateRandomFive()">ランダム5枚</button>
-    <input type="text" id="favoriteManualIds" placeholder="IDをカンマ区切りで入力">
-    <button onclick="showManualFive()">表示</button>
-  </div>
-
-  <div id="favoriteDisplay" style="display:flex; gap:15px; justify-content:center; flex-wrap:wrap;"></div>
-
-  <div style="text-align:center; margin-top:15px;">
-    <button onclick="tweetFavoriteFive()">Twitter投稿用テキスト生成</button>
-  </div>
-
-  <div style="text-align:center; margin-top:10px;">
-    <button onclick="downloadFavoriteImage()">5枚画像を保存</button>
-  </div>
-
-  <textarea id="favoriteTweetText" style="height:120px;" placeholder="ここに投稿文が生成されます"></textarea>
-</div>
-
-<!-- デッキレシピ投稿タブ -->
-<div id="recipe" class="tab-content">
-  <h2>デッキレシピ投稿</h2>
-  <form>
-    <label>タイトル:<br><input type="text" name="title" style="width:100%"></label><br><br>
-    <label>説明:<br><textarea name="description" style="width:100%; height:100px;"></textarea></label><br><br>
-
-    <label>デッキコード:<br>
-      <textarea id="recipeDeckCode" placeholder="デッキコードを入力" style="width:100%; height:60px;"></textarea>
-    </label>
-    <button type="button" onclick="loadRecipeDeck()">デッキを読み込む</button><br><br>
-
-    <div id="recipeDeckPreview"></div><br>
-
-    <button type="button" onclick="submitToTwitter()">Twitterに投稿</button>
-
-    <div style="text-align:center; margin-top:15px;">
-      <button type="button" onclick="downloadRecipeImage()">デッキ画像をPNG保存</button>
-    </div>
-  </form>
 </div>
 
 <div id="collection" class="tab-content">
