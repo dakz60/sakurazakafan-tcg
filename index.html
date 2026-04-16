@@ -14,6 +14,8 @@
   <button class="tab active" onclick="openTab('deck', this)">デッキ作成</button>
   <button class="tab" onclick="openTab('collection', this)">コレクション</button>
   <button class="tab" onclick="openTab('allcards', this)">カード一覧</button>
+  <button class="tab" onclick="openTab('trade', this)">トレード</button>
+  <button class="tab" onclick="openTab('board', this)">掲示板</button>
 </div>
 
 <!-- デッキ作成タブ -->
@@ -93,9 +95,9 @@
         <label>レアリティ：
           <select id="rarityFilter">
             <option value="">すべて</option>
-            <option value="PR">PR</option>
+            <option value="PRT">PRT</option>
+            <option value="PRY">PRY</option>
             <option value="BT">BT</option>
-            <option value="LLC">LLC</option>
             <option value="R">R</option>
             <option value="R+">R+</option>
             <option value="SC">SC</option>
@@ -183,7 +185,87 @@
   <h2>カード一覧</h2>
   <div id="cardListAll"></div>
 </div>
+  
+<!-- トレード -->
+  <div id="trade" class="tab-content">
+  <h2>トレード</h2>
 
+  <label>レアリティ：
+    <select id="tradeRarity">
+      <option>N</option>
+      <option>R</option>
+      <option>N+</option>
+      <option>R+</option>
+      <option>SR</option>
+      <option>BT</option>
+      <option>SC</option>
+      <option>PR（ユニット）</option>
+      <option>PR（テリトリー）</option>
+    </select>
+  </label>
+
+  <label>譲：
+    <input type="text" id="tradeGive">
+  </label>
+
+  <label>求：
+    <input type="text" id="tradeWant">
+  </label>
+
+  <label>方法：
+    <select id="tradeMethod">
+      <option>会場手渡し</option>
+      <option>都内手渡し</option>
+      <option>郵送</option>
+    </select>
+  </label>
+
+  <label>推しメン：
+    <input type="text" id="tradeOshi">
+  </label>
+
+  <label>Twitter：
+    <input type="text" id="tradeTwitter">
+  </label>
+
+  <button onclick="postTrade()">投稿</button>
+</div>
+
+<!-- 掲示板 -->
+<div id="board" class="tab-content">
+  <h2>掲示板</h2>
+
+  <label>地域：
+    <select id="filterRegion" onchange="showBoard()">
+      <option value="">すべて</option>
+      <option>北海道</option>
+      <option>東北</option>
+      <option>関東</option>
+      <option>中部</option>
+      <option>近畿</option>
+      <option>中国・四国</option>
+      <option>九州</option>
+    </select>
+  </label>
+
+  <label>現地：
+    <select id="filterPlace" onchange="showBoard()">
+      <option value="">すべて</option>
+      <option>京都リアミ</option>
+      <option>幕張リアミ</option>
+      <option>バクラ</option>
+      <option>ツアー静岡</option>
+      <option>ツアー兵庫</option>
+      <option>ツアー広島</option>
+      <option>ツアー千葉</option>
+      <option>ツアー宮城</option>
+      <option>ツアー香川</option>
+    </select>
+  </label>
+
+  <div id="boardList"></div>
+</div>
+  
 <!-- JS読み込み -->
 <script src="data/cards.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
