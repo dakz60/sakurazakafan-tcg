@@ -359,28 +359,43 @@ function toggleBackground(){
 }
 
 // ==================== トレード用 ====================
-
-// ① 1個だけにする + レアリティ付きに進化
 function convertIdsToNames(idText){
   if(!idText) return "";
 
-  return idText.replace(/\s/g, "").split(",").map(id=>{
+  return idText.split(",").map(item=>{
+    item = item.trim();
+
+    let [id, count] = item.split("*");
+    id = id.trim();
+    count = count ? parseInt(count) : 1;
+
     const card = cards.find(c => c.id === id);
-    return card ? `${card.name}(${card.rarity})` : `不明ID:${id}`;
+
+    if(!card) return `不明ID:${id}`;
+
+    return count > 1
+      ? `${card.name}(${card.rarity})×${count}`
+      : `${card.name}(${card.rarity})`;
   }).join("、");
 }
 
-// ② そのまま使う
+function splitTextList(text){
+  if(!text) return "";
+  return text.split(",").map(t => t.trim()).filter(t => t).join("、");
+}
+
 function postTrade(){
-  const rarity = document.getElementById("tradeRarity").value;
   const giveRaw = document.getElementById("tradeGive").value;
   const wantRaw = document.getElementById("tradeWant").value;
-  const method = document.getElementById("tradeMethod").value;
-  const place = document.getElementById("tradePlace").value;
-  const oshi = document.getElementById("tradeOshi").value;
+  const methodRaw = document.getElementById("tradeMethod").value;
+  const placeRaw = document.getElementById("tradePlace").value;
+  const oshiRaw = document.getElementById("tradeOshi").value;
 
   const give = convertIdsToNames(giveRaw);
   const want = convertIdsToNames(wantRaw);
+  const method = splitTextList(methodRaw);
+  const place = splitTextList(placeRaw);
+  const oshi = splitTextList(oshiRaw);
 
   const text = encodeURIComponent(
 `【櫻坂TCGトレード】
@@ -396,7 +411,6 @@ function postTrade(){
   const url = `https://twitter.com/intent/tweet?text=${text}`;
   window.open(url, "_blank");
 }
-
 function showCollectionCards(){
 
  const owned = JSON.parse(localStorage.getItem("ownedCards") || "[]");
