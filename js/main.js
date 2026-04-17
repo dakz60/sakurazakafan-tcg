@@ -59,6 +59,8 @@ function showCollection(){
       // 背景・文字色の決定
       let bgStyle = '#eee';   // デフォルト背景
       let nameColor = '#000'; // デフォルト文字
+      return `
+<div class="cardAll" style="
 <div class="cardAll" style="
   display:flex; 
   flex-direction:column; 
