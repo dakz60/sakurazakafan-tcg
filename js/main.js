@@ -1,302 +1,599 @@
-// ==================== ユーティリティ ====================
-function el(id){
-  return document.getElementById(id);
-}
-
-// cards安全参照
-function getCards(){
-  return window.cards || [];
-}
-
 // ==================== タブ切り替え ====================
-function openTab(tabId, btn){
-
-  document.querySelectorAll('button.tab')
-    .forEach(b => b.classList.remove('active'));
-
-  if(btn){
-    btn.classList.add('active');
-  }
-
-  document.querySelectorAll('.tab-content')
-    .forEach(c => c.classList.remove('active'));
-
-  const target = el(tabId);
-  if(target) target.classList.add('active');
-
-  // タブごとの再描画
+function openTab(tabId){
+  document.querySelectorAll('button.tab').forEach(b=>b.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
   if(tabId === 'collection') showCollection();
-  if(tabId === 'allcards') showAllCards();
-  if(tabId === 'board' && typeof showBoard === "function") showBoard();
 }
-
-// ==================== 初期化 ====================
-window.addEventListener("load", () => {
-
+// ==================== ページロード時の初期処理 ====================
+window.addEventListener("load", function(){
   updateReleaseCountdown();
   showDailyCard();
-  showCollection();
-  showAllCards();
-
-  // URLデッキ復元
-  const params = new URLSearchParams(location.search);
+  setupSearchSuggestions(); 
+  const params = new URLSearchParams(window.location.search);
   const deckParam = params.get("deck");
-
   if(deckParam){
-    const box = el("deckCodeBox");
-    if(box) box.value = deckParam;
+    document.getElementById("deckCodeBox").value = deckParam;
     loadDeckFromCode();
-  }
-
-  // ドラッグ並び替え
-  const deckImages = el("deckImages");
-  if(deckImages && typeof Sortable !== "undefined"){
-    Sortable.create(deckImages,{
-      animation:150,
-      onEnd(evt){
-        const moved = deck.splice(evt.oldIndex,1)[0];
-        deck.splice(evt.newIndex,0,moved);
-        updateDeckStatus();
-      }
-    });
   }
 });
 
-// ==================== 全カード ====================
+// ==================== 全カード一覧表示 ====================
 function showAllCards(){
-  const container = el("cardListAll");
-  if(!container) return;
+  const container = document.getElementById("cardListAll");
+  if(!cards || cards.length===0){
+    container.textContent = "カードデータがありません";
+    return;
+  }
+  container.innerHTML = cards.map(c=>{
+    return `<div class="cardAll">
+      <img src="${c.img}" alt="${c.name}"><br>
+      ${c.name}<br>
+      ID:${c.id}
+    </div>`;
+  }).join('');
+}
 
-  const cards = getCards();
-
-  if(cards.length === 0){
+function showCollection(){
+  const container = document.getElementById("collectionList");
+  if(!cards || cards.length === 0){
     container.textContent = "カードデータがありません";
     return;
   }
 
-  container.innerHTML = cards.map(c => `
-    <div class="cardAll">
-      <img src="${c.img}" alt="${c.name}" loading="lazy"><br>
-      ${c.name}<br>
-      ID:${c.id}
-    </div>
-  `).join('');
-}
-
-// ==================== コレクション ====================
-function showCollection(){
-  const container = el("collectionList");
-  if(!container) return;
-
-  const cards = getCards();
-  const mode = el("ownershipFilter")?.value || "all";
+  const ownership = document.getElementById("ownershipFilter")?.value || "all";
 
   container.innerHTML = cards
     .filter(card => {
-      const count = Number(localStorage.getItem("cardCount_" + card.id) || 0);
-
-      if(mode === "owned") return count > 0;
-      if(mode === "unowned") return count === 0;
-      return true;
+      const count = parseInt(localStorage.getItem("cardCount_" + card.id) || 0);
+      if(ownership === "owned") return count > 0;
+      if(ownership === "unowned") return count === 0;
+      return true; // all
     })
     .map(card => {
-      const count = Number(localStorage.getItem("cardCount_" + card.id) || 0);
+      const count = parseInt(localStorage.getItem("cardCount_" + card.id) || 0);
+
+      // 背景・文字色の決定
+      let bgStyle = '#eee';   // デフォルト背景
+      let nameColor = '#000'; // デフォルト文字
+
+      if(typeof memberColors !== "undefined"){
+        // メンバーカラーが直接ある場合
+        if(memberColors[card.name]){
+          const colors = memberColors[card.name];
+          bgStyle = colors[0];
+          nameColor = (colors[0] === colors[1]) ? '#fff' : colors[1];
+        } else {
+          // 名前にメンバー名が含まれている場合を検索（2人カード対応）
+          for(const member in memberColors){
+            if(card.name.includes(member)){
+              const colors = memberColors[member];
+              bgStyle = colors[0];
+              nameColor = (colors[0] === colors[1]) ? '#fff' : colors[1];
+              break;
+            }
+          }
+        }
+      }
 
       return `
-      <div class="cardAll" style="display:flex;flex-direction:column;align-items:center;margin:4px;padding:12px;width:120px;">
-        <img src="${card.img}" style="width:110px;height:152px;">
-        <div style="text-align:center;font-weight:bold;">${card.name}</div>
-        <input type="number" min="0" value="${count}"
-          style="width:40px;text-align:center;"
-          onchange="updateCardCount('${card.id}', this.value)">
-      </div>
+<div class="cardAll" style="
+  display:flex; 
+  flex-direction:column; 
+  align-items:center; 
+  margin:4px; 
+  background:${bgStyle}; 
+  padding:12px; 
+  border-radius:10px;
+  width:120px;
+">
+  <img src="${card.img}" alt="${card.name}" style="width:110px; height:152px; border-radius:5px;">
+  <div style="
+    text-align:center; 
+    font-size:16px; 
+    margin-top:6px; 
+    color:${nameColor};
+    font-weight:bold;
+  ">
+    ${card.name}
+  </div>
+  <input type="number" min="0" value="${count}" style="width:40px; text-align:center; margin-top:4px;"
+    onchange="updateCardCount('${card.id}', this.value)">
+</div>
       `;
     }).join('');
 }
 
-// ==================== カード枚数 ====================
+function updateCardCount(cardId, value){
+  const num = Math.max(0, parseInt(value) || 0);
+  localStorage.setItem("cardCount_" + cardId, num);
+  showCollection();
+}
+
+window.addEventListener("load", function(){
+  showCollection();
+});
+
 function updateCardCount(cardId, value){
   const num = Math.max(0, parseInt(value) || 0);
   localStorage.setItem("cardCount_" + cardId, num);
 }
 
-// ==================== デッキ ====================
-let deck = [];
-let territoryCardId = null;
+// ==================== デッキ作成 ====================
+let deck=[], territoryCardId=null;
 
-// ==================== 発売カウントダウン ====================
 function updateReleaseCountdown(){
-  const release = new Date(2026, 2, 20);
-  const now = new Date();
+  const releaseDate = new Date(2026, 2, 20);
+  const today = new Date();
 
-  release.setHours(0,0,0,0);
-  now.setHours(0,0,0,0);
+  releaseDate.setHours(0,0,0,0);
+  today.setHours(0,0,0,0);
 
-  const diff = Math.floor((now - release) / (1000*60*60*24));
+  const diff = Math.floor((today - releaseDate) / (1000 * 60 * 60 * 24));
 
-  const text =
-    diff < 0 ? `発売まであと${Math.abs(diff)}日`
-    : diff === 0 ? "本日発売！"
-    : `発売から${diff}日`;
+  let text = "";
 
-  const elc = el("releaseCountdown");
-  if(elc) elc.textContent = text;
+  if(diff < 0){
+    text = `発売まであと${Math.abs(diff)}日`;
+  } else if(diff === 0){
+    text = "本日発売！";
+  } else {
+    text = `発売から${diff}日!!`;
+  }
+
+  document.getElementById("releaseCountdown").textContent = text;
 }
 
-// ==================== デイリーカード ====================
 function showDailyCard(){
-  const container = el("dailyCard");
-  const cards = getCards();
-  if(!container || cards.length === 0) return;
-
-  const c = cards[Math.floor(Math.random() * cards.length)];
-
-  container.innerHTML = `
-    <img src="${c.img}" style="width:240px;display:block;margin:auto;">
-    <div style="text-align:center;margin-top:10px;">${c.name}</div>
+  if(!cards || cards.length===0) return;
+  const randomCard = cards[Math.floor(Math.random()*cards.length)];
+  document.getElementById("dailyCard").innerHTML = `
+    <img src="${randomCard.img}" style="width:240px; display:block; margin:auto;">
+    <div style="text-align:center; margin-top:10px;">${randomCard.name}</div>
   `;
 }
+function rerollDailyCard(){ showDailyCard(); }
 
-function rerollDailyCard(){
-  showDailyCard();
+function showManualCard(){
+  const id = document.getElementById("manualCardId").value.trim();
+  const card = cards.find(c => c.id === id);
+  if(card){
+    document.getElementById("dailyCard").innerHTML = `
+      <img src="${card.img}" style="width:240px; display:block; margin:auto;">
+      <div style="text-align:center; margin-top:10px;">${card.name}</div>
+    `;
+  } else { alert("カードIDが見つかりません"); }
 }
 
 // ==================== 検索 ====================
 function search(){
-  const cards = getCards();
+  const name=document.getElementById("searchBox").value;
+  const effect=document.getElementById("effectSearchBox").value;
+  const costMin=document.getElementById("costMin").value;
+  const costMax=document.getElementById("costMax").value;
+  const powerMin=document.getElementById("powerMin").value;
+  const powerMax=document.getElementById("powerMax").value;
+  const hitMin=document.getElementById("hitMin").value;
+  const hitMax=document.getElementById("hitMax").value;
+  const typeFilter=document.getElementById("typeFilter").value;
+  const colorFilter=document.getElementById("colorFilter").value;
+  const generationFilter=document.getElementById("generationFilter").value;
+  const subTypeFilter=document.getElementById("subTypeFilter").value;
+  const rarityFilter=document.getElementById("rarityFilter").value;
+  const keyWordFilter=document.getElementById("keyWordFilter").value;
+  const cardId = document.getElementById("cardIdSearchBox").value;
+  const result=document.getElementById("result");
 
-  const name = el("searchBox")?.value || "";
-  const effect = el("effectSearchBox")?.value || "";
-  const id = el("cardIdSearchBox")?.value || "";
+  let filtered = cards.filter(c=>(!name || c.name.includes(name)) && (!effect || (c.effect && c.effect.includes(effect))) && (!cardId || c.id.includes(cardId)));
+  if(costMin!=="") filtered = filtered.filter(c => c.cost>=Number(costMin));
+  if(costMax!=="") filtered = filtered.filter(c => c.cost<=Number(costMax));
+  if(powerMin!=="") filtered = filtered.filter(c => c.power!==null && c.power>=Number(powerMin));
+  if(powerMax!=="") filtered = filtered.filter(c => c.power!==null && c.power<=Number(powerMax));
+  if(hitMin!=="") filtered = filtered.filter(c => c.hit!==null && c.hit>=Number(hitMin));
+  if(hitMax!=="") filtered = filtered.filter(c => c.hit!==null && c.hit<=Number(hitMax));
+  if(typeFilter !== ""){
+  filtered = filtered.filter(c => {
+    if(!c.type) return false;
 
-  const result = el("result");
-  if(!result) return;
+    const types = c.type.split("/"); // "unit/ace" → ["unit","ace"]
 
-  const filtered = cards.filter(c =>
-    (!name || c.name.includes(name)) &&
-    (!effect || (c.effect || "").includes(effect)) &&
-    (!id || c.id.includes(id))
-  );
+    if(typeFilter === "unit"){
+      return types.includes("unit");
+    }
 
-  if(filtered.length === 0){
-    result.textContent = "見つかりませんでした";
-    return;
-  }
+    if(typeFilter === "ace"){
+      return types.includes("ace");
+    }
 
-  result.innerHTML = filtered.map(card => `
-    <div style="display:flex;align-items:center;">
-      <img src="${card.img}" style="width:80px;margin-right:8px;">
-      <div>
-        ${card.name} | ID:${card.id}
-        <br>
-        <button onclick="addToDeck('${card.id}')">＋</button>
-        <button onclick="removeFromDeck('${card.id}')">－</button>
-      </div>
-    </div>
-  `).join('');
+    return c.type === typeFilter;
+  });
+}
+  if(keyWordFilter !==""){
+    filtered = filtered.filter(c =>
+      c.keyWord && c.keyWord.includes(keyWordFilter)
+     );
+}
+  if(colorFilter!=="") filtered = filtered.filter(c => c.color===colorFilter);  
+  if(generationFilter!=="") filtered = filtered.filter(c => c.generation===generationFilter);
+  if(rarityFilter!=="") filtered = filtered.filter(c => c.rarity===rarityFilter);
+
+  if(subTypeFilter==="バスター" || subTypeFilter==="ショット") filtered = filtered.filter(c => c.subType && c.subType.includes(subTypeFilter));
+  else if(subTypeFilter==="その他") filtered = filtered.filter(c => (!c.subType || (c.subType.indexOf("バスター")===-1 && c.subType.indexOf("ショット")===-1)) && c.type!=="territory");
+
+  if(filtered.length===0){ result.textContent="見つかりませんでした"; return; }
+
+  result.innerHTML = filtered.map(card=>{
+    let colorClass='';
+    if(card.color==='白') colorClass='card-white';
+    else if(card.color==='赤') colorClass='card-red';
+    else if(card.color==='青') colorClass='card-blue';
+    else if(card.color==='黒') colorClass='card-black';
+    const imgTag=`<img src="${card.img}" alt="${card.name}" style="width:85px; height:auto; border-radius:5px; margin-right:5px;">`;
+   let info='';
+   if(card.type==='command' || card.type==='territory'){
+info=`コスト:${card.cost} | 効果:${card.effect||'-'} | レアリティ:${card.rarity||'-'} | 期別:${card.generation||'-'} | トリガー:${card.subType ? card.subType.join(",") : '-'} | キーワード:${card.keyWord || '-'} | カードID:${card.id}`;
+   }else{
+info=`コスト:${card.cost} | 効果:${card.effect||'-'} | パワー:${card.power||'-'} | ヒット:${card.hit||'-'} | レアリティ:${card.rarity||'-'} | 期別:${card.generation||'-'} | トリガー:${card.subType ? card.subType.join(",") : '-'} | キーワード:${card.keyWord || '-'} | カードID:${card.id}`;
+}
+    return `<div class="${colorClass}" style="display:flex; align-items:center; margin-bottom:5px;">
+      ${imgTag}<div>${card.name} | ${info}<br>
+      <button onclick="addToDeck('${card.id}')">＋</button>
+      <button onclick="removeFromDeck('${card.id}')">－</button></div></div>`;
+  }).join('');
 }
 
 // ==================== デッキ操作 ====================
 function addToDeck(id){
-  const cards = getCards();
-  const card = cards.find(c => c.id === id);
+  const card = cards.find(c=>c.id===id); 
   if(!card) return;
+  if(card.type==='territory'){ territoryCardId = id; updateDeckImages(); updateDeckStatus(); return; }
 
-  if(card.type === "territory"){
-    territoryCardId = id;
-    updateDeck();
-    return;
-  }
+  const sameSpecCount = deck.filter(d=>{
+    const c = cards.find(x=>x.id===d);
+    if(!c) return false;
+    return (c.name===card.name && c.type===card.type && c.cost===card.cost && c.power===card.power && c.hit===card.hit && c.color===card.color && JSON.stringify(c.subType||[])===JSON.stringify(card.subType||[]) && c.generation===card.generation);
+  }).length;
+  if(sameSpecCount>=4){ alert("同じカードは4枚までです"); return; }
+  if(deck.length>=50){ alert("デッキは50枚までです"); return; }
 
-  if(deck.length >= 50){
-    alert("デッキは50枚まで");
-    return;
-  }
-
-  deck.push(id);
-  updateDeck();
+  deck.push(id); updateDeckImages(); updateDeckStatus();
+}
+function removeFromDeck(id){ 
+  const index=deck.indexOf(id); 
+  if(index!==-1) deck.splice(index,1); 
+  if(territoryCardId===id) territoryCardId=null; 
+  updateDeckImages(); updateDeckStatus(); 
 }
 
-function removeFromDeck(id){
-  deck = deck.filter(x => x !== id);
+function updateDeckImages(){
+  const deckDiv=document.getElementById("deckImages"); deckDiv.innerHTML="";
+  deck.slice(0,50).forEach(cardId=>{
+    const card=cards.find(c=>c.id===cardId); if(!card) return;
+    const img=document.createElement("img"); img.src=card.img; img.alt=card.name; img.onclick=()=>removeFromDeck(card.id); deckDiv.appendChild(img);
+  });
+  for(let i=deck.length;i<50;i++){ const ph=document.createElement("div"); ph.style.width="110px"; ph.style.height="152px"; deckDiv.appendChild(ph); }
 
-  if(territoryCardId === id){
-    territoryCardId = null;
-  }
-
-  updateDeck();
+  const terrDiv=document.getElementById("territoryImage"); terrDiv.innerHTML="";
+  if(territoryCardId){ const card=cards.find(c=>c.id===territoryCardId); if(card){ const img=document.createElement("img"); img.src=card.img; img.alt=card.name; img.onclick=()=>{territoryCardId=null; updateDeckImages(); updateDeckStatus();}; terrDiv.appendChild(img); }}
 }
 
-// ==================== デッキ描画 ====================
-function updateDeck(){
-  const cards = getCards();
-
-  const deckDiv = el("deckImages");
-  if(deckDiv){
-    deckDiv.innerHTML = "";
-
-    deck.slice(0,50).forEach(id => {
-      const c = cards.find(x => x.id === id);
-      if(!c) return;
-
-      const img = document.createElement("img");
-      img.src = c.img;
-      img.onclick = () => removeFromDeck(id);
-      deckDiv.appendChild(img);
-    });
-  }
-
-  const terr = el("territoryImage");
-  if(terr){
-    terr.innerHTML = "";
-
-    const c = cards.find(x => x.id === territoryCardId);
-    if(c){
-      const img = document.createElement("img");
-      img.src = c.img;
-      img.onclick = () => {
-        territoryCardId = null;
-        updateDeck();
-      };
-      terr.appendChild(img);
-    }
-  }
-
-  updateDeckStatus();
-}
-
-// ==================== デッキ状態 ====================
 function updateDeckStatus(){
-  const elc = el("deckStatus");
-  if(!elc) return;
-
-  elc.textContent =
-    `デッキ:${deck.length}枚 / テリトリー:${territoryCardId ? "あり" : "なし"}`;
+  let unitCount=0, commandCount=0, busterCount=0, shotCount=0, territory=territoryCardId?"あり":"なし";
+  deck.forEach(id=>{ const card=cards.find(c=>c.id===id); if(!card) return; if(card.type && card.type.includes("unit")) unitCount++; if(card.type==="command") commandCount++; if(card.subType?.includes("バスター")) busterCount++; if(card.subType?.includes("ショット")) shotCount++; });
+  document.getElementById("deckStatus").innerHTML = `
+    ユニット：${unitCount}枚<br>
+    コマンド：${commandCount}枚<br>
+    バスター：${busterCount}枚<br>
+    ショット：${shotCount}枚<br>
+    テリトリー：${territory}
+  `;
 }
+
+function checkDeckRules(){
+  const totalCards=deck.length; const terr=territoryCardId?1:0;
+  let busterCount=0, shotCount=0;
+  deck.forEach(id=>{ const card=cards.find(c=>c.id===id); if(card?.subType?.includes("バスター")) busterCount++; if(card?.subType?.includes("ショット")) shotCount++; });
+  let msg="";
+  if(totalCards<40 || totalCards>50) msg+=`デッキ枚数は40～50枚である必要があります（現在${totalCards}枚）<br>`;
+  if(terr!==1) msg+=`テリトリーカードは1枚必要です（現在${terr}枚）<br>`;
+  if(busterCount!==12) msg+=`バスターカードは12枚必要です（現在${busterCount}枚）<br>`;
+  if(shotCount>12) msg+=`ショットカードは最大12枚です（現在${shotCount}枚）<br>`;
+  document.getElementById("deckCheckResult").innerHTML = msg || "咲け、咲け、櫻坂46";
+}
+
+Sortable.create(document.getElementById('deckImages'),{
+  animation:150,
+  onEnd:function(evt){
+    const moved=deck.splice(evt.oldIndex,1)[0];
+    deck.splice(evt.newIndex,0,moved);
+  }
+});
 
 // ==================== デッキコード ====================
 function generateDeckCode(){
-  if(deck.length === 0) return alert("空です");
-
-  const code = (territoryCardId || "0") + "|" + deck.join(",");
-  el("deckCodeBox").value = code;
-
-  const out = el("deckCodeResult");
-  if(out) out.textContent = "生成完了";
+  if(deck.length===0){alert("デッキが空です"); return;}
+  const idList=deck.join(",");
+  const territoryId=territoryCardId||"0";
+  document.getElementById("deckCodeBox").value=territoryId+"|"+idList;
+  document.getElementById("deckCodeResult").textContent="デッキコード生成完了！";
 }
 
 function loadDeckFromCode(){
-  const code = el("deckCodeBox")?.value;
-  if(!code) return;
+  const code=document.getElementById("deckCodeBox").value.trim();
+  if(!code){alert("コードを入力してください"); return;}
+  try{
+    const parts=code.split("|");
+    const territoryId=parts[0];
+    const deckIds=parts[1]?parts[1].split(","):[];
+    territoryCardId=territoryId!=="0"?territoryId:null;
+    deck=deckIds.filter(id=>cards.some(c=>c.id===id));
+    updateDeckImages();
+    document.getElementById("deckCodeResult").textContent="デッキ復元完了！";
+  }catch(e){alert("無効なコードです");}
+}
 
-  const [t, d] = code.split("|");
+function copyDeckCode(){
+  const box=document.getElementById("deckCodeBox");
+  if(!box.value){alert("コピーするコードがありません"); return;}
+  navigator.clipboard.writeText(box.value).then(()=>{document.getElementById("deckCodeResult").textContent="コピーしました！";}).catch(()=>{alert("コピーに失敗しました");});
+}
 
-  territoryCardId = (t !== "0") ? t : null;
+window.addEventListener("load",function(){
+  const params=new URLSearchParams(window.location.search);
+  const deckParam=params.get("deck");
+  if(deckParam){ document.getElementById("deckCodeBox").value=deckParam; loadDeckFromCode(); }
+});
 
-  const cards = getCards();
-  deck = (d ? d.split(",") : []).filter(id =>
-    cards.some(c => c.id === id)
-  );
+function toggleBackground(){
+  const deck = document.getElementById("deckContainer");
+  if(deck.classList.contains("white-mode")){ deck.classList.replace("white-mode","mat-mode"); }
+  else{ deck.classList.replace("mat-mode","white-mode"); }
+}
 
-  updateDeck();
+// ==================== 投稿タブ ====================
+function loadRecipeDeck(){
+  const code = document.getElementById("recipeDeckCode").value.trim();
+  if(!code){ alert("デッキコードを入力してください"); return; }
+  try {
+    const parts = code.split("|");
+    const deckIds = parts[1] ? parts[1].split(",") : [];
+    const container = document.getElementById("recipeDeckPreview");
+    container.innerHTML = deckIds.map(id=>{
+      const card = cards.find(c=>c.id===id);
+      if(!card) return "";
+      return `<div style="display:inline-block; margin:1px;">
+                <img src="${card.img}" style="width:120px; height:170px; object-fit:cover; border-radius:1px;">
+              </div>`;
+    }).join('');
+  } catch(e){ alert("無効なデッキコードです"); }
+}
+
+function submitToTwitter(){
+  const title = encodeURIComponent(document.querySelector('#recipe input[name="title"]').value);
+  const desc = encodeURIComponent(document.querySelector('#recipe textarea[name="description"]').value);
+  const code = encodeURIComponent(document.getElementById("recipeDeckCode").value);
+  const url = `https://twitter.com/intent/tweet?text=${title}%0A${desc}%0Aデッキコード:${code}`;
+  window.open(url,"_blank");
+}
+
+// ==================== 推し5枚 ====================
+let favoriteFive = [];
+
+function generateRandomFive(){
+  if(!cards || cards.length===0) return;
+  const shuffled = [...cards].sort(()=>0.5-Math.random());
+  favoriteFive = shuffled.slice(0,5);
+  renderFavoriteFive();
+}
+
+function showManualFive(){
+  const input = document.getElementById("favoriteManualIds").value.trim();
+  if(!input) return;
+  const ids = input.split(",").map(id=>id.trim());
+  favoriteFive = ids.map(id=>cards.find(c=>c.id===id)).filter(Boolean).slice(0,5);
+  renderFavoriteFive();
+}
+
+function renderFavoriteFive(){
+  const container = document.getElementById("favoriteDisplay");
+  container.innerHTML = "";
+
+  favoriteFive.forEach((card,index)=>{
+    const div = document.createElement("div");
+    div.innerHTML = `
+      <div style="text-align:center; font-weight:bold;">${index+1}</div>
+      <img src="${card.img}" style="width:140px; border-radius:8px;">
+      <div style="text-align:center; font-size:12px;">${card.id}</div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function tweetFavoriteFive(){
+  if(favoriteFive.length===0){
+    alert("カードを選んでください");
+    return;
+  }
+
+  const names = favoriteFive.map((c,i)=>`${i+1}. ${c.name}`).join("\n");
+
+  const text = `🌸〇〇の最強5枚‼🌸
+
+${names}
+
+#櫻坂TCG
+#櫻坂46
+#美しき衝突
+#櫻舞う`;
+
+  const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+  window.open(url, "_blank");
+}
+
+// ==================== 推し5枚画像保存 ====================
+function downloadFavoriteImage(){
+  if(favoriteFive.length !== 5){
+    alert("5枚選んでください");
+    return;
+  }
+
+  const cardWidth = 220;
+  const cardHeight = 308;
+  const margin = 20;
+
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+
+  canvas.width = cardWidth * 5 + margin * 2;
+  canvas.height = cardHeight + 160;
+
+  // 背景
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // タイトル
+  ctx.fillStyle = "#f19db5";
+  ctx.font = "bold 40px sans-serif";
+  ctx.textAlign = "center";
+  ctx.fillText("🌸 〇〇の最強5枚‼ 🌸", canvas.width / 2, 50);
+
+  let loaded = 0;
+
+  favoriteFive.forEach((card, index)=>{
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.src = card.img;
+
+    img.onload = function(){
+      ctx.drawImage(
+        img,
+        margin + index * cardWidth,
+        80,
+        cardWidth,
+        cardHeight
+      );
+
+      loaded++;
+
+      if(loaded === 5){
+        // ハッシュタグ
+        ctx.fillStyle = "#333";
+        ctx.font = "24px sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText(
+          "#櫻坂TCG  #櫻坂46  #美しき衝突  #櫻舞う",
+          canvas.width / 2,
+          canvas.height - 30
+        );
+
+        const link = document.createElement("a");
+        link.download = "oshi5.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      }
+    };
+  });
+}
+
+// ==================== デッキレシピ画像保存 ====================
+function downloadRecipeImage(){
+  const code = document.getElementById("recipeDeckCode").value.trim();
+  if(!code){
+    alert("デッキコードを入力してください");
+    return;
+  }
+
+  const parts = code.split("|");
+  const deckIds = parts[1] ? parts[1].split(",") : [];
+
+  if(deckIds.length === 0){
+    alert("デッキが読み込まれていません");
+    return;
+  }
+
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+
+  // ===== サイズ設定 =====
+  const cols = 10;
+  const rows = 5;
+  const cardWidth = 120;
+  const cardHeight = 170;
+  const margin = 10;
+  const padding = 30;
+
+  canvas.width = cols * (cardWidth + margin) + padding * 2 - margin;
+  canvas.height = rows * (cardHeight + margin) + padding * 2 + 80;
+
+  // 背景
+  ctx.fillStyle = "white";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // タイトル
+  ctx.fillStyle = "black";
+  ctx.font = "bold 28px sans-serif";
+  ctx.textAlign = "center";
+  ctx.fillText("デッキレシピ", canvas.width / 2, 40);
+
+  // 画像読み込み
+  const loadImages = deckIds.slice(0,50).map(id=>{
+    return new Promise(resolve=>{
+      const card = cards.find(c=>c.id===id);
+      if(!card){ resolve(null); return; }
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+      img.src = card.img;
+      img.onload = ()=>resolve(img);
+    });
+  });
+
+  Promise.all(loadImages).then(images=>{
+    images.forEach((img,i)=>{
+      if(!img) return;
+      const row = Math.floor(i / cols);
+      const col = i % cols;
+      const x = padding + col * (cardWidth + margin);
+      const y = padding + 40 + row * (cardHeight + margin);
+      ctx.drawImage(img, x, y, cardWidth, cardHeight);
+    });
+
+    // デッキコード表示
+    ctx.font = "16px sans-serif";
+    ctx.textAlign = "left";
+    ctx.fillText("デッキコード: " + code, 20, canvas.height - 20);
+
+    const link = document.createElement("a");
+    link.download = "deck_recipe.png";
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+  });
+}
+
+function showCollectionCards(){
+
+ const owned = JSON.parse(localStorage.getItem("ownedCards") || "[]");
+
+ const unowned = cards.filter(c => !owned.includes(c.id));
+
+ const list = document.getElementById("collectionList");
+ list.innerHTML="";
+
+ unowned.forEach(card=>{
+   const img=document.createElement("img");
+   img.src=card.img;
+   img.width=80;
+   list.appendChild(img);
+ });
+
+}
+function setupSearchSuggestions(){
+  const dataList = document.getElementById("cardList");
+  if(!cards || cards.length === 0) return;
+
+  const uniqueNames = [...new Set(cards.map(c => c.name))];
+
+  dataList.innerHTML = uniqueNames.map(name => {
+    return `<option value="${name}">`;
+  }).join('');
 }
