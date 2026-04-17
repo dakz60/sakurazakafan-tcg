@@ -237,3 +237,14 @@ hr {
 #collectionList input[type=number] {
     -moz-appearance: textfield;
 }
+
+.trade-group {
+  display: flex;
+  flex-direction: column; /* ← 縦並び */
+  gap: 5px;
+  color: black; /* ← 文字黒 */
+}
+
+.trade-group label {
+  color: black;
+}
