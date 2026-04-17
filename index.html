@@ -270,27 +270,18 @@
 <div id="board" class="tab-content">
   <h2>掲示板</h2>
 
-  <!-- 検索フィルタ -->
   <div class="search-section">
-
     <label>譲検索：</label>
-    <input type="text" id="boardGiveSearch" placeholder="譲で検索">
+    <input type="text" id="boardGiveSearch">
 
     <label>求検索：</label>
-    <input type="text" id="boardWantSearch" placeholder="求で検索">
+    <input type="text" id="boardWantSearch">
 
     <label>場所：</label>
     <div class="board-check-group">
       <div>
         <label><input type="checkbox" name="boardPlace" value="京都リアミ">京都リアミ</label>
         <label><input type="checkbox" name="boardPlace" value="幕張リアミ">幕張リアミ</label>
-        <label><input type="checkbox" name="boardPlace" value="バクラ">バクラ</label>
-        <label><input type="checkbox" name="boardPlace" value="ツアー静岡">ツアー静岡</label>
-        <label><input type="checkbox" name="boardPlace" value="ツアー兵庫">ツアー兵庫</label>
-        <label><input type="checkbox" name="boardPlace" value="ツアー広島">ツアー広島</label>
-        <label><input type="checkbox" name="boardPlace" value="ツアー千葉">ツアー千葉</label>
-        <label><input type="checkbox" name="boardPlace" value="ツアー宮城">ツアー宮城</label>
-        <label><input type="checkbox" name="boardPlace" value="ツアー香川">ツアー香川</label>
       </div>
     </div>
 
@@ -298,34 +289,15 @@
     <div class="board-check-group">
       <div>
         <label><input type="checkbox" name="boardMethod" value="会場手渡し">会場手渡し</label>
-        <label><input type="checkbox" name="boardMethod" value="都内手渡し">都内手渡し</label>
         <label><input type="checkbox" name="boardMethod" value="郵送">郵送</label>
       </div>
     </div>
 
-    <label>メンバー：</label>
-    <div class="board-check-group">
-      <div>
-        <!-- ここ全部そのままでOK -->
-      </div>
-    </div>
-
-    <button onclick="showBoard()">検索</button>
-
-  </div>
-
-  <hr>
-
-  <!-- 投稿一覧 -->
-  <div id="boardList"></div>
-</div>
-s
     <button onclick="showBoard()">検索</button>
   </div>
 
   <hr>
 
-  <!-- 投稿一覧 -->
   <div id="boardList"></div>
 </div>
 
