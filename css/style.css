@@ -240,11 +240,17 @@ hr {
 
 .trade-group {
   display: flex;
-  flex-direction: column; /* ← 縦並び */
+  flex-direction: column;
   gap: 5px;
-  color: black; /* ← 文字黒 */
+  color: black;
 }
 
 .trade-group label {
   color: black;
+}
+
+.board-check-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
 }
