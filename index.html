@@ -270,7 +270,16 @@
 <div id="board" class="tab-content">
   <h2>掲示板</h2>
 
+  <!-- コピペ入力 -->
+  <textarea id="boardInput" placeholder="ここにTwitter投稿をコピペ"></textarea>
+  <br>
+  <button onclick="addBoardPost()">投稿</button>
+
+  <hr>
+
+  <!-- 検索フィルタ -->
   <div class="search-section">
+
     <label>譲検索：</label>
     <input type="text" id="boardGiveSearch">
 
@@ -278,19 +287,16 @@
     <input type="text" id="boardWantSearch">
 
     <label>場所：</label>
-    <div class="board-check-group">
-      <div>
-        <label><input type="checkbox" name="boardPlace" value="京都リアミ">京都リアミ</label>
-        <label><input type="checkbox" name="boardPlace" value="幕張リアミ">幕張リアミ</label>
-      </div>
+    <div>
+      <label><input type="checkbox" name="boardPlace" value="京都リアミ">京都リアミ</label>
+      <label><input type="checkbox" name="boardPlace" value="幕張リアミ">幕張リアミ</label>
+      <label><input type="checkbox" name="boardPlace" value="バクラ">バクラ</label>
     </div>
 
     <label>方法：</label>
-    <div class="board-check-group">
-      <div>
-        <label><input type="checkbox" name="boardMethod" value="会場手渡し">会場手渡し</label>
-        <label><input type="checkbox" name="boardMethod" value="郵送">郵送</label>
-      </div>
+    <div>
+      <label><input type="checkbox" name="boardMethod" value="会場手渡し">会場手渡し</label>
+      <label><input type="checkbox" name="boardMethod" value="郵送">郵送</label>
     </div>
 
     <button onclick="showBoard()">検索</button>
@@ -298,9 +304,9 @@
 
   <hr>
 
+  <!-- 投稿一覧 -->
   <div id="boardList"></div>
 </div>
-
 <!-- JS読み込み -->
 <script src="data/cards.js"></script>
 <script src="js/board.js"></script>
