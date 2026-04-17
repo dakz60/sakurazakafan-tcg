@@ -1,15 +1,21 @@
-// ==================== 安全ユーティリティ ====================
+// ==================== ユーティリティ ====================
 function el(id){
   return document.getElementById(id);
 }
 
+// cards安全参照
+function getCards(){
+  return window.cards || [];
+}
+
 // ==================== タブ切り替え ====================
-function openTab(tabId){
+function openTab(tabId, btn){
+
   document.querySelectorAll('button.tab')
     .forEach(b => b.classList.remove('active'));
 
-  if(event?.currentTarget){
-    event.currentTarget.classList.add('active');
+  if(btn){
+    btn.classList.add('active');
   }
 
   document.querySelectorAll('.tab-content')
@@ -18,20 +24,22 @@ function openTab(tabId){
   const target = el(tabId);
   if(target) target.classList.add('active');
 
+  // タブごとの再描画
   if(tabId === 'collection') showCollection();
   if(tabId === 'allcards') showAllCards();
-  if(tabId === 'board') showBoard?.();
+  if(tabId === 'board' && typeof showBoard === "function") showBoard();
 }
 
 // ==================== 初期化 ====================
 window.addEventListener("load", () => {
+
   updateReleaseCountdown();
   showDailyCard();
-  setupSearchSuggestions?.();
   showCollection();
-  showAllCards?.();
+  showAllCards();
 
-  const params = new URLSearchParams(window.location.search);
+  // URLデッキ復元
+  const params = new URLSearchParams(location.search);
   const deckParam = params.get("deck");
 
   if(deckParam){
@@ -40,14 +48,15 @@ window.addEventListener("load", () => {
     loadDeckFromCode();
   }
 
-  // Sortable（存在する場合のみ）
+  // ドラッグ並び替え
   const deckImages = el("deckImages");
   if(deckImages && typeof Sortable !== "undefined"){
     Sortable.create(deckImages,{
       animation:150,
-      onEnd:function(evt){
+      onEnd(evt){
         const moved = deck.splice(evt.oldIndex,1)[0];
         deck.splice(evt.newIndex,0,moved);
+        updateDeckStatus();
       }
     });
   }
@@ -58,7 +67,9 @@ function showAllCards(){
   const container = el("cardListAll");
   if(!container) return;
 
-  if(!window.cards || cards.length===0){
+  const cards = getCards();
+
+  if(cards.length === 0){
     container.textContent = "カードデータがありません";
     return;
   }
@@ -75,35 +86,26 @@ function showAllCards(){
 // ==================== コレクション ====================
 function showCollection(){
   const container = el("collectionList");
-  if(!container || !window.cards) return;
+  if(!container) return;
 
-  const ownership = el("ownershipFilter")?.value || "all";
+  const cards = getCards();
+  const mode = el("ownershipFilter")?.value || "all";
 
   container.innerHTML = cards
     .filter(card => {
-      const count = parseInt(localStorage.getItem("cardCount_" + card.id) || 0);
-      if(ownership === "owned") return count > 0;
-      if(ownership === "unowned") return count === 0;
+      const count = Number(localStorage.getItem("cardCount_" + card.id) || 0);
+
+      if(mode === "owned") return count > 0;
+      if(mode === "unowned") return count === 0;
       return true;
     })
     .map(card => {
-      const count = parseInt(localStorage.getItem("cardCount_" + card.id) || 0);
+      const count = Number(localStorage.getItem("cardCount_" + card.id) || 0);
 
       return `
-      <div class="cardAll" style="
-        display:flex;
-        flex-direction:column;
-        align-items:center;
-        margin:4px;
-        background:#F3F3F3;
-        padding:12px;
-        border-radius:10px;
-        width:120px;
-      ">
-        <img src="${card.img}" loading="lazy" style="width:110px;height:152px;">
-        <div style="text-align:center;font-weight:bold;">
-          ${card.name}
-        </div>
+      <div class="cardAll" style="display:flex;flex-direction:column;align-items:center;margin:4px;padding:12px;width:120px;">
+        <img src="${card.img}" style="width:110px;height:152px;">
+        <div style="text-align:center;font-weight:bold;">${card.name}</div>
         <input type="number" min="0" value="${count}"
           style="width:40px;text-align:center;"
           onchange="updateCardCount('${card.id}', this.value)">
@@ -112,7 +114,7 @@ function showCollection(){
     }).join('');
 }
 
-// ==================== カード枚数更新 ====================
+// ==================== カード枚数 ====================
 function updateCardCount(cardId, value){
   const num = Math.max(0, parseInt(value) || 0);
   localStorage.setItem("cardCount_" + cardId, num);
@@ -122,32 +124,34 @@ function updateCardCount(cardId, value){
 let deck = [];
 let territoryCardId = null;
 
-// ==================== カウントダウン ====================
+// ==================== 発売カウントダウン ====================
 function updateReleaseCountdown(){
-  const releaseDate = new Date(2026, 2, 20);
-  const today = new Date();
+  const release = new Date(2026, 2, 20);
+  const now = new Date();
 
-  releaseDate.setHours(0,0,0,0);
-  today.setHours(0,0,0,0);
+  release.setHours(0,0,0,0);
+  now.setHours(0,0,0,0);
 
-  const diff = Math.floor((today - releaseDate)/(1000*60*60*24));
+  const diff = Math.floor((now - release) / (1000*60*60*24));
 
-  let text = diff < 0
-    ? `発売まであと${Math.abs(diff)}日`
-    : diff === 0
-      ? "本日発売！"
-      : `発売から${diff}日!!`;
+  const text =
+    diff < 0 ? `発売まであと${Math.abs(diff)}日`
+    : diff === 0 ? "本日発売！"
+    : `発売から${diff}日`;
 
-  el("releaseCountdown") && (el("releaseCountdown").textContent = text);
+  const elc = el("releaseCountdown");
+  if(elc) elc.textContent = text;
 }
 
 // ==================== デイリーカード ====================
 function showDailyCard(){
-  if(!cards || !el("dailyCard")) return;
+  const container = el("dailyCard");
+  const cards = getCards();
+  if(!container || cards.length === 0) return;
 
-  const c = cards[Math.floor(Math.random()*cards.length)];
+  const c = cards[Math.floor(Math.random() * cards.length)];
 
-  el("dailyCard").innerHTML = `
+  container.innerHTML = `
     <img src="${c.img}" style="width:240px;display:block;margin:auto;">
     <div style="text-align:center;margin-top:10px;">${c.name}</div>
   `;
@@ -159,22 +163,20 @@ function rerollDailyCard(){
 
 // ==================== 検索 ====================
 function search(){
-  if(!cards) return;
-
-  let filtered = cards;
+  const cards = getCards();
 
   const name = el("searchBox")?.value || "";
   const effect = el("effectSearchBox")?.value || "";
-  const cardId = el("cardIdSearchBox")?.value || "";
-
-  filtered = filtered.filter(c =>
-    (!name || c.name.includes(name)) &&
-    (!effect || (c.effect && c.effect.includes(effect))) &&
-    (!cardId || c.id.includes(cardId))
-  );
+  const id = el("cardIdSearchBox")?.value || "";
 
   const result = el("result");
   if(!result) return;
+
+  const filtered = cards.filter(c =>
+    (!name || c.name.includes(name)) &&
+    (!effect || (c.effect || "").includes(effect)) &&
+    (!id || c.id.includes(id))
+  );
 
   if(filtered.length === 0){
     result.textContent = "見つかりませんでした";
@@ -183,9 +185,9 @@ function search(){
 
   result.innerHTML = filtered.map(card => `
     <div style="display:flex;align-items:center;">
-      <img src="${card.img}" style="width:85px;margin-right:5px;">
+      <img src="${card.img}" style="width:80px;margin-right:8px;">
       <div>
-        ${card.name} | コスト:${card.cost ?? "-"} | ID:${card.id}
+        ${card.name} | ID:${card.id}
         <br>
         <button onclick="addToDeck('${card.id}')">＋</button>
         <button onclick="removeFromDeck('${card.id}')">－</button>
@@ -196,13 +198,13 @@ function search(){
 
 // ==================== デッキ操作 ====================
 function addToDeck(id){
-  const card = cards.find(c=>c.id===id);
+  const cards = getCards();
+  const card = cards.find(c => c.id === id);
   if(!card) return;
 
-  if(card.type === 'territory'){
+  if(card.type === "territory"){
     territoryCardId = id;
-    updateDeckImages();
-    updateDeckStatus();
+    updateDeck();
     return;
   }
 
@@ -212,64 +214,75 @@ function addToDeck(id){
   }
 
   deck.push(id);
-  updateDeckImages();
-  updateDeckStatus();
+  updateDeck();
 }
 
 function removeFromDeck(id){
-  const i = deck.indexOf(id);
-  if(i !== -1) deck.splice(i,1);
+  deck = deck.filter(x => x !== id);
 
-  if(territoryCardId === id) territoryCardId = null;
+  if(territoryCardId === id){
+    territoryCardId = null;
+  }
 
-  updateDeckImages();
-  updateDeckStatus();
+  updateDeck();
 }
 
-// ==================== デッキ表示 ====================
-function updateDeckImages(){
+// ==================== デッキ描画 ====================
+function updateDeck(){
+  const cards = getCards();
+
   const deckDiv = el("deckImages");
-  if(!deckDiv) return;
+  if(deckDiv){
+    deckDiv.innerHTML = "";
 
-  deckDiv.innerHTML = "";
+    deck.slice(0,50).forEach(id => {
+      const c = cards.find(x => x.id === id);
+      if(!c) return;
 
-  deck.slice(0,50).forEach(id=>{
-    const c = cards.find(x=>x.id===id);
-    if(!c) return;
-
-    const img = document.createElement("img");
-    img.src = c.img;
-    img.onclick = () => removeFromDeck(id);
-    deckDiv.appendChild(img);
-  });
+      const img = document.createElement("img");
+      img.src = c.img;
+      img.onclick = () => removeFromDeck(id);
+      deckDiv.appendChild(img);
+    });
+  }
 
   const terr = el("territoryImage");
   if(terr){
     terr.innerHTML = "";
-    const c = cards.find(x=>x.id===territoryCardId);
+
+    const c = cards.find(x => x.id === territoryCardId);
     if(c){
       const img = document.createElement("img");
       img.src = c.img;
-      img.onclick = () => { territoryCardId=null; updateDeckImages(); };
+      img.onclick = () => {
+        territoryCardId = null;
+        updateDeck();
+      };
       terr.appendChild(img);
     }
   }
+
+  updateDeckStatus();
 }
 
+// ==================== デッキ状態 ====================
 function updateDeckStatus(){
-  el("deckStatus") && (el("deckStatus").textContent =
-    `デッキ:${deck.length}枚 / テリトリー:${territoryCardId ? "あり" : "なし"}`
-  );
+  const elc = el("deckStatus");
+  if(!elc) return;
+
+  elc.textContent =
+    `デッキ:${deck.length}枚 / テリトリー:${territoryCardId ? "あり" : "なし"}`;
 }
 
 // ==================== デッキコード ====================
 function generateDeckCode(){
-  if(deck.length===0) return alert("空です");
+  if(deck.length === 0) return alert("空です");
 
-  el("deckCodeBox").value =
-    (territoryCardId || "0") + "|" + deck.join(",");
+  const code = (territoryCardId || "0") + "|" + deck.join(",");
+  el("deckCodeBox").value = code;
 
-  el("deckCodeResult").textContent = "生成完了";
+  const out = el("deckCodeResult");
+  if(out) out.textContent = "生成完了";
 }
 
 function loadDeckFromCode(){
@@ -279,14 +292,11 @@ function loadDeckFromCode(){
   const [t, d] = code.split("|");
 
   territoryCardId = (t !== "0") ? t : null;
+
+  const cards = getCards();
   deck = (d ? d.split(",") : []).filter(id =>
     cards.some(c => c.id === id)
   );
 
-  updateDeckImages();
-  updateDeckStatus();
+  updateDeck();
 }
-
-// ==================== 互換ダミー ====================
-function showBoard(){}
-function showAllCards(){}
