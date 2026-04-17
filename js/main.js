@@ -358,13 +358,36 @@ function toggleBackground(){
   else{ deck.classList.replace("mat-mode","white-mode"); }
 }
 
+// ==================== トレード用 ====================
+
+function convertIdsToNames(idText){
+  if(!idText) return "";
+
+  return idText.split(",").map(id=>{
+    const card = cards.find(c => c.id === id.trim());
+    return card ? card.name : id;
+  }).join("、");
+}
+
+function convertIdsToNames(idText){
+  if(!idText) return "";
+
+  return idText.split(",").map(id=>{
+    const card = cards.find(c => c.id === id.trim());
+    return card ? card.name : id;
+  }).join("、");
+}
+
 function postTrade(){
   const rarity = document.getElementById("tradeRarity").value;
-  const give = document.getElementById("tradeGive").value;
-  const want = document.getElementById("tradeWant").value;
+  const giveRaw = document.getElementById("tradeGive").value;
+  const wantRaw = document.getElementById("tradeWant").value;
   const method = document.getElementById("tradeMethod").value;
   const place = document.getElementById("tradePlace").value;
   const oshi = document.getElementById("tradeOshi").value;
+
+  const give = convertIdsToNames(giveRaw);
+  const want = convertIdsToNames(wantRaw);
 
   const text = encodeURIComponent(
 `【櫻坂TCGトレード】
