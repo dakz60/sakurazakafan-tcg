@@ -267,85 +267,59 @@
 </div>
 
 <!-- 掲示板 -->
-
 <div id="board" class="tab-content">
   <h2>掲示板</h2>
 
-  <button onclick="addBoardPost()">投稿を追加</button>
-
-  <hr>
-
-  <div id="boardList"></div>
-</div>
   <!-- 検索フィルタ -->
   <div class="search-section">
 
-  <label>譲検索：</label>
-<input type="text" id="boardGiveSearch" placeholder="譲で検索">
+    <label>譲検索：</label>
+    <input type="text" id="boardGiveSearch" placeholder="譲で検索">
 
-<label>求検索：</label>
-<input type="text" id="boardWantSearch" placeholder="求で検索">
+    <label>求検索：</label>
+    <input type="text" id="boardWantSearch" placeholder="求で検索">
 
-<label>場所：</label>
-<div class="board-check-group">
-<div>
-  <label><input type="checkbox" name="boardPlace" value="京都リアミ">京都リアミ</label>
-  <label><input type="checkbox" name="boardPlace" value="幕張リアミ">幕張リアミ</label>
-  <label><input type="checkbox" name="boardPlace" value="バクラ">バクラ</label>
-  <label><input type="checkbox" name="boardPlace" value="ツアー静岡">ツアー静岡</label>
-  <label><input type="checkbox" name="boardPlace" value="ツアー兵庫">ツアー兵庫</label>
-  <label><input type="checkbox" name="boardPlace" value="ツアー広島">ツアー広島</label>
-  <label><input type="checkbox" name="boardPlace" value="ツアー千葉">ツアー千葉</label>
-  <label><input type="checkbox" name="boardPlace" value="ツアー宮城">ツアー宮城</label>
-  <label><input type="checkbox" name="boardPlace" value="ツアー香川">ツアー香川</label>
+    <label>場所：</label>
+    <div class="board-check-group">
+      <div>
+        <label><input type="checkbox" name="boardPlace" value="京都リアミ">京都リアミ</label>
+        <label><input type="checkbox" name="boardPlace" value="幕張リアミ">幕張リアミ</label>
+        <label><input type="checkbox" name="boardPlace" value="バクラ">バクラ</label>
+        <label><input type="checkbox" name="boardPlace" value="ツアー静岡">ツアー静岡</label>
+        <label><input type="checkbox" name="boardPlace" value="ツアー兵庫">ツアー兵庫</label>
+        <label><input type="checkbox" name="boardPlace" value="ツアー広島">ツアー広島</label>
+        <label><input type="checkbox" name="boardPlace" value="ツアー千葉">ツアー千葉</label>
+        <label><input type="checkbox" name="boardPlace" value="ツアー宮城">ツアー宮城</label>
+        <label><input type="checkbox" name="boardPlace" value="ツアー香川">ツアー香川</label>
+      </div>
+    </div>
+
+    <label>方法：</label>
+    <div class="board-check-group">
+      <div>
+        <label><input type="checkbox" name="boardMethod" value="会場手渡し">会場手渡し</label>
+        <label><input type="checkbox" name="boardMethod" value="都内手渡し">都内手渡し</label>
+        <label><input type="checkbox" name="boardMethod" value="郵送">郵送</label>
+      </div>
+    </div>
+
+    <label>メンバー：</label>
+    <div class="board-check-group">
+      <div>
+        <!-- ここ全部そのままでOK -->
+      </div>
+    </div>
+
+    <button onclick="showBoard()">検索</button>
+
+  </div>
+
+  <hr>
+
+  <!-- 投稿一覧 -->
+  <div id="boardList"></div>
 </div>
-
-<label>方法：</label>
-<div class="board-check-group">
-<div>
-  <label><input type="checkbox" name="boardMethod" value="会場手渡し">会場手渡し</label>
-  <label><input type="checkbox" name="boardMethod" value="都内手渡し">都内手渡し</label>
-  <label><input type="checkbox" name="boardMethod" value="郵送">郵送</label>
-</div>
-
-<label>メンバー：</label>
-<div class="board-check-group">
-<div>
-    <label><input type="checkbox" name="boardOshi" value="井上梨名">井上梨名</label>
-    <label><input type="checkbox" name="boardOshi" value="遠藤光莉">遠藤光莉</label>
-    <label><input type="checkbox" name="boardOshi" value="大園玲">大園玲</label>
-    <label><input type="checkbox" name="boardOshi" value="大沼晶保">大沼晶保</label>
-    <label><input type="checkbox" name="boardOshi" value="幸阪茉里乃">幸阪茉里乃</label>
-    <label><input type="checkbox" name="boardOshi" value="武元唯衣">武元唯衣</label>
-    <label><input type="checkbox" name="boardOshi" value="田村保乃">田村保乃</label>
-    <label><input type="checkbox" name="boardOshi" value="藤吉夏鈴">藤吉夏鈴</label>
-    <label><input type="checkbox" name="boardOshi" value="増本綺良">増本綺良</label>
-    <label><input type="checkbox" name="boardOshi" value="松田里奈">松田里奈</label>
-    <label><input type="checkbox" name="boardOshi" value="森田ひかる">森田ひかる</label>
-    <label><input type="checkbox" name="boardOshi" value="守屋麗奈">守屋麗奈</label>
-    <label><input type="checkbox" name="boardOshi" value="山崎天">山﨑天</label>
-    <label><input type="checkbox" name="boardOshi" value="石森璃花">石森璃花</label>
-    <label><input type="checkbox" name="boardOshi" value="遠藤理子">遠藤理子</label>
-    <label><input type="checkbox" name="boardOshi" value="小田倉麗奈">小田倉麗奈</label>
-    <label><input type="checkbox" name="boardOshi" value="小島凪沙">小島凪沙</label>
-    <label><input type="checkbox" name="boardOshi" value="谷口愛季">谷口愛季</label>
-    <label><input type="checkbox" name="boardOshi" value="中嶋優月">中嶋優月</label>
-    <label><input type="checkbox" name="boardOshi" value="的野美青">的野美青</label>
-    <label><input type="checkbox" name="boardOshi" value="向井純葉">向井純葉</label>
-    <label><input type="checkbox" name="boardOshi" value="村井優">村井優</label>
-    <label><input type="checkbox" name="boardOshi" value="村山美羽">村山美羽</label>
-    <label><input type="checkbox" name="boardOshi" value="山下瞳月">山下瞳月</label>
-    <label><input type="checkbox" name="boardOshi" value="浅井恋乃未">浅井恋乃未</label>
-    <label><input type="checkbox" name="boardOshi" value="稲熊ひな">稲熊ひな</label>
-    <label><input type="checkbox" name="boardOshi" value="勝又春">勝又春</label>
-    <label><input type="checkbox" name="boardOshi" value="佐藤愛桜">佐藤愛桜</label>
-    <label><input type="checkbox" name="boardOshi" value="中川智尋">中川智尋</label>
-    <label><input type="checkbox" name="boardOshi" value="松本和子">松本和子</label>
-    <label><input type="checkbox" name="boardOshi" value="目黒陽色">目黒陽色</label>
-    <label><input type="checkbox" name="boardOshi" value="山川宇井">山川宇井</label>
-    <label><input type="checkbox" name="boardOshi" value="山田桃実">山田桃実</label>
-</div>
-  
+s
     <button onclick="showBoard()">検索</button>
   </div>
 
