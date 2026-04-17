@@ -376,7 +376,6 @@ function postTrade(){
   const give = convertIdsToNames(giveRaw);
   const want = convertIdsToNames(wantRaw);
 
-  // ★ここが重要
   const method = getCheckedValues("tradeMethod");
   const place = getCheckedValues("tradePlace");
   const oshi = getCheckedValues("tradeOshi");
@@ -390,6 +389,7 @@ function postTrade(){
 推し：${oshi}
 
 #櫻坂TCGトレード`
+#櫻坂TCG掲示板`
   );
 
   const url = `https://twitter.com/intent/tweet?text=${text}`;
