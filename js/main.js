@@ -358,6 +358,30 @@ function toggleBackground(){
   else{ deck.classList.replace("mat-mode","white-mode"); }
 }
 
+function postTrade(){
+  const rarity = document.getElementById("tradeRarity").value;
+  const give = document.getElementById("tradeGive").value;
+  const want = document.getElementById("tradeWant").value;
+  const method = document.getElementById("tradeMethod").value;
+  const place = document.getElementById("tradePlace").value;
+  const oshi = document.getElementById("tradeOshi").value;
+
+  const text = encodeURIComponent(
+`【櫻坂TCGトレード】
+レア：${rarity}
+譲：${give}
+求：${want}
+方法：${method}
+場所：${place}
+推し：${oshi}
+
+#櫻坂TCGトレード`
+  );
+
+  const url = `https://twitter.com/intent/tweet?text=${text}`;
+  window.open(url, "_blank");
+}
+
 function showCollectionCards(){
 
  const owned = JSON.parse(localStorage.getItem("ownedCards") || "[]");
