@@ -1,8 +1,33 @@
+// ==================== チェック取得 ====================
 function getCheckedList(name){
   return [...document.querySelectorAll(`input[name="${name}"]:checked`)]
     .map(el => el.value);
 }
 
+// ==================== 投稿追加（コピペ保存） ====================
+function addBoardPost(){
+  const text = document.getElementById("boardInput")?.value.trim();
+
+  if(!text){
+    alert("投稿を入力してください");
+    return;
+  }
+
+  let list = JSON.parse(localStorage.getItem("boardPosts") || "[]");
+
+  list.unshift({
+    text: text,
+    time: Date.now()
+  });
+
+  localStorage.setItem("boardPosts", JSON.stringify(list));
+
+  document.getElementById("boardInput").value = "";
+
+  showBoard();
+}
+
+// ==================== 掲示板表示 ====================
 function showBoard(){
 
   const giveSearch = document.getElementById("boardGiveSearch")?.value || "";
@@ -17,7 +42,7 @@ function showBoard(){
 
   let list = JSON.parse(localStorage.getItem("boardPosts") || "[]");
 
-  // テキスト検索
+  // 譲・求（テキスト検索）
   if(giveSearch){
     list = list.filter(p => p.text.includes(giveSearch));
   }
@@ -26,26 +51,28 @@ function showBoard(){
     list = list.filter(p => p.text.includes(wantSearch));
   }
 
-  // チェック系（全部 or 部分一致）
+  // 場所フィルタ
   if(places.length > 0){
     list = list.filter(p =>
       places.some(v => p.text.includes(v))
     );
   }
 
+  // 方法フィルタ
   if(methods.length > 0){
     list = list.filter(p =>
       methods.some(v => p.text.includes(v))
     );
   }
 
+  // メンバーフィルタ
   if(oshis.length > 0){
     list = list.filter(p =>
       oshis.some(v => p.text.includes(v))
     );
   }
 
-  // 出力
+  // 表示
   if(list.length === 0){
     container.innerHTML = "投稿がありません";
     return;
@@ -58,8 +85,14 @@ function showBoard(){
       margin:10px;
       border-radius:10px;
       white-space:pre-wrap;
+      background:#fff;
     ">
       ${p.text}
     </div>
   `).join('');
 }
+
+// ==================== 初期表示 ====================
+window.addEventListener("load", () => {
+  showBoard();
+});
