@@ -57,8 +57,8 @@ function showCollection(){
       const count = parseInt(localStorage.getItem("cardCount_" + card.id) || 0);
 
       // 背景・文字色の決定
-      let bgStyle = '#F6A5B8';   // デフォルト背景
-      let nameColor = '#000'; // デフォルト文字
+      let bgStyle = '#F3F3F3';   // デフォルト背景
+      let nameColor = '#F6A5B8'; // デフォルト文字
       return `
 <div class="cardAll" style="
   display:flex; 
