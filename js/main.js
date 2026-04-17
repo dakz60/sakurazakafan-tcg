@@ -372,15 +372,14 @@ function splitTextList(text){
 function postTrade(){
   const giveRaw = document.getElementById("tradeGive").value;
   const wantRaw = document.getElementById("tradeWant").value;
-  const methodRaw = document.getElementById("tradeMethod").value;
-  const placeRaw = document.getElementById("tradePlace").value;
-  const oshiRaw = document.getElementById("tradeOshi").value;
 
   const give = convertIdsToNames(giveRaw);
   const want = convertIdsToNames(wantRaw);
-  const method = splitTextList(methodRaw);
-  const place = splitTextList(placeRaw);
-  const oshi = splitTextList(oshiRaw);
+
+  // ★ここが重要
+  const method = getCheckedValues("tradeMethod");
+  const place = getCheckedValues("tradePlace");
+  const oshi = getCheckedValues("tradeOshi");
 
   const text = encodeURIComponent(
 `【櫻坂TCGトレード】
@@ -396,6 +395,7 @@ function postTrade(){
   const url = `https://twitter.com/intent/tweet?text=${text}`;
   window.open(url, "_blank");
 }
+
 function showCollectionCards(){
 
  const owned = JSON.parse(localStorage.getItem("ownedCards") || "[]");
