@@ -389,8 +389,7 @@ function postTrade(){
 場所：${place}
 推し：${oshi}
 
-#櫻坂TCGトレード`
-#櫻坂TCG掲示板`
+#櫻坂TCGトレード #櫻坂TCG掲示板`
   );
 
   const url = `https://twitter.com/intent/tweet?text=${text}`;
