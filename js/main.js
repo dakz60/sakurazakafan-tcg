@@ -360,24 +360,17 @@ function toggleBackground(){
 
 // ==================== トレード用 ====================
 
+// ① 1個だけにする + レアリティ付きに進化
 function convertIdsToNames(idText){
   if(!idText) return "";
 
-  return idText.split(",").map(id=>{
-    const card = cards.find(c => c.id === id.trim());
-    return card ? card.name : id;
+  return idText.replace(/\s/g, "").split(",").map(id=>{
+    const card = cards.find(c => c.id === id);
+    return card ? `${card.name}(${card.rarity})` : `不明ID:${id}`;
   }).join("、");
 }
 
-function convertIdsToNames(idText){
-  if(!idText) return "";
-
-  return idText.split(",").map(id=>{
-    const card = cards.find(c => c.id === id.trim());
-    return card ? card.name : id;
-  }).join("、");
-}
-
+// ② そのまま使う
 function postTrade(){
   const rarity = document.getElementById("tradeRarity").value;
   const giveRaw = document.getElementById("tradeGive").value;
