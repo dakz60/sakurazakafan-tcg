@@ -271,7 +271,13 @@
   <!-- 検索フィルタ -->
   <div class="search-section">
 
-    <input type="text" id="boardSearch" placeholder="譲・求キーワード">
+  <label>譲検索：</label>
+<input type="text" id="boardGiveSearch" placeholder="譲で検索">
+
+<label>求検索：</label>
+<input type="text" id="boardWantSearch" placeholder="求で検索">
+
+<button onclick="showBoard()">検索</button>
 
     <select id="boardPlace">
       <option value="">地域/会場すべて</option>
