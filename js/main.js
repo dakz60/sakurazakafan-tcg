@@ -339,6 +339,11 @@ function toggleBackground(){
 }
 
 // ==================== トレード用 ====================
+function getCheckedValues(name){
+  return [...document.querySelectorAll(`input[name="${name}"]:checked`)]
+    .map(el => el.value)
+    .join("、");
+}
 function convertIdsToNames(idText){
   if(!idText) return "";
 
