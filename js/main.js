@@ -59,27 +59,6 @@ function showCollection(){
       // 背景・文字色の決定
       let bgStyle = '#eee';   // デフォルト背景
       let nameColor = '#000'; // デフォルト文字
-
-      if(typeof memberColors !== "undefined"){
-        // メンバーカラーが直接ある場合
-        if(memberColors[card.name]){
-          const colors = memberColors[card.name];
-          bgStyle = colors[0];
-          nameColor = (colors[0] === colors[1]) ? '#fff' : colors[1];
-        } else {
-          // 名前にメンバー名が含まれている場合を検索（2人カード対応）
-          for(const member in memberColors){
-            if(card.name.includes(member)){
-              const colors = memberColors[member];
-              bgStyle = colors[0];
-              nameColor = (colors[0] === colors[1]) ? '#fff' : colors[1];
-              break;
-            }
-          }
-        }
-      }
-
-      return `
 <div class="cardAll" style="
   display:flex; 
   flex-direction:column; 
