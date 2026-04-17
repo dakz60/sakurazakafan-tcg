@@ -264,6 +264,46 @@
   <button onclick="postTrade()">投稿</button>
 </div>
 
+<!-- 掲示板 -->
+<div id="board" class="tab-content">
+  <h2>掲示板</h2>
+
+  <!-- 検索フィルタ -->
+  <div class="search-section">
+
+    <input type="text" id="boardSearch" placeholder="譲・求キーワード">
+
+    <select id="boardPlace">
+      <option value="">地域/会場すべて</option>
+      <option value="京都リアミ">京都リアミ</option>
+      <option value="幕張リアミ">幕張リアミ</option>
+      <option value="バクラ">バクラ</option>
+      <option value="ツアー">ツアー</option>
+    </select>
+
+    <select id="boardOshi">
+      <option value="">メンバーすべて</option>
+      <option value="森田ひかる">森田ひかる</option>
+      <option value="山﨑天">山﨑天</option>
+      <option value="藤吉夏鈴">藤吉夏鈴</option>
+    </select>
+
+    <select id="boardMethod">
+      <option value="">方法すべて</option>
+      <option value="会場手渡し">会場手渡し</option>
+      <option value="都内手渡し">都内手渡し</option>
+      <option value="郵送">郵送</option>
+    </select>
+
+    <button onclick="showBoard()">検索</button>
+  </div>
+
+  <hr>
+
+  <!-- 投稿一覧 -->
+  <div id="boardList"></div>
+</div>
+
 <!-- JS読み込み -->
 <script src="data/cards.js"></script>
 <script src="data/board.js"></script>
