@@ -61,7 +61,6 @@ function showCollection(){
       let nameColor = '#000'; // デフォルト文字
       return `
 <div class="cardAll" style="
-<div class="cardAll" style="
   display:flex; 
   flex-direction:column; 
   align-items:center; 
