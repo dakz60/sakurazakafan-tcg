@@ -384,7 +384,6 @@ function postTrade(){
 
   const text = encodeURIComponent(
 `【櫻坂TCGトレード】
-レア：${rarity}
 譲：${give}
 求：${want}
 方法：${method}
