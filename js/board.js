@@ -4,12 +4,13 @@ function getCheckedList(name){
     .map(el => el.value);
 }
 
-// ==================== 投稿追加（コピペ保存） ====================
+// ==================== 投稿追加 ====================
 function addBoardPost(){
-  const text = document.getElementById("boardInput")?.value.trim();
+  const input = document.getElementById("boardInput");
+  const text = input.value.trim();
 
   if(!text){
-    alert("投稿を入力してください");
+    alert("コピペを貼ってください");
     return;
   }
 
@@ -22,12 +23,11 @@ function addBoardPost(){
 
   localStorage.setItem("boardPosts", JSON.stringify(list));
 
-  document.getElementById("boardInput").value = "";
-
+  input.value = "";
   showBoard();
 }
 
-// ==================== 掲示板表示 ====================
+// ==================== 表示＋フィルタ ====================
 function showBoard(){
 
   const giveSearch = document.getElementById("boardGiveSearch")?.value || "";
@@ -35,41 +35,22 @@ function showBoard(){
 
   const places = getCheckedList("boardPlace");
   const methods = getCheckedList("boardMethod");
-  const oshis = getCheckedList("boardOshi");
 
   const container = document.getElementById("boardList");
   if(!container) return;
 
   let list = JSON.parse(localStorage.getItem("boardPosts") || "[]");
 
-  // 譲・求（テキスト検索）
-  if(giveSearch){
-    list = list.filter(p => p.text.includes(giveSearch));
+  // フィルタ
+  if(giveSearch) list = list.filter(p => p.text.includes(giveSearch));
+  if(wantSearch) list = list.filter(p => p.text.includes(wantSearch));
+
+  if(places.length) {
+    list = list.filter(p => places.some(v => p.text.includes(v)));
   }
 
-  if(wantSearch){
-    list = list.filter(p => p.text.includes(wantSearch));
-  }
-
-  // 場所フィルタ
-  if(places.length > 0){
-    list = list.filter(p =>
-      places.some(v => p.text.includes(v))
-    );
-  }
-
-  // 方法フィルタ
-  if(methods.length > 0){
-    list = list.filter(p =>
-      methods.some(v => p.text.includes(v))
-    );
-  }
-
-  // メンバーフィルタ
-  if(oshis.length > 0){
-    list = list.filter(p =>
-      oshis.some(v => p.text.includes(v))
-    );
+  if(methods.length) {
+    list = list.filter(p => methods.some(v => p.text.includes(v)));
   }
 
   // 表示
@@ -93,6 +74,4 @@ function showBoard(){
 }
 
 // ==================== 初期表示 ====================
-window.addEventListener("load", () => {
-  showBoard();
-});
+window.addEventListener("load", showBoard);
