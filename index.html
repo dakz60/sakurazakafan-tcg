@@ -199,7 +199,8 @@
   </label>
 <br>
   
-  <label>方法：</label>
+<label>方法：</label>
+<div class="board-check-group">
   <div>
     <label><input type="checkbox" name="tradeMethod" value="会場手渡し">会場手渡し</label>
     <label><input type="checkbox" name="tradeMethod" value="都内手渡し">都内手渡し</label>
@@ -207,7 +208,8 @@
   </div>
 <br>
   
-  <label>場所：</label>
+<label>場所：</label>
+<div class="board-check-group">
   <div>
     <label><input type="checkbox" name="tradePlace" value="京都リアミ">京都リアミ</label>
     <label><input type="checkbox" name="tradePlace" value="幕張リアミ">幕張リアミ</label>
@@ -220,9 +222,9 @@
     <label><input type="checkbox" name="tradePlace" value="ツアー香川">ツアー香川</label>
   </div>
 <br>
-  
-  <!-- 推しメン（複数選択） -->
-  <label>推しメン：</label>
+
+<label>メンバー：</label>
+<div class="board-check-group">
   <div>
     <label><input type="checkbox" name="tradeOshi" value="井上梨名">井上梨名</label>
     <label><input type="checkbox" name="tradeOshi" value="遠藤光莉">遠藤光莉</label>
@@ -280,6 +282,7 @@
 <button onclick="showBoard()">検索</button>
 
 <label>場所：</label>
+<div class="board-check-group">
 <div>
   <label><input type="checkbox" name="boardPlace" value="京都リアミ">京都リアミ</label>
   <label><input type="checkbox" name="boardPlace" value="幕張リアミ">幕張リアミ</label>
@@ -292,7 +295,16 @@
   <label><input type="checkbox" name="boardPlace" value="ツアー香川">ツアー香川</label>
 </div>
 
+<label>方法：</label>
+<div class="board-check-group">
+<div>
+  <label><input type="checkbox" name="boardMethod" value="会場手渡し">会場手渡し</label>
+  <label><input type="checkbox" name="boardMethod" value="都内手渡し">都内手渡し</label>
+  <label><input type="checkbox" name="boardMethod" value="郵送">郵送</label>
+</div>
+
 <label>メンバー：</label>
+<div class="board-check-group">
 <div>
     <label><input type="checkbox" name="boardOshi" value="井上梨名">井上梨名</label>
     <label><input type="checkbox" name="boardOshi" value="遠藤光莉">遠藤光莉</label>
@@ -328,14 +340,7 @@
     <label><input type="checkbox" name="boardOshi" value="山川宇井">山川宇井</label>
     <label><input type="checkbox" name="boardOshi" value="山田桃実">山田桃実</label>
 </div>
-
-<label>方法：</label>
-<div>
-  <label><input type="checkbox" name="boardMethod" value="会場手渡し">会場手渡し</label>
-  <label><input type="checkbox" name="boardMethod" value="都内手渡し">都内手渡し</label>
-  <label><input type="checkbox" name="boardMethod" value="郵送">郵送</label>
-</div>
-
+  
     <button onclick="showBoard()">検索</button>
   </div>
 
