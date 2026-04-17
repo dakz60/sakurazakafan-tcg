@@ -7,6 +7,7 @@ function openTab(tabId){
 
   if(tabId === 'collection') showCollection();
   if(tabId === 'allcards') showAllCards();
+  if(tabId === 'board') showBoard();
 }
 // ==================== ページロード時の初期処理 ====================
 window.addEventListener("load", function(){
