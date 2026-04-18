@@ -9,51 +9,53 @@ function formatBoardEntryList(entries) {
   return entries.map((entry) => formatCardEntry(entry));
 }
 
+function entryContainsRarity(entryText, rarity) {
+  const { id } = parseCardEntry(entryText);
+  const card = findCardById(id);
+  return card ? card.rarity === rarity : false;
+}
+
+function boardEntryMatchesRarity(entries, rarity) {
+  if (!rarity) return true;
+  return entries.some((entry) => entryContainsRarity(entry, rarity));
+}
+
 function boardEntryMatches(entries, terms) {
   if (terms.length === 0) return true;
 
-  const normalizedEntries = formatBoardEntryList(entries).map((entry) => normalizeSearchText(entry));
-  return terms.some((term) => {
-    const normalizedTerm = normalizeSearchText(term);
-    return normalizedEntries.some((entry) => entry.includes(normalizedTerm));
-  });
-}
-
-function boardListMatchesSelection(values, selectedValues) {
-  if (selectedValues.length === 0) return true;
-  return selectedValues.some((value) => values.includes(value));
-}
-
-function renderBoardPost(post) {
-  const give = formatBoardEntryList(post.give || []).join("、") || "なし";
-  const want = formatBoardEntryList(post.want || []).join("、") || "なし";
   const method = (post.method || []).join("、") || "なし";
   const place = (post.place || []).join("、") || "なし";
   const oshi = (post.oshi || []).join("、") || "なし";
+  const twitterLink = post.twitterUrl
+    ? `<div><b>X：</b><a href="${post.twitterUrl}" target="_blank" rel="noopener noreferrer">投稿を見る</a></div>`
+    : "";
 
   return `
     <div class="board-post">
-      <div><b>譲：</b>${give}</div>
-      <div><b>求：</b>${want}</div>
       <div><b>方法：</b>${method}</div>
       <div><b>場所：</b>${place}</div>
       <div><b>推し：</b>${oshi}</div>
+      ${twitterLink}
     </div>
   `;
 }
-
-function showBoard() {
   const container = document.getElementById("boardList");
   if (!container) return;
 
   const giveTerms = getBoardSearchTerms("boardGiveSearch");
   const wantTerms = getBoardSearchTerms("boardWantSearch");
+  const giveTerms = getBoardSearchTerms("boardGiveSearch").slice(0, 2);
+  const wantTerms = getBoardSearchTerms("boardWantSearch").slice(0, 2);
+  const giveRarity = document.getElementById("boardGiveSearch3")?.value || "";
+  const wantRarity = document.getElementById("boardWantSearch3")?.value || "";
   const selectedPlaces = getCheckedValues("boardPlace");
   const selectedMethods = getCheckedValues("boardMethod");
 
   const filtered = (boardPosts || []).filter((post) => {
     if (!boardEntryMatches(post.give || [], giveTerms)) return false;
     if (!boardEntryMatches(post.want || [], wantTerms)) return false;
+    if (!boardEntryMatchesRarity(post.give || [], giveRarity)) return false;
+    if (!boardEntryMatchesRarity(post.want || [], wantRarity)) return false;
     if (!boardListMatchesSelection(post.place || [], selectedPlaces)) return false;
     if (!boardListMatchesSelection(post.method || [], selectedMethods)) return false;
     return true;
