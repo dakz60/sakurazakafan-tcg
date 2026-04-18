@@ -1,5 +1,4 @@
  const cards = [
- { id: "000",name: "未所持のカード"},
  { id: "001",name: "井上梨名", color: "青", cost: 2, power: 3000, hit: 1, suit: "♤♢", type: "unit", rarity: "N", generation: "2期", img: "images/1.jpg" },
  { id: "002",name: "遠藤光莉", color: "白", cost: 7, power: 8000, hit: 2, suit: "♡♧", type: "unit", rarity: "N", generation: "2期", img: "images/2.jpg" },
  { id: "003",name: "大園玲", color: "赤", cost: 3, power: 4000, hit: 1, suit: "♢♧", type: "unit", rarity: "N", generation: "2期", img: "images/3.jpg" },
