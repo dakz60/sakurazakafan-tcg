@@ -5,6 +5,6 @@ const boardPosts = [
   place: ["京都リアミ","ツアー兵庫","ツアー広島","ツアー香川"],
   method: ["会場手渡し", "都内手渡し"],
   oshi: ["谷口愛季", "山下瞳月"],
-  twitterUrl: "https://twitter.com/xxxxxxxx/status/1234567890"
+  twitterUrl: "https://x.com/dazhi2s_SSS/status/2045584302969409745?s=20"
 }
 ];
