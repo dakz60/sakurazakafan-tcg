@@ -164,6 +164,62 @@
   <button onclick="copyDeckCode()">コピー</button>
   <div id="deckCodeResult"></div>
 </div>
+  
+function getCheckedValues(name){
+  return [...document.querySelectorAll(`input[name="${name}"]:checked`)]
+    .map(el => el.value)
+    .join("、");
+}
+function convertIdsToNames(idText){
+  if(!idText) return "";
+
+  return idText.split(",").map(item=>{
+    item = item.trim();
+
+    let [id, count] = item.split("*");
+    id = id.trim();
+    count = count ? parseInt(count) : 1;
+
+    const card = cards.find(c => c.id === id);
+
+    if(!card) return `不明ID:${id}`;
+
+    return count > 1
+      ? `${card.name}(${card.rarity})×${count}`
+      : `${card.name}(${card.rarity})`;
+  }).join("、");
+}
+
+function splitTextList(text){
+  if(!text) return "";
+  return text.split(",").map(t => t.trim()).filter(t => t).join("、");
+}
+
+function postTrade(){
+  const giveRaw = document.getElementById("tradeGive").value;
+  const wantRaw = document.getElementById("tradeWant").value;
+
+  const give = convertIdsToNames(giveRaw);
+  const want = convertIdsToNames(wantRaw);
+
+  const method = getCheckedValues("tradeMethod");
+  const place = getCheckedValues("tradePlace");
+  const oshi = getCheckedValues("tradeOshi");
+
+  const text = encodeURIComponent(
+`【櫻坂TCGトレード】
+譲：${give}
+求：${want}
+方法：${method}
+場所：${place}
+推し：${oshi}
+
+#櫻坂TCGトレード #櫻坂TCG掲示板`
+  );
+
+  const url = `https://twitter.com/intent/tweet?text=${text}`;
+  window.open(url, "_blank");
+}
 
 <!-- 全カード一覧タブ -->
 <div id="allcards" class="tab-content">
