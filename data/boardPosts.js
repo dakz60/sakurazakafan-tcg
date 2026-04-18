@@ -10,8 +10,8 @@ const boardPosts = [
   {
     give: ["049", "050"],
     want: ["121*2"],
-    place: ["京都リアミ", "郵送"],
-    method: ["会場手渡し"],
+    place: ["京都リアミ",],
+    method: ["会場手渡し","郵送"],
     oshi: ["大園玲"]
   }
 ];
