@@ -264,10 +264,7 @@
     <label>譲検索2：
       <input type="text" id="boardGiveSearch2" placeholder="メンバー名">
     </label>
-<input type="text" id="boardGiveSearch2" placeholder="メンバー名">
-    </label>
     <label>譲検索3：
-      <input type="text" id="boardGiveSearch3" placeholder="レアリティ">
       <select id="boardGiveSearch3">
         <option value="">レアリティ</option>
         <option value="PR">PR</option>
@@ -281,12 +278,14 @@
         <option value="SR">SR</option>
       </select>
     </label>
+
     <label>求検索1：
       <input type="text" id="boardWantSearch1" placeholder="メンバー名">
+    </label>
+    <label>求検索2：
       <input type="text" id="boardWantSearch2" placeholder="メンバー名">
     </label>
     <label>求検索3：
-      <input type="text" id="boardWantSearch3" placeholder="レアリティ">
       <select id="boardWantSearch3">
         <option value="">レアリティ</option>
         <option value="PR">PR</option>
@@ -302,6 +301,26 @@
     </label>
   </div>
 
+  <label>場所：</label>
+  <div class="board-check-group">
+    <label><input type="checkbox" name="boardPlace" value="京都リアミ">京都リアミ</label>
+    <label><input type="checkbox" name="boardPlace" value="幕張リアミ">幕張リアミ</label>
+    <label><input type="checkbox" name="boardPlace" value="バクラ">バクラ</label>
+    <label><input type="checkbox" name="boardPlace" value="ツアー静岡">ツアー静岡</label>
+    <label><input type="checkbox" name="boardPlace" value="ツアー兵庫">ツアー兵庫</label>
+    <label><input type="checkbox" name="boardPlace" value="ツアー広島">ツアー広島</label>
+    <label><input type="checkbox" name="boardPlace" value="ツアー千葉">ツアー千葉</label>
+    <label><input type="checkbox" name="boardPlace" value="ツアー宮城">ツアー宮城</label>
+    <label><input type="checkbox" name="boardPlace" value="ツアー香川">ツアー香川</label>
+  </div>
+
+  <label>方法：</label>
+  <div class="board-check-group">
+    <label><input type="checkbox" name="boardMethod" value="会場手渡し">会場手渡し</label>
+    <label><input type="checkbox" name="boardMethod" value="都内手渡し">都内手渡し</label>
+    <label><input type="checkbox" name="boardMethod" value="郵送">郵送</label>
+  </div>
+
   <div class="trade-actions">
     <button onclick="showBoard()">検索</button>
     <button onclick="resetBoardFilters()">リセット</button>
@@ -309,6 +328,7 @@
 
   <div id="boardList"></div>
 </div>
+
 
 <script src="data/cards.js"></script>
 <script src="data/boardPosts.js"></script>
