@@ -527,8 +527,8 @@ function toggleBackground() {
 function buildTradeText() {
   const giveRaw = document.getElementById("tradeGive")?.value || "";
   const wantRaw = document.getElementById("tradeWant")?.value || "";
-  const give = convertIdsToNames(giveRaw) || "なし";
-  const want = convertIdsToNames(wantRaw) || "なし";
+  const give = convertIdsToCompactList(giveRaw) || "なし";
+  const want = convertIdsToCompactList(wantRaw) || "なし";
   const method = getCheckedValues("tradeMethod").join("、") || "未入力";
   const place = getCheckedValues("tradePlace").join("、") || "未入力";
   const oshi = getCheckedValues("tradeOshi").join("、") || "未入力";
