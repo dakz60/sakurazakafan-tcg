@@ -56,6 +56,15 @@ function getCardSubTypes(card) {
   return [];
 }
 
+function formatCompactCardEntry(entryText) {
+  const { id, count } = parseCardEntry(entryText);
+  return count > 1 ? `${id}×${count}` : id;
+}
+
+function convertIdsToCompactList(idText) {
+  return parseTradeEntries(idText).map(formatCompactCardEntry).join(",");
+}
+
 function formatCardEntry(entryText) {
   const { id, count } = parseCardEntry(entryText);
   const card = findCardById(id);
