@@ -1,5 +1,5 @@
-function getBoardSearchTerms(prefix) {
-  return [1, 2, 3]
+function getBoardMemberSearchTerms(prefix) {
+  return [1, 2]
     .map((index) => document.getElementById(`${prefix}${index}`)?.value || "")
     .map((term) => term.trim())
     .filter(Boolean);
@@ -23,6 +23,22 @@ function boardEntryMatchesRarity(entries, rarity) {
 function boardEntryMatches(entries, terms) {
   if (terms.length === 0) return true;
 
+  const normalizedEntries = formatBoardEntryList(entries).map((entry) => normalizeSearchText(entry));
+
+  return terms.some((term) => {
+    const normalizedTerm = normalizeSearchText(term);
+    return normalizedEntries.some((entry) => entry.includes(normalizedTerm));
+  });
+}
+
+function boardListMatchesSelection(values, selectedValues) {
+  if (selectedValues.length === 0) return true;
+  return selectedValues.some((value) => values.includes(value));
+}
+
+function renderBoardPost(post) {
+  const give = formatBoardEntryList(post.give || []).join("、") || "なし";
+  const want = formatBoardEntryList(post.want || []).join("、") || "なし";
   const method = (post.method || []).join("、") || "なし";
   const place = (post.place || []).join("、") || "なし";
   const oshi = (post.oshi || []).join("、") || "なし";
@@ -32,6 +48,8 @@ function boardEntryMatches(entries, terms) {
 
   return `
     <div class="board-post">
+      <div><b>譲：</b>${give}</div>
+      <div><b>求：</b>${want}</div>
       <div><b>方法：</b>${method}</div>
       <div><b>場所：</b>${place}</div>
       <div><b>推し：</b>${oshi}</div>
@@ -39,13 +57,13 @@ function boardEntryMatches(entries, terms) {
     </div>
   `;
 }
+
+function showBoard() {
   const container = document.getElementById("boardList");
   if (!container) return;
 
-  const giveTerms = getBoardSearchTerms("boardGiveSearch");
-  const wantTerms = getBoardSearchTerms("boardWantSearch");
-  const giveTerms = getBoardSearchTerms("boardGiveSearch").slice(0, 2);
-  const wantTerms = getBoardSearchTerms("boardWantSearch").slice(0, 2);
+  const giveTerms = getBoardMemberSearchTerms("boardGiveSearch");
+  const wantTerms = getBoardMemberSearchTerms("boardWantSearch");
   const giveRarity = document.getElementById("boardGiveSearch3")?.value || "";
   const wantRarity = document.getElementById("boardWantSearch3")?.value || "";
   const selectedPlaces = getCheckedValues("boardPlace");
