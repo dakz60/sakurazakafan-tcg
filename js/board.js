@@ -9,6 +9,34 @@ function formatBoardEntryList(entries) {
   return entries.map((entry) => formatCardEntry(entry));
 }
 
+function renderBoardCardImages(entries) {
+  if (!entries || entries.length === 0) {
+    return `<div class="board-card-empty">なし</div>`;
+  }
+
+  return entries
+    .map((entry) => {
+      const { id, count } = parseCardEntry(entry);
+      const card = findCardById(id);
+
+      if (!card) {
+        return `<div class="board-card-missing">不明ID:${id}</div>`;
+      }
+
+      const countBadge = count > 1 ? `<span class="board-card-count">×${count}</span>` : "";
+
+      return `
+        <div class="board-card-thumb" title="${card.name}(${card.rarity})">
+          <img src="${card.img}" alt="${card.name}" loading="lazy">
+          ${countBadge}
+          <div>${card.name}</div>
+          <small>${card.rarity} / ${card.id}</small>
+        </div>
+      `;
+    })
+    .join("");
+}
+
 function entryContainsRarity(entryText, rarity) {
   const { id } = parseCardEntry(entryText);
   const card = findCardById(id);
@@ -39,6 +67,8 @@ function boardListMatchesSelection(values, selectedValues) {
 function renderBoardPost(post) {
   const give = formatBoardEntryList(post.give || []).join("、") || "なし";
   const want = formatBoardEntryList(post.want || []).join("、") || "なし";
+  const giveImages = renderBoardCardImages(post.give || []);
+  const wantImages = renderBoardCardImages(post.want || []);
   const method = (post.method || []).join("、") || "なし";
   const place = (post.place || []).join("、") || "なし";
   const oshi = (post.oshi || []).join("、") || "なし";
@@ -49,7 +79,17 @@ function renderBoardPost(post) {
   return `
     <div class="board-post">
       <div><b>譲：</b>${give}</div>
+      <div class="board-card-section">
+        <div class="board-card-section-title">譲カード</div>
+        <div class="board-card-grid">${giveImages}</div>
+      </div>
+
       <div><b>求：</b>${want}</div>
+      <div class="board-card-section">
+        <div class="board-card-section-title">求カード</div>
+        <div class="board-card-grid">${wantImages}</div>
+      </div>
+
       <div><b>方法：</b>${method}</div>
       <div><b>場所：</b>${place}</div>
       <div><b>推し：</b>${oshi}</div>
