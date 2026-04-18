@@ -340,3 +340,60 @@ hr {
     height: 160px;
   }
 }
+
+.board-card-section {
+  margin: 8px 0 12px;
+}
+
+.board-card-section-title {
+  color: rgb(241,157,181);
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.board-card-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.board-card-thumb {
+  position: relative;
+  width: 84px;
+  padding: 5px;
+  border: 1px solid rgba(241,157,181,0.45);
+  border-radius: 8px;
+  background: white;
+  text-align: center;
+  font-size: 12px;
+}
+
+.board-card-thumb img {
+  width: 72px;
+  height: 104px;
+  object-fit: cover;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.board-card-thumb small {
+  display: block;
+  color: #777;
+}
+
+.board-card-count {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: rgb(241,157,181);
+  color: white;
+  font-weight: bold;
+}
+
+.board-card-empty,
+.board-card-missing {
+  color: #777;
+  font-size: 13px;
+}
