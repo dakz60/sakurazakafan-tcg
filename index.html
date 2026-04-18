@@ -2,6 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>櫻坂TCG◢ ファンサイト</title>
 <link rel="stylesheet" href="css/style.css">
 </head>
@@ -9,8 +10,7 @@
 
 <h1>櫻坂TCG◢ ファンサイト</h1>
 
-<!-- タブ -->
-<div>
+<div class="tab-row">
   <button class="tab active" onclick="openTab('deck', this)">デッキ作成</button>
   <button class="tab" onclick="openTab('collection', this)">コレクション</button>
   <button class="tab" onclick="openTab('allcards', this)">カード一覧</button>
@@ -18,14 +18,12 @@
   <button class="tab" onclick="openTab('board', this)">掲示板</button>
 </div>
 
-<!-- デッキ作成タブ -->
 <div id="deck" class="tab-content active">
   <h2>デッキ作成</h2>
   <div id="releaseCountdown"></div>
 
   <div class="flex-row">
     <div style="flex:2;" class="flex-col">
-      <!-- 検索条件 -->
       <div class="search-section">
         <label>コスト：<input type="number" id="costMin" placeholder="最小"> 〜 <input type="number" id="costMax" placeholder="最大"></label>
         <label>パワー：<input type="number" id="powerMin" placeholder="最小"> 〜 <input type="number" id="powerMax" placeholder="最大"></label>
@@ -103,6 +101,7 @@
             <option value="SC">SC</option>
             <option value="N">N</option>
             <option value="N+">N+</option>
+            <option value="SR">SR</option>
           </select>
         </label>
         <label>カードID：
@@ -122,19 +121,17 @@
       </div>
     </div>
 
-    <!-- ランダムカード表示 -->
-    <div style="flex:1; border:2px solid rgb(241,157,181); border-radius:80px; padding:40px;">
-      <h3 style="text-align:center;">🌸ランダムカード🌸</h3>
+    <div class="daily-card-panel">
+      <h3>🌸ランダムカード🌸</h3>
       <div id="dailyCard"></div>
-      <div style="text-align:center; margin-top:10px;">
-        <button onclick="rerollDailyCard()" style="font-size:16px; border-radius:20px; cursor:pointer;">🌸</button>
-        <input type="text" id="manualCardId" placeholder="カードID" style="width:66px;">
+      <div class="daily-card-actions">
+        <button onclick="rerollDailyCard()">🌸</button>
+        <input type="text" id="manualCardId" placeholder="カードID">
         <button onclick="showManualCard()">表示</button>
       </div>
     </div>
   </div>
 
-  <!-- 検索結果＆デッキ状況 -->
   <div class="flex-row">
     <div style="flex:2;">
       <h2>検索結果</h2>
@@ -164,74 +161,156 @@
   <button onclick="copyDeckCode()">コピー</button>
   <div id="deckCodeResult"></div>
 </div>
-  
-function getCheckedValues(name){
-  return [...document.querySelectorAll(`input[name="${name}"]:checked`)]
-    .map(el => el.value)
-    .join("、");
-}
-function convertIdsToNames(idText){
-  if(!idText) return "";
 
-  return idText.split(",").map(item=>{
-    item = item.trim();
+<div id="collection" class="tab-content">
+  <h2>コレクション</h2>
+  <div class="filter-button-row">
+    <button id="collectionFilterAll" class="filter-button active" onclick="setCollectionFilter('all')">すべて</button>
+    <button id="collectionFilterOwned" class="filter-button" onclick="setCollectionFilter('owned')">所有</button>
+    <button id="collectionFilterUnowned" class="filter-button" onclick="setCollectionFilter('unowned')">未所有</button>
+  </div>
+  <div id="collectionList"></div>
+</div>
 
-    let [id, count] = item.split("*");
-    id = id.trim();
-    count = count ? parseInt(count) : 1;
-
-    const card = cards.find(c => c.id === id);
-
-    if(!card) return `不明ID:${id}`;
-
-    return count > 1
-      ? `${card.name}(${card.rarity})×${count}`
-      : `${card.name}(${card.rarity})`;
-  }).join("、");
-}
-
-function splitTextList(text){
-  if(!text) return "";
-  return text.split(",").map(t => t.trim()).filter(t => t).join("、");
-}
-
-function postTrade(){
-  const giveRaw = document.getElementById("tradeGive").value;
-  const wantRaw = document.getElementById("tradeWant").value;
-
-  const give = convertIdsToNames(giveRaw);
-  const want = convertIdsToNames(wantRaw);
-
-  const method = getCheckedValues("tradeMethod");
-  const place = getCheckedValues("tradePlace");
-  const oshi = getCheckedValues("tradeOshi");
-
-  const text = encodeURIComponent(
-`【櫻坂TCGトレード】
-譲：${give}
-求：${want}
-方法：${method}
-場所：${place}
-推し：${oshi}
-
-#櫻坂TCGトレード #櫻坂TCG掲示板`
-  );
-
-  const url = `https://twitter.com/intent/tweet?text=${text}`;
-  window.open(url, "_blank");
-}
-
-<!-- 全カード一覧タブ -->
 <div id="allcards" class="tab-content">
   <h2>カード一覧</h2>
   <div id="cardListAll"></div>
 </div>
 
-<!-- JS読み込み -->
+<div id="trade" class="tab-content">
+  <h2>トレード</h2>
+
+  <label>譲：
+    <textarea id="tradeGive" rows="5" placeholder="カードID または カードID*枚数&#10;例: 001&#10;049*2"></textarea>
+  </label>
+
+  <label>求：
+    <textarea id="tradeWant" rows="5" placeholder="カードID または カードID*枚数"></textarea>
+  </label>
+
+  <label>方法：</label>
+  <div class="board-check-group">
+    <label><input type="checkbox" name="tradeMethod" value="会場手渡し">会場手渡し</label>
+    <label><input type="checkbox" name="tradeMethod" value="都内手渡し">都内手渡し</label>
+    <label><input type="checkbox" name="tradeMethod" value="郵送">郵送</label>
+  </div>
+
+  <label>場所：</label>
+  <div class="board-check-group">
+    <label><input type="checkbox" name="tradePlace" value="京都リアミ">京都リアミ</label>
+    <label><input type="checkbox" name="tradePlace" value="幕張リアミ">幕張リアミ</label>
+    <label><input type="checkbox" name="tradePlace" value="バクラ">バクラ</label>
+    <label><input type="checkbox" name="tradePlace" value="ツアー静岡">ツアー静岡</label>
+    <label><input type="checkbox" name="tradePlace" value="ツアー兵庫">ツアー兵庫</label>
+    <label><input type="checkbox" name="tradePlace" value="ツアー広島">ツアー広島</label>
+    <label><input type="checkbox" name="tradePlace" value="ツアー千葉">ツアー千葉</label>
+    <label><input type="checkbox" name="tradePlace" value="ツアー宮城">ツアー宮城</label>
+    <label><input type="checkbox" name="tradePlace" value="ツアー香川">ツアー香川</label>
+  </div>
+
+  <label>メンバー：</label>
+  <div class="board-check-group">
+    <label><input type="checkbox" name="tradeOshi" value="井上梨名">井上梨名</label>
+    <label><input type="checkbox" name="tradeOshi" value="遠藤光莉">遠藤光莉</label>
+    <label><input type="checkbox" name="tradeOshi" value="大園玲">大園玲</label>
+    <label><input type="checkbox" name="tradeOshi" value="大沼晶保">大沼晶保</label>
+    <label><input type="checkbox" name="tradeOshi" value="幸阪茉里乃">幸阪茉里乃</label>
+    <label><input type="checkbox" name="tradeOshi" value="武元唯衣">武元唯衣</label>
+    <label><input type="checkbox" name="tradeOshi" value="田村保乃">田村保乃</label>
+    <label><input type="checkbox" name="tradeOshi" value="藤吉夏鈴">藤吉夏鈴</label>
+    <label><input type="checkbox" name="tradeOshi" value="増本綺良">増本綺良</label>
+    <label><input type="checkbox" name="tradeOshi" value="松田里奈">松田里奈</label>
+    <label><input type="checkbox" name="tradeOshi" value="森田ひかる">森田ひかる</label>
+    <label><input type="checkbox" name="tradeOshi" value="守屋麗奈">守屋麗奈</label>
+    <label><input type="checkbox" name="tradeOshi" value="山﨑天">山﨑天</label>
+    <label><input type="checkbox" name="tradeOshi" value="石森璃花">石森璃花</label>
+    <label><input type="checkbox" name="tradeOshi" value="遠藤理子">遠藤理子</label>
+    <label><input type="checkbox" name="tradeOshi" value="小田倉麗奈">小田倉麗奈</label>
+    <label><input type="checkbox" name="tradeOshi" value="小島凪沙">小島凪沙</label>
+    <label><input type="checkbox" name="tradeOshi" value="谷口愛季">谷口愛季</label>
+    <label><input type="checkbox" name="tradeOshi" value="中嶋優月">中嶋優月</label>
+    <label><input type="checkbox" name="tradeOshi" value="的野美青">的野美青</label>
+    <label><input type="checkbox" name="tradeOshi" value="向井純葉">向井純葉</label>
+    <label><input type="checkbox" name="tradeOshi" value="村井優">村井優</label>
+    <label><input type="checkbox" name="tradeOshi" value="村山美羽">村山美羽</label>
+    <label><input type="checkbox" name="tradeOshi" value="山下瞳月">山下瞳月</label>
+    <label><input type="checkbox" name="tradeOshi" value="浅井恋乃未">浅井恋乃未</label>
+    <label><input type="checkbox" name="tradeOshi" value="稲熊ひな">稲熊ひな</label>
+    <label><input type="checkbox" name="tradeOshi" value="勝又春">勝又春</label>
+    <label><input type="checkbox" name="tradeOshi" value="佐藤愛桜">佐藤愛桜</label>
+    <label><input type="checkbox" name="tradeOshi" value="中川智尋">中川智尋</label>
+    <label><input type="checkbox" name="tradeOshi" value="松本和子">松本和子</label>
+    <label><input type="checkbox" name="tradeOshi" value="目黒陽色">目黒陽色</label>
+    <label><input type="checkbox" name="tradeOshi" value="山川宇衣">山川宇衣</label>
+    <label><input type="checkbox" name="tradeOshi" value="山田桃実">山田桃実</label>
+  </div>
+
+  <div class="trade-actions">
+    <button onclick="previewTradeText()">定型文作成</button>
+    <button onclick="copyTradeText()">コピー</button>
+    <button onclick="postTrade()">Xに投稿</button>
+  </div>
+
+  <textarea id="tradePreview" rows="8" placeholder="ここに投稿文が表示されます"></textarea>
+</div>
+
+<div id="board" class="tab-content">
+  <h2>掲示板</h2>
+
+  <div class="search-section board-search-grid">
+    <label>譲検索1：
+      <input type="text" id="boardGiveSearch1" placeholder="メンバー名">
+    </label>
+    <label>譲検索2：
+      <input type="text" id="boardGiveSearch2" placeholder="メンバー名">
+    </label>
+    <label>譲検索3：
+      <input type="text" id="boardGiveSearch3" placeholder="レアリティ">
+    </label>
+    <label>求検索1：
+      <input type="text" id="boardWantSearch1" placeholder="メンバー名">
+    </label>
+    <label>求検索2：
+      <input type="text" id="boardWantSearch2" placeholder="メンバー名">
+    </label>
+    <label>求検索3：
+      <input type="text" id="boardWantSearch3" placeholder="レアリティ">
+    </label>
+  </div>
+
+  <label>場所：</label>
+  <div class="board-check-group">
+    <label><input type="checkbox" name="boardPlace" value="京都リアミ">京都リアミ</label>
+    <label><input type="checkbox" name="boardPlace" value="幕張リアミ">幕張リアミ</label>
+    <label><input type="checkbox" name="boardPlace" value="バクラ">バクラ</label>
+    <label><input type="checkbox" name="boardPlace" value="ツアー静岡">ツアー静岡</label>
+    <label><input type="checkbox" name="boardPlace" value="ツアー兵庫">ツアー兵庫</label>
+    <label><input type="checkbox" name="boardPlace" value="ツアー広島">ツアー広島</label>
+    <label><input type="checkbox" name="boardPlace" value="ツアー千葉">ツアー千葉</label>
+    <label><input type="checkbox" name="boardPlace" value="ツアー宮城">ツアー宮城</label>
+    <label><input type="checkbox" name="boardPlace" value="ツアー香川">ツアー香川</label>
+  </div>
+
+  <label>方法：</label>
+  <div class="board-check-group">
+    <label><input type="checkbox" name="boardMethod" value="会場手渡し">会場手渡し</label>
+    <label><input type="checkbox" name="boardMethod" value="都内手渡し">都内手渡し</label>
+    <label><input type="checkbox" name="boardMethod" value="郵送">郵送</label>
+  </div>
+
+  <div class="trade-actions">
+    <button onclick="showBoard()">検索</button>
+    <button onclick="resetBoardFilters()">リセット</button>
+  </div>
+
+  <div id="boardList"></div>
+</div>
+
 <script src="data/cards.js"></script>
+<script src="data/boardPosts.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
-<script src="js/memberColors.js"></script>
 <script src="js/main.js"></script>
+<script src="js/board.js"></script>
 
 </body>
 </html>
