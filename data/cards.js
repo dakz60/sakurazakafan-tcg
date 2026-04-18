@@ -124,7 +124,7 @@
  { id: "123", name: "大園玲＆村山美羽", color: "黒", cost: 6, power: 6500, hit: 2, suit: "♢", type: "unit",keyWord: ["ブライト"], rarity: "R+", generation: "2期"  ,img:"images/123.jpg"},
  { id: "124", name: "大沼晶保＆遠藤光莉", color: "赤", cost: 2, power: 2000, hit: 1, suit: "♡", type: "unit",keyWord: ["ブライト","デコイ"], rarity: "R+", generation: "2期"  ,img:"images/124.jpg"},
  { id: "125", name: "幸阪茉里乃＆井上梨名", color: "赤", cost: 9, power: 9500, hit: 2, suit: "♤", type: "unit",keyWord: ["登場時"], rarity: "R+", generation: "2期", img: "images/125.jpg" },
- { id: "126",name: "武元唯衣＆松田里奈", color: "黒", cost: 6, power: 6500, hit: 2, suit: "♧", type: "unit",keyWord: ["パワー","スカウト","ドロップ時"], rarity: "R+", generation: "2期"  ,img:"images/126.jpg"},
+ { id: "126",name: "武元唯衣＆松田里奈", color: "黒", cost: 6, power: 6500, hit: 2, suit: "♧", type: "unit",subType: ["バスター"],keyWord: ["パワー","スカウト","ドロップ時"], rarity: "R+", generation: "2期"  ,img:"images/126.jpg"},
  { id: "127",name: "田村保乃＆藤吉夏鈴", color: "白", cost: 4, power: 4500, hit: 1, suit: "♤", type: "unit",keyWord:["ブライト"], rarity: "R+", generation: "2期"  ,img:"images/127.jpg"},
  { id: "128",name: "藤吉夏鈴＆山﨑天", color: "青", cost: 3, power: 4000, hit: 1, suit: "♡", type: "unit/buster",subType: ["バスター"],keyWord:["パワー"], rarity: "R+", generation: "2期"  ,img:"images/128.jpg"},
  { id: "129",name: "増本綺良＆幸阪茉里乃", color: "青", cost: 6, power: 6000, hit: 2, suit: "♧", type: "unit",keyWord: ["パワー"], rarity: "R+", generation: "2期" ,img:"images/129.jpg" },
