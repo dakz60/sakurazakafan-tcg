@@ -8,7 +8,7 @@ const boardPosts = [
   twitterUrl: "https://x.com/dazhi2s_SSS/status/2045584302969409745?s=20"
 },
 {
-  give: ["p019","p031""],
+  give: ["p019","p031"],
   want: ["p015","p054"],
   place: ["京都リアミ","ツアー香川"],
   method: ["会場手渡し", "郵送"],
