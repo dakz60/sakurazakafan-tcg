@@ -314,11 +314,12 @@ function search() {
       const imgTag = `<img src="${card.img}" loading="lazy" alt="${card.name}" style="width:85px; height:auto; border-radius:5px; margin-right:5px;">`;
       const subTypes = getCardSubTypes(card).length > 0 ? getCardSubTypes(card).join(",") : "-";
       const keyWords = Array.isArray(card.keyWord) ? card.keyWord.join(",") : "-";
-
+      const suitInfo = card.type && String(card.type).includes("unit") ? ` | スート:${card.suit || "-"}` : "";
+      
       const info =
         card.type === "command" || card.type === "territory"
           ? `コスト:${card.cost} | 効果:${card.effect || "-"} | レアリティ:${card.rarity || "-"} | 期別:${card.generation || "-"} | トリガー:${subTypes} | キーワード:${keyWords} | カードID:${card.id}`
-          : `コスト:${card.cost} | 効果:${card.effect || "-"} | パワー:${card.power || "-"} | ヒット:${card.hit || "-"} | レアリティ:${card.rarity || "-"} | 期別:${card.generation || "-"} | トリガー:${subTypes} | キーワード:${keyWords} | カードID:${card.id}`;
+          : `コスト:${card.cost} | 効果:${card.effect || "-"} | パワー:${card.power || "-"} | ヒット:${card.hit || "-"}${suitInfo}| レアリティ:${card.rarity || "-"} | 期別:${card.generation || "-"} | トリガー:${subTypes} | キーワード:${keyWords} | カードID:${card.id}`;
 
       return `<div class="${colorClass}" style="display:flex; align-items:center; margin-bottom:5px;">
         ${imgTag}<div>${card.name} | ${info}<br>
