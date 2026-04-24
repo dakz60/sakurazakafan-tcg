@@ -196,7 +196,7 @@
  { id: "p018", name: "谷口愛季",effect: "ユニットが【ブライト】した時、そのターン中、このユニットのヒットを+1。各ターン1回まで。" , color: "赤", cost: 3, power: 3000, hit: 1, suit: "♤", type: "unit", rarity: "PR", generation: "3期", img: "images/18PR.jpg" },
  { id: "p019", name: "中嶋優月",effect: "ユニットが【ブライト】した時、そのターン中、このユニットのヒットを+1。各ターン1回まで。" , color: "赤", cost: 5, power: 5000, hit: 1, suit: "♧", type: "unit", rarity: "PR", generation: "3期", img: "images/19PR.jpg" },
  { id: "p020", name: "的野美青",effect: "ユニットが【ブライト】した時、そのターン中、このユニットのヒットを+1。各ターン1回まで。" , color: "青", cost: 3, power: 3000, hit: 1, suit: "♡", type: "unit", rarity: "PR", generation: "3期", img: "images/20PR.jpg" },
- { id: "p021", name: "向井純葉",effect: "ユニットが【ブライト】した時、そのターン中、このユニットのヒットを+1。各ターン1回まで。" , color: "白", cost: 2, power: 3000, hit: 1, suit: "♢", type: "unit", rarity: "PR", generation: "3期", img: "images/21PR.jpg" },
+ { id: "p021", name: "向井純葉",effect: "ユニットが【ブライト】した時、そのターン中、このユニットのヒットを+1。各ターン1回まで。" , color: "白", cost: 3, power: 3000, hit: 1, suit: "♢", type: "unit", rarity: "PR", generation: "3期", img: "images/21PR.jpg" },
  { id: "p022", name: "村井優", color: "赤", cost: 7, power: 7000, hit: 1, suit: "♧", type: "unit", rarity: "PR", generation: "3期", img: "images/22PR.jpg" },
  { id: "p023", name: "村山美羽", color: "黒", cost: 4, power: 4000, hit: 1, suit: "♢", type: "unit/buster",subType: ["バスター"], rarity: "PR", generation: "3期", img: "images/23PR.jpg" },
  { id: "p024", name: "山下瞳月",effect: "ユニットが【ブライト】した時、そのターン中、このユニットのヒットを+1。各ターン1回まで。" , color: "青", cost: 6, power: 6000, hit: 2, suit: "♢", type: "unit", rarity: "PR", generation: "3期", img: "images/24PR.jpg" },
