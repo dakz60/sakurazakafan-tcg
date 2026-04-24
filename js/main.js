@@ -315,7 +315,7 @@ function search() {
       const subTypes = getCardSubTypes(card).length > 0 ? getCardSubTypes(card).join(",") : "-";
       const keyWords = Array.isArray(card.keyWord) ? card.keyWord.join(",") : "-";
       const suitInfo = card.type && String(card.type).includes("unit") ? ` | スート:${card.suit || "-"}` : "";
-      
+
       const info =
         card.type === "command" || card.type === "territory"
           ? `コスト:${card.cost} | 効果:${card.effect || "-"} | レアリティ:${card.rarity || "-"} | 期別:${card.generation || "-"} | トリガー:${subTypes} | キーワード:${keyWords} | カードID:${card.id}`
@@ -428,6 +428,12 @@ function updateDeckStatus() {
   let commandCount = 0;
   let busterCount = 0;
   let shotCount = 0;
+  const colorCounts = {
+    白: 0,
+    赤: 0,
+    青: 0,
+    黒: 0,
+  };
 
   deck.forEach((id) => {
     const card = findCardById(id);
@@ -436,14 +442,23 @@ function updateDeckStatus() {
     if (card.type === "command") commandCount += 1;
     if (getCardSubTypes(card).includes("バスター")) busterCount += 1;
     if (getCardSubTypes(card).includes("ショット")) shotCount += 1;
+    if (card.color && colorCounts[card.color] !== undefined) colorCounts[card.color] += 1;
   });
+
+  const totalDeckCards = deck.length || 1;
+  const colorSummary = Object.entries(colorCounts)
+    .map(([color, count]) => `${color}：${count}枚 (${Math.round((count / totalDeckCards) * 100)}%)`)
+    .join("<br>");
 
   deckStatus.innerHTML = `
     ユニット：${unitCount}枚<br>
     コマンド：${commandCount}枚<br>
     バスター：${busterCount}枚<br>
     ショット：${shotCount}枚<br>
-    テリトリー：${territoryCardId ? "あり" : "なし"}
+    テリトリー：${territoryCardId ? "あり" : "なし"}<br>
+    <br>
+    色内訳<br>
+    ${colorSummary}
   `;
 }
 
