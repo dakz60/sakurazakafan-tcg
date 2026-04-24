@@ -428,6 +428,7 @@ function updateDeckStatus() {
   let commandCount = 0;
   let busterCount = 0;
   let shotCount = 0;
+
   const colorCounts = {
     白: 0,
     赤: 0,
@@ -435,19 +436,43 @@ function updateDeckStatus() {
     黒: 0,
   };
 
+  const suitCounts = {
+    "♡": 0,
+    "♢": 0,
+    "♤": 0,
+    "♧": 0,
+  };
+
   deck.forEach((id) => {
     const card = findCardById(id);
     if (!card) return;
+
     if (card.type && String(card.type).includes("unit")) unitCount += 1;
     if (card.type === "command") commandCount += 1;
     if (getCardSubTypes(card).includes("バスター")) busterCount += 1;
     if (getCardSubTypes(card).includes("ショット")) shotCount += 1;
-    if (card.color && colorCounts[card.color] !== undefined) colorCounts[card.color] += 1;
+
+    if (card.color && colorCounts[card.color] !== undefined) {
+      colorCounts[card.color] += 1;
+    }
+
+    if (card.suit) {
+      Object.keys(suitCounts).forEach((suit) => {
+        if (String(card.suit).includes(suit)) {
+          suitCounts[suit] += 1;
+        }
+      });
+    }
   });
 
   const totalDeckCards = deck.length || 1;
+
   const colorSummary = Object.entries(colorCounts)
     .map(([color, count]) => `${color}：${count}枚 (${Math.round((count / totalDeckCards) * 100)}%)`)
+    .join("<br>");
+
+  const suitSummary = Object.entries(suitCounts)
+    .map(([suit, count]) => `${suit}：${count}枚`)
     .join("<br>");
 
   deckStatus.innerHTML = `
@@ -458,7 +483,10 @@ function updateDeckStatus() {
     テリトリー：${territoryCardId ? "あり" : "なし"}<br>
     <br>
     色内訳<br>
-    ${colorSummary}
+    ${colorSummary}<br>
+    <br>
+    スート内訳<br>
+    ${suitSummary}
   `;
 }
 
