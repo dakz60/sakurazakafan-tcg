@@ -168,11 +168,30 @@
     <button id="collectionFilterOwned" class="filter-button" onclick="setCollectionFilter('owned')">所有</button>
     <button id="collectionFilterUnowned" class="filter-button" onclick="setCollectionFilter('unowned')">未所有</button>
   </div>
+  <div class="filter-button-row">
+    <button id="collectionRarityAll" class="filter-button active" onclick="setCollectionRarityFilter('')">全レアリティ</button>
+    <button id="collectionRaritySC" class="filter-button" onclick="setCollectionRarityFilter('SC')">SC</button>
+    <button id="collectionRarityPR" class="filter-button" onclick="setCollectionRarityFilter('PR')">PR</button>
+    <button id="collectionRarityRPlus" class="filter-button" onclick="setCollectionRarityFilter('R+')">R+</button>
+    <button id="collectionRarityNPlus" class="filter-button" onclick="setCollectionRarityFilter('N+')">N+</button>
+  </div>
   <div id="collectionList"></div>
 </div>
 
 <div id="allcards" class="tab-content">
   <h2>カード一覧</h2>
+  <div class="filter-button-row">
+    <button id="allCardsOwnershipAll" class="filter-button active" onclick="setAllCardsOwnershipFilter('all')">すべて</button>
+    <button id="allCardsOwnershipOwned" class="filter-button" onclick="setAllCardsOwnershipFilter('owned')">所持</button>
+    <button id="allCardsOwnershipUnowned" class="filter-button" onclick="setAllCardsOwnershipFilter('unowned')">未所持</button>
+  </div>
+  <div class="filter-button-row">
+    <button id="allCardsRarityAll" class="filter-button active" onclick="setAllCardsRarityFilter('')">全レアリティ</button>
+    <button id="allCardsRaritySC" class="filter-button" onclick="setAllCardsRarityFilter('SC')">SC</button>
+    <button id="allCardsRarityPR" class="filter-button" onclick="setAllCardsRarityFilter('PR')">PR</button>
+    <button id="allCardsRarityRPlus" class="filter-button" onclick="setAllCardsRarityFilter('R+')">R+</button>
+    <button id="allCardsRarityNPlus" class="filter-button" onclick="setAllCardsRarityFilter('N+')">N+</button>
+  </div>
   <div id="cardListAll"></div>
 </div>
 
@@ -199,7 +218,7 @@
     <label><input type="checkbox" name="tradePlace" value="京都リアミ">京都リアミ</label>
     <label><input type="checkbox" name="tradePlace" value="幕張リアミ">幕張リアミ</label>
     <label><input type="checkbox" name="tradePlace" value="バクラ">バクラ</label>
-    <label><input type="checkbox" name="tradePlace" value="4期ラ">4期ラ</label>  
+    <label><input type="checkbox" name="tradePlace" value="4期ラ">4期ラ</label>
     <label><input type="checkbox" name="tradePlace" value="ツアー静岡">ツアー静岡</label>
     <label><input type="checkbox" name="tradePlace" value="ツアー兵庫">ツアー兵庫</label>
     <label><input type="checkbox" name="tradePlace" value="ツアー広島">ツアー広島</label>
@@ -327,7 +346,6 @@
 
   <div id="boardList"></div>
 </div>
-
 
 <script src="data/cards.js"></script>
 <script src="data/boardPosts.js"></script>
