@@ -213,6 +213,8 @@ function setAllCardsRarityFilter(nextFilter) {
     PR: "allCardsRarityPR",
     "R+": "allCardsRarityRPlus",
     "N+": "allCardsRarityNPlus",
+    "R": "allCardsRarityR",
+    "N": "allCardsRarityN",
   };
 
   Object.values(buttonMap).forEach((id) => {
@@ -255,6 +257,8 @@ function setCollectionRarityFilter(nextFilter) {
     PR: "collectionRarityPR",
     "R+": "collectionRarityRPlus",
     "N+": "collectionRarityNPlus",
+    "R": "collectionRarityR",
+    "N": "collectionRarityN",
   };
 
   Object.values(buttonMap).forEach((id) => {
