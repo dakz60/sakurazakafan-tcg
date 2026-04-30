@@ -1,6 +1,9 @@
 let deck = [];
 let territoryCardId = null;
 let collectionFilter = "all";
+let collectionRarityFilter = "";
+let allCardsOwnershipFilter = "all";
+let allCardsRarityFilter = "";
 
 function openTab(tabId, buttonEl) {
   document.querySelectorAll("button.tab").forEach((button) => button.classList.remove("active"));
@@ -33,13 +36,13 @@ function getCheckedValues(name) {
 
 function parseTradeEntries(text) {
   return String(text || "")
-    .split(/[\n,]+/)
+    .split(/[\n,、]+/)
     .map((item) => item.trim())
     .filter(Boolean);
 }
 
 function parseCardEntry(entryText) {
-  const [rawId, rawCount] = String(entryText || "").split("*");
+  const [rawId, rawCount] = String(entryText || "").split(/[＊*×x]/);
   return {
     id: String(rawId || "").trim(),
     count: Math.max(1, parseInt(rawCount, 10) || 1),
@@ -66,6 +69,10 @@ function convertIdsToCompactList(idText) {
 }
 
 function formatCardEntry(entryText) {
+  const specialEntries = ["未所持カード", "他相談", "相談"];
+  const rawEntry = String(entryText || "").trim();
+  if (specialEntries.includes(rawEntry)) return rawEntry;
+
   const { id, count } = parseCardEntry(entryText);
   const card = findCardById(id);
   if (!card) {
@@ -153,16 +160,70 @@ function showAllCards() {
   }
 
   container.innerHTML = cards
-    .map(
-      (card) => `
+    .filter((card) => {
+      const count = getCardCount(card.id);
+      if (allCardsOwnershipFilter === "owned" && count === 0) return false;
+      if (allCardsOwnershipFilter === "unowned" && count > 0) return false;
+      if (allCardsRarityFilter && card.rarity !== allCardsRarityFilter) return false;
+      return true;
+    })
+    .map((card) => {
+      const count = getCardCount(card.id);
+      const ownershipText = count > 0 ? `所持 ${count}枚` : "未所持";
+
+      return `
         <div class="cardAll">
           <img src="${card.img}" alt="${card.name}" loading="lazy">
           <div>${card.name}</div>
+          <div>${ownershipText}</div>
+          <div>${card.rarity || "-"}</div>
           <div>ID:${card.id}</div>
         </div>
-      `
-    )
+      `;
+    })
     .join("");
+}
+
+function setAllCardsOwnershipFilter(nextFilter) {
+  allCardsOwnershipFilter = nextFilter;
+
+  const buttonMap = {
+    all: "allCardsOwnershipAll",
+    owned: "allCardsOwnershipOwned",
+    unowned: "allCardsOwnershipUnowned",
+  };
+
+  Object.values(buttonMap).forEach((id) => {
+    const button = document.getElementById(id);
+    if (button) button.classList.remove("active");
+  });
+
+  const activeButton = document.getElementById(buttonMap[nextFilter]);
+  if (activeButton) activeButton.classList.add("active");
+
+  showAllCards();
+}
+
+function setAllCardsRarityFilter(nextFilter) {
+  allCardsRarityFilter = nextFilter;
+
+  const buttonMap = {
+    "": "allCardsRarityAll",
+    SC: "allCardsRaritySC",
+    PR: "allCardsRarityPR",
+    "R+": "allCardsRarityRPlus",
+    "N+": "allCardsRarityNPlus",
+  };
+
+  Object.values(buttonMap).forEach((id) => {
+    const button = document.getElementById(id);
+    if (button) button.classList.remove("active");
+  });
+
+  const activeButton = document.getElementById(buttonMap[nextFilter]);
+  if (activeButton) activeButton.classList.add("active");
+
+  showAllCards();
 }
 
 function setCollectionFilter(nextFilter) {
@@ -172,6 +233,28 @@ function setCollectionFilter(nextFilter) {
     all: "collectionFilterAll",
     owned: "collectionFilterOwned",
     unowned: "collectionFilterUnowned",
+  };
+
+  Object.values(buttonMap).forEach((id) => {
+    const button = document.getElementById(id);
+    if (button) button.classList.remove("active");
+  });
+
+  const activeButton = document.getElementById(buttonMap[nextFilter]);
+  if (activeButton) activeButton.classList.add("active");
+
+  showCollection();
+}
+
+function setCollectionRarityFilter(nextFilter) {
+  collectionRarityFilter = nextFilter;
+
+  const buttonMap = {
+    "": "collectionRarityAll",
+    SC: "collectionRaritySC",
+    PR: "collectionRarityPR",
+    "R+": "collectionRarityRPlus",
+    "N+": "collectionRarityNPlus",
   };
 
   Object.values(buttonMap).forEach((id) => {
@@ -197,6 +280,7 @@ function updateCardCount(cardId, value) {
 function handleCardCountChange(cardId, value) {
   updateCardCount(cardId, value);
   showCollection();
+  showAllCards();
 }
 
 function showCollection() {
@@ -211,8 +295,11 @@ function showCollection() {
   container.innerHTML = cards
     .filter((card) => {
       const count = getCardCount(card.id);
-      if (collectionFilter === "owned") return count > 0;
-      if (collectionFilter === "unowned") return count === 0;
+
+      if (collectionFilter === "owned" && count === 0) return false;
+      if (collectionFilter === "unowned" && count > 0) return false;
+      if (collectionRarityFilter && card.rarity !== collectionRarityFilter) return false;
+
       return true;
     })
     .map((card) => {
@@ -221,6 +308,7 @@ function showCollection() {
         <div class="cardAll collection-card">
           <img src="${card.img}" loading="lazy" alt="${card.name}">
           <div class="collection-card-name">${card.name}</div>
+          <div>${card.rarity || "-"}</div>
           <input
             type="number"
             min="0"
@@ -319,7 +407,7 @@ function search() {
       const info =
         card.type === "command" || card.type === "territory"
           ? `コスト:${card.cost} | 効果:${card.effect || "-"} | レアリティ:${card.rarity || "-"} | 期別:${card.generation || "-"} | トリガー:${subTypes} | キーワード:${keyWords} | カードID:${card.id}`
-          : `コスト:${card.cost} | 効果:${card.effect || "-"} | パワー:${card.power || "-"} | ヒット:${card.hit || "-"}${suitInfo}| レアリティ:${card.rarity || "-"} | 期別:${card.generation || "-"} | トリガー:${subTypes} | キーワード:${keyWords} | カードID:${card.id}`;
+          : `コスト:${card.cost} | 効果:${card.effect || "-"} | パワー:${card.power || "-"} | ヒット:${card.hit || "-"}${suitInfo} | レアリティ:${card.rarity || "-"} | 期別:${card.generation || "-"} | トリガー:${subTypes} | キーワード:${keyWords} | カードID:${card.id}`;
 
       return `<div class="${colorClass}" style="display:flex; align-items:center; margin-bottom:5px;">
         ${imgTag}<div>${card.name} | ${info}<br>
@@ -573,8 +661,11 @@ function toggleBackground() {
   const deckContainer = document.getElementById("deckContainer");
   if (!deckContainer) return;
 
-  if (deckContainer.classList.contains("white-mode")) deckContainer.classList.replace("white-mode", "mat-mode");
-  else deckContainer.classList.replace("mat-mode", "white-mode");
+  if (deckContainer.classList.contains("white-mode")) {
+    deckContainer.classList.replace("white-mode", "mat-mode");
+  } else {
+    deckContainer.classList.replace("mat-mode", "white-mode");
+  }
 }
 
 function buildTradeText() {
@@ -630,6 +721,7 @@ window.addEventListener("load", () => {
   showDailyCard();
   setupSearchSuggestions();
   showCollection();
+  showAllCards();
   updateDeckStatus();
 
   const deckImages = document.getElementById("deckImages");
