@@ -511,198 +511,99 @@ hr {
 
 @media (max-width: 640px) {
   body {
-    padding: 8px;
-    font-size: 13px;
+    padding: 10px;
+    font-size: 14px;
   }
 
   h1 {
-    font-size: 22px;
-    margin: 8px 0 12px;
+    font-size: 24px;
   }
 
   h2 {
-    font-size: 18px;
-    margin: 10px 0;
+    font-size: 20px;
   }
 
-  h3 {
-    font-size: 16px;
-    margin: 8px 0;
-  }
-
-  .tab-row {
-    gap: 6px;
+  .search-section label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
   }
 
   button.tab,
   .filter-button {
     flex: 1 1 calc(50% - 6px);
-    padding: 8px 6px;
-    font-size: 13px;
   }
 
-  input,
-  select,
-  textarea,
-  button {
-    font-size: 14px;
-    padding: 6px;
-    margin: 4px;
-  }
-
-  .flex-row {
+  .trade-actions {
     flex-direction: column;
-    gap: 12px;
   }
 
-  .search-section {
-    margin-bottom: 8px;
-  }
-
-  .search-section label {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 6px;
-    flex-wrap: wrap;
-    margin: 4px 0;
-  }
-
-  .search-section input[type="number"] {
-    width: 72px;
-  }
-
-  #cardIdSearchBox,
-  #searchBox,
-  #effectSearchBox {
-    flex: 1;
-    min-width: 0;
-  }
-
-  .daily-card-panel {
+  .trade-actions button {
     width: 100%;
-    box-sizing: border-box;
-    padding: 12px;
-    border-radius: 18px;
-  }
-
-  #dailyCard img {
-    width: 160px !important;
-  }
-
-  .daily-card-actions {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 6px;
-    flex-wrap: wrap;
-  }
-
-  .daily-card-actions input {
-    width: 90px;
-  }
-
-  #result {
-    max-height: none;
-    overflow: visible;
-  }
-
-  #result > div {
-    font-size: 12px;
-    line-height: 1.5;
-  }
-
-  #result img {
-    width: 68px !important;
-    margin-right: 8px !important;
-  }
-
-  #result button {
-    padding: 4px 8px;
-    font-size: 12px;
-  }
-
-  #deckContainer {
-    padding: 8px;
-    gap: 10px;
-    min-height: auto;
-    flex-direction: column;
-    overflow-x: auto;
-  }
-
-  #deckImages {
-    grid-template-columns: repeat(5, 56px);
-    grid-template-rows: repeat(10, 80px);
-    gap: 3px;
-    min-width: max-content;
-  }
-
-  #deckImages img {
-    width: 56px;
-    height: 80px;
-  }
-
-  #territoryImage {
-    width: 100%;
-    min-width: 0;
-    text-align: center;
-  }
-
-  #territoryImage img {
-    width: 180px;
-    height: auto;
   }
 
   .cardAll,
   .collection-card {
     width: calc(50% - 6px);
     padding: 8px;
-    margin-bottom: 6px;
+  }
+
+  .collection-card-name {
+    font-size: 14px;
+  }
+
+  #deckContainer {
+    padding: 10px;
+  }
+
+  #deckImages {
+    grid-template-columns: repeat(4, 72px);
+    grid-template-rows: repeat(13, 104px);
+    min-width: max-content;
+  }
+
+  #deckImages img {
+    width: 72px;
+    height: 104px;
+  }
+
+  #territoryImage img {
+    width: min(220px, 100%);
+  }
+
+  .board-card-thumb {
+    width: calc(50% - 4px);
+  }
+
+  .board-search-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  #collectionList,
+  #cardListAll {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .cardAll,
+  .collection-card {
+    width: 100%;
+    margin-bottom: 0;
+    box-sizing: border-box;
+    padding: 8px;
   }
 
   .cardAll img,
   .collection-card img {
     width: 100%;
-    max-width: 84px;
+    max-width: 90px;
     height: auto;
   }
 
   .collection-card-name {
-    font-size: 13px;
-  }
-
-  #collectionList input[type="number"] {
-    width: 44px;
-  }
-
-  .trade-actions {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-
-  .trade-actions button {
-    flex: 1 1 calc(50% - 6px);
-  }
-
-  .board-search-grid {
-    grid-template-columns: 1fr;
-    gap: 6px;
-  }
-
-  .board-card-thumb {
-    width: calc(50% - 4px);
-    box-sizing: border-box;
-    font-size: 11px;
-  }
-
-  .board-card-thumb img {
-    width: 100%;
-    height: auto;
-  }
-
-  .board-check-group {
-    gap: 4px 8px;
     font-size: 13px;
   }
 }
