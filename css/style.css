@@ -2,9 +2,11 @@ body {
   font-family: sans-serif;
   background: white;
   color: rgb(241,157,181);
-  margin: 0;
+  margin: 0 auto;
   padding: 20px;
+  max-width: 1400px;
   font-size: 16px;
+  box-sizing: border-box;
 }
 
 h1, h2 {
@@ -16,6 +18,7 @@ h1, h2 {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
+  justify-content: center;
 }
 
 button.tab {
@@ -26,6 +29,7 @@ button.tab {
   cursor: pointer;
   border-radius: 5px;
   transition: all 0.2s;
+  flex: 1 1 140px;
 }
 
 button.tab.active {
@@ -54,6 +58,7 @@ input, select, button, textarea {
   border-radius: 5px;
   border: 1px solid rgb(241,157,181);
   font-size: 16px;
+  box-sizing: border-box;
 }
 
 input, select, textarea {
@@ -110,6 +115,7 @@ hr {
   display: flex;
   gap: 40px;
   align-items: flex-start;
+  flex-wrap: wrap;
 }
 
 .flex-col {
@@ -126,6 +132,7 @@ hr {
   border-radius: 20px;
   box-shadow: 0 8px 20px rgba(0,0,0,0.2);
   min-height: 700px;
+  overflow-x: auto;
 }
 
 #deckContainer.white-mode {
@@ -146,6 +153,7 @@ hr {
   gap: 1px;
   justify-items: center;
   align-items: center;
+  min-width: max-content;
 }
 
 #deckImages img {
@@ -205,7 +213,7 @@ hr {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100px;
+  width: 110px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
   padding: 5px;
@@ -320,10 +328,136 @@ hr {
   background: #fffafc;
 }
 
+.board-card-section {
+  margin: 8px 0 12px;
+}
+
+.board-card-section-title {
+  color: rgb(241,157,181);
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.board-card-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.board-card-thumb {
+  position: relative;
+  width: 84px;
+  padding: 5px;
+  border: 1px solid rgba(241,157,181,0.45);
+  border-radius: 8px;
+  background: white;
+  text-align: center;
+  font-size: 12px;
+}
+
+.board-card-thumb img {
+  width: 72px;
+  height: 104px;
+  object-fit: cover;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.board-card-thumb small {
+  display: block;
+  color: #777;
+}
+
+.board-card-count {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: rgb(241,157,181);
+  color: white;
+  font-weight: bold;
+}
+
+.board-card-empty,
+.board-card-missing {
+  color: #777;
+  font-size: 13px;
+}
+
+.board-card-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 84px;
+  min-height: 104px;
+  padding: 5px;
+  border: 1px dashed rgba(241,157,181,0.65);
+  border-radius: 8px;
+  background: white;
+  color: rgb(241,157,181);
+  font-weight: bold;
+  text-align: center;
+}
+
+#tradeTextCount {
+  text-align: right;
+  font-weight: bold;
+  margin: 0 5px 10px;
+}
+
+@media (max-width: 1200px) {
+  body {
+    padding: 16px;
+  }
+
+  .flex-row {
+    gap: 24px;
+  }
+
+  #deckContainer {
+    min-height: auto;
+    padding: 16px;
+  }
+
+  #deckImages {
+    grid-template-columns: repeat(5, 98px);
+    grid-template-rows: repeat(10, 140px);
+  }
+
+  #territoryImage {
+    width: 100%;
+    min-width: 0;
+    text-align: center;
+  }
+
+  #territoryImage img {
+    width: min(270px, 100%);
+    height: auto;
+  }
+}
+
 @media (max-width: 900px) {
+  body {
+    padding: 14px;
+    font-size: 15px;
+  }
+
   .flex-row {
     flex-direction: column;
     gap: 20px;
+  }
+
+  button.tab {
+    flex: 1 1 calc(50% - 6px);
+    padding: 10px 12px;
+  }
+
+  .daily-card-panel {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 18px;
+    border-radius: 24px;
   }
 
   #deckImages {
@@ -333,124 +467,115 @@ hr {
 
   #deckContainer {
     flex-direction: column;
+    gap: 16px;
+    padding: 14px;
   }
 
   #territoryImage img {
     width: 240px;
-    height: 160px;
+    height: auto;
+  }
+
+  #result {
+    max-height: none;
+  }
+
+  .cardAll {
+    width: calc(33.333% - 8px);
+  }
+
+  .collection-card {
+    width: calc(33.333% - 8px);
+  }
+
+  .cardAll img,
+  .collection-card img {
+    width: 100%;
+    height: auto;
+  }
+
+  .board-card-thumb {
+    width: calc(33.333% - 6px);
+    box-sizing: border-box;
+  }
+
+  .board-card-thumb img {
+    width: 100%;
+    height: auto;
+  }
+
+  .board-search-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-.board-card-section {
-  margin: 8px 0 12px;
-}
+@media (max-width: 640px) {
+  body {
+    padding: 10px;
+    font-size: 14px;
+  }
 
-.board-card-section-title {
-  color: rgb(241,157,181);
-  font-weight: bold;
-  margin-bottom: 6px;
-}
+  h1 {
+    font-size: 24px;
+  }
 
-.board-card-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
+  h2 {
+    font-size: 20px;
+  }
 
-.board-card-thumb {
-  position: relative;
-  width: 84px;
-  padding: 5px;
-  border: 1px solid rgba(241,157,181,0.45);
-  border-radius: 8px;
-  background: white;
-  text-align: center;
-  font-size: 12px;
-}
+  .search-section label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
 
-.board-card-thumb img {
-  width: 72px;
-  height: 104px;
-  object-fit: cover;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-}
+  button.tab,
+  .filter-button {
+    flex: 1 1 calc(50% - 6px);
+  }
 
-.board-card-thumb small {
-  display: block;
-  color: #777;
-}
+  .trade-actions {
+    flex-direction: column;
+  }
 
-.board-card-count {
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  padding: 2px 6px;
-  border-radius: 999px;
-  background: rgb(241,157,181);
-  color: white;
-  font-weight: bold;
-}
+  .trade-actions button {
+    width: 100%;
+  }
 
-.board-card-empty,
-.board-card-missing {
-  color: #777;
-  font-size: 13px;
-}
+  .cardAll,
+  .collection-card {
+    width: calc(50% - 6px);
+    padding: 8px;
+  }
 
-.board-card-section {
-  margin: 8px 0 12px;
-}
+  .collection-card-name {
+    font-size: 14px;
+  }
 
-.board-card-section-title {
-  color: rgb(241,157,181);
-  font-weight: bold;
-  margin-bottom: 6px;
-}
+  #deckContainer {
+    padding: 10px;
+  }
 
-.board-card-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
+  #deckImages {
+    grid-template-columns: repeat(4, 72px);
+    grid-template-rows: repeat(13, 104px);
+    min-width: max-content;
+  }
 
-.board-card-thumb {
-  position: relative;
-  width: 84px;
-  padding: 5px;
-  border: 1px solid rgba(241,157,181,0.45);
-  border-radius: 8px;
-  background: white;
-  text-align: center;
-  font-size: 12px;
-}
+  #deckImages img {
+    width: 72px;
+    height: 104px;
+  }
 
-.board-card-thumb img {
-  width: 72px;
-  height: 104px;
-  object-fit: cover;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-}
+  #territoryImage img {
+    width: min(220px, 100%);
+  }
 
-.board-card-thumb small {
-  display: block;
-  color: #777;
-}
+  .board-card-thumb {
+    width: calc(50% - 4px);
+  }
 
-.board-card-count {
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  padding: 2px 6px;
-  border-radius: 999px;
-  background: rgb(241,157,181);
-  color: white;
-  font-weight: bold;
-}
-
-.board-card-empty,
-.board-card-missing {
-  color: #777;
-  font-size: 13px;
+  .board-search-grid {
+    grid-template-columns: 1fr;
+  }
 }
