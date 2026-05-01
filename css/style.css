@@ -179,7 +179,9 @@ hr {
   margin: 5px auto;
 }
 
-#releaseCountdown, #deckCheckResult, #deckCodeResult {
+#releaseCountdown,
+#deckCheckResult,
+#deckCodeResult {
   text-align: center;
   font-weight: bold;
   margin: 10px 0;
@@ -203,7 +205,8 @@ hr {
   overflow-y: auto;
 }
 
-#collectionList, #cardListAll {
+#collectionList,
+#cardListAll {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
@@ -284,6 +287,20 @@ hr {
   margin-top: 6px;
   color: rgb(241,157,181);
   font-weight: bold;
+}
+
+.collection-trade-actions {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+
+.collection-trade-actions button {
+  margin: 0;
+  padding: 4px 8px;
+  font-size: 13px;
 }
 
 #collectionList input[type=number]::-webkit-outer-spin-button,
@@ -542,14 +559,31 @@ hr {
     width: 100%;
   }
 
+  #collectionList,
+  #cardListAll {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+  }
+
   .cardAll,
   .collection-card {
-    width: calc(50% - 6px);
-    padding: 8px;
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 8px !important;
+    box-sizing: border-box !important;
+  }
+
+  .cardAll img,
+  .collection-card img {
+    width: 100% !important;
+    max-width: 88px !important;
+    height: auto !important;
   }
 
   .collection-card-name {
-    font-size: 14px;
+    font-size: 13px !important;
   }
 
   #deckContainer {
@@ -577,33 +611,5 @@ hr {
 
   .board-search-grid {
     grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 640px) {
-  #collectionList,
-  #cardListAll {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
-  }
-
-  .cardAll,
-  .collection-card {
-    width: 100%;
-    margin-bottom: 0;
-    box-sizing: border-box;
-    padding: 8px;
-  }
-
-  .cardAll img,
-  .collection-card img {
-    width: 100%;
-    max-width: 90px;
-    height: auto;
-  }
-
-  .collection-card-name {
-    font-size: 13px;
   }
 }
