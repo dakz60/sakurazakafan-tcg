@@ -59,15 +59,6 @@ function getCardSubTypes(card) {
   return [];
 }
 
-function formatCompactCardEntry(entryText) {
-  const { id, count } = parseCardEntry(entryText);
-  return count > 1 ? `${id}×${count}` : id;
-}
-
-function convertIdsToCompactList(idText) {
-  return parseTradeEntries(idText).map(formatCompactCardEntry).join(",");
-}
-
 function formatCardEntry(entryText) {
   const specialEntries = ["未所持カード", "他相談", "相談"];
   const rawEntry = String(entryText || "").trim();
@@ -85,6 +76,24 @@ function formatCardEntry(entryText) {
 
 function convertIdsToNames(idText) {
   return parseTradeEntries(idText).map(formatCardEntry).join("、");
+}
+
+function formatCompactCardEntry(entryText) {
+  const { id, count } = parseCardEntry(entryText);
+  return count > 1 ? `${id}×${count}` : id;
+}
+
+function convertIdsToCompactList(idText) {
+  return parseTradeEntries(idText).map(formatCompactCardEntry).join(",");
+}
+
+function shortenTradeValues(values) {
+  const labelMap = {
+    会場手渡し: "会場",
+    都内手渡し: "都内",
+  };
+
+  return values.map((value) => labelMap[value] || value).join(",");
 }
 
 function setupSearchSuggestions() {
@@ -213,8 +222,6 @@ function setAllCardsRarityFilter(nextFilter) {
     PR: "allCardsRarityPR",
     "R+": "allCardsRarityRPlus",
     "N+": "allCardsRarityNPlus",
-    "R": "allCardsRarityR",
-    "N": "allCardsRarityN",
   };
 
   Object.values(buttonMap).forEach((id) => {
@@ -257,8 +264,6 @@ function setCollectionRarityFilter(nextFilter) {
     PR: "collectionRarityPR",
     "R+": "collectionRarityRPlus",
     "N+": "collectionRarityNPlus",
-    "R": "collectionRarityR",
-    "N": "collectionRarityN",
   };
 
   Object.values(buttonMap).forEach((id) => {
@@ -285,6 +290,90 @@ function handleCardCountChange(cardId, value) {
   updateCardCount(cardId, value);
   showCollection();
   showAllCards();
+}
+
+function updateTradeGiveBox(entries) {
+  const tradeGive = document.getElementById("tradeGive");
+  if (!tradeGive) return;
+  tradeGive.value = entries.join("\n");
+  updateTradePreview(buildTradeText());
+}
+
+function addCollectionCardToTradeGive(cardId) {
+  const tradeGive = document.getElementById("tradeGive");
+  if (!tradeGive) return;
+
+  const entries = parseTradeEntries(tradeGive.value);
+  const index = entries.findIndex((entry) => parseCardEntry(entry).id === String(cardId));
+
+  if (index === -1) {
+    entries.push(String(cardId));
+  } else {
+    const parsed = parseCardEntry(entries[index]);
+    entries[index] = `${parsed.id}*${parsed.count + 1}`;
+  }
+
+  updateTradeGiveBox(entries);
+}
+
+function removeCollectionCardFromTradeGive(cardId) {
+  const tradeGive = document.getElementById("tradeGive");
+  if (!tradeGive) return;
+
+  const entries = parseTradeEntries(tradeGive.value);
+  const index = entries.findIndex((entry) => parseCardEntry(entry).id === String(cardId));
+  if (index === -1) return;
+
+  const parsed = parseCardEntry(entries[index]);
+  if (parsed.count <= 1) {
+    entries.splice(index, 1);
+  } else {
+    entries[index] = `${parsed.id}*${parsed.count - 1}`;
+  }
+
+  updateTradeGiveBox(entries);
+}
+
+function updateTradeWantBox(entries) {
+  const tradeWant = document.getElementById("tradeWant");
+  if (!tradeWant) return;
+  tradeWant.value = entries.join("\n");
+  updateTradePreview(buildTradeText());
+}
+
+function addCollectionCardToTradeWant(cardId) {
+  const tradeWant = document.getElementById("tradeWant");
+  if (!tradeWant) return;
+
+  const entries = parseTradeEntries(tradeWant.value);
+  const index = entries.findIndex((entry) => parseCardEntry(entry).id === String(cardId));
+
+  if (index === -1) {
+    entries.push(String(cardId));
+  } else {
+    const parsed = parseCardEntry(entries[index]);
+    entries[index] = `${parsed.id}*${parsed.count + 1}`;
+  }
+
+  updateTradeWantBox(entries);
+}
+
+function removeCollectionCardFromTradeWant(cardId) {
+  const tradeWant = document.getElementById("tradeWant");
+  if (!tradeWant) return;
+
+  const entries = parseTradeEntries(tradeWant.value);
+  const index = entries.findIndex((entry) => parseCardEntry(entry).id === String(cardId));
+  if (index === -1) return;
+
+  const parsed = parseCardEntry(entries[index]);
+  if (parsed.count <= 1) {
+    entries.splice(index, 1);
+  } else {
+    entries[index] = `${parsed.id}*${parsed.count - 1}`;
+  }
+
+  updateTradeWantBox(entries);
 }
 
 function showCollection() {
@@ -319,6 +408,12 @@ function showCollection() {
             value="${count}"
             onchange="handleCardCountChange('${card.id}', this.value)"
           >
+          <div class="collection-trade-actions">
+            <button type="button" onclick="addCollectionCardToTradeGive('${card.id}')">譲＋</button>
+            <button type="button" onclick="removeCollectionCardFromTradeGive('${card.id}')">譲－</button>
+            <button type="button" onclick="addCollectionCardToTradeWant('${card.id}')">求＋</button>
+            <button type="button" onclick="removeCollectionCardFromTradeWant('${card.id}')">求－</button>
+          </div>
         </div>
       `;
     })
@@ -672,7 +767,9 @@ function toggleBackground() {
   }
 }
 
-function buildTradeText() {
+const TWITTER_TEXT_LIMIT = 280;
+
+function buildFullTradeText() {
   const giveRaw = document.getElementById("tradeGive")?.value || "";
   const wantRaw = document.getElementById("tradeWant")?.value || "";
   const give = convertIdsToCompactList(giveRaw) || "なし";
@@ -691,15 +788,48 @@ function buildTradeText() {
 #櫻坂TCGトレード #櫻坂TCG掲示板`;
 }
 
-function previewTradeText() {
+function buildCompactTradeText() {
+  const giveRaw = document.getElementById("tradeGive")?.value || "";
+  const wantRaw = document.getElementById("tradeWant")?.value || "";
+  const give = convertIdsToCompactList(giveRaw) || "なし";
+  const want = convertIdsToCompactList(wantRaw) || "なし";
+  const method = shortenTradeValues(getCheckedValues("tradeMethod")) || "未入力";
+  const place = getCheckedValues("tradePlace").join(",") || "未入力";
+  const oshi = getCheckedValues("tradeOshi").join(",") || "未入力";
+
+  return `【櫻坂TCG】
+譲 ${give}
+求 ${want}
+方 ${method}
+場 ${place}
+推 ${oshi}
+#櫻坂TCGトレード`;
+}
+
+function buildTradeText() {
+  const fullText = buildFullTradeText();
+  if (fullText.length <= TWITTER_TEXT_LIMIT) return fullText;
+  return buildCompactTradeText();
+}
+
+function updateTradePreview(text) {
   const tradePreview = document.getElementById("tradePreview");
-  if (tradePreview) tradePreview.value = buildTradeText();
+  if (tradePreview) tradePreview.value = text;
+
+  const tradeTextCount = document.getElementById("tradeTextCount");
+  if (tradeTextCount) {
+    const overText = text.length > TWITTER_TEXT_LIMIT ? "（長すぎます）" : "";
+    tradeTextCount.textContent = `${text.length}/${TWITTER_TEXT_LIMIT}文字 ${overText}`;
+  }
+}
+
+function previewTradeText() {
+  updateTradePreview(buildTradeText());
 }
 
 function copyTradeText() {
   const text = buildTradeText();
-  const tradePreview = document.getElementById("tradePreview");
-  if (tradePreview) tradePreview.value = text;
+  updateTradePreview(text);
 
   navigator.clipboard
     .writeText(text)
@@ -713,8 +843,12 @@ function copyTradeText() {
 
 function postTrade() {
   const text = buildTradeText();
-  const tradePreview = document.getElementById("tradePreview");
-  if (tradePreview) tradePreview.value = text;
+  updateTradePreview(text);
+
+  if (text.length > TWITTER_TEXT_LIMIT) {
+    alert("投稿文が280文字を超えています。カード枚数を減らすか、推し・場所などを短くしてください。");
+    return;
+  }
 
   const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
   window.open(url, "_blank");
