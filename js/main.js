@@ -220,6 +220,7 @@ function setAllCardsRarityFilter(nextFilter) {
     "": "allCardsRarityAll",
     SC: "allCardsRaritySC",
     PR: "allCardsRarityPR",
+    SR: "allCardsRaritySR",
     "R+": "allCardsRarityRPlus",
     "N+": "allCardsRarityNPlus",
   };
@@ -262,6 +263,7 @@ function setCollectionRarityFilter(nextFilter) {
     "": "collectionRarityAll",
     SC: "collectionRaritySC",
     PR: "collectionRarityPR",
+    SR: "allCardsRaritySR",
     "R+": "collectionRarityRPlus",
     "N+": "collectionRarityNPlus",
   };
