@@ -137,7 +137,7 @@
  { id: "134", name: "石森璃花＆向井純葉", color: "黒", cost: 4, power: 4500, hit: 1, suit: "♤", type: "unit",keyWord: ["ブライト"], rarity: "R+", generation: "3期"  ,img:"images/134.jpg"},
  { id: "135", name: "遠藤理子＆谷口愛季", color: "青", cost: 5, power: 5500, hit: 1, suit: "♧", type: "unit/buster",subType: ["バスター"],keyWord: ["ブリッツ","パワー"], rarity: "R+", generation: "3期" ,img:"images/135.jpg" },
  { id: "136", name: "小田倉麗奈＆守屋麗奈", color: "黒", cost: 5, power: 6000, hit: 1, suit: "♤", type: "unit/buster",subType: ["バスター"],keyWord: ["パワー"], rarity: "R+", generation: "2期＆3期"  ,img:"images/136.jpg"},
- { id: "137", name: "小島 凪紗＆小田倉麗奈", color: "赤", cost: 4, power: 6000, hit: 1, suit: "♡", type: "unit",subType: ["バスター"],keyWord: ["バーサーク,"パワー"], rarity: "R+", generation: "3期" ,img:"images/137.jpg" },
+ { id: "137", name: "小島 凪紗＆小田倉麗奈", color: "赤", cost: 4, power: 6000, hit: 1, suit: "♡", type: "unit/buster",subType: ["バスター"],keyWord: ["バーサーク","パワー"], rarity: "R+", generation: "3期" ,img:"images/137.jpg" },
  { id: "138", name: "谷口愛季＆田村保乃", color: "青", cost: 7, power: 6500, hit: 2, suit: "♤", type: "unit",subType: ["バスター"],keyWord: ["ブライト","ヒット"], rarity: "R+", generation: "2期＆3期"  ,img:"images/138.jpg"},
  { id: "139", name: "中嶋優月＆増本綺良", color: "青", cost: 4, power: 3500, hit: 1, suit: "♧", type: "unit",keyWord: ["ブライト"], rarity: "R+", generation: "2期＆3期" ,img:"images/139.jpg" },
  { id: "140", name: "的野美青＆村井優", color: "赤", cost: 6, power: 8000, hit: 2, suit: "♡", type: "unit",keyWord: ["バーサーク"], rarity: "R+", generation: "3期"  ,img:"images/140.jpg"},
