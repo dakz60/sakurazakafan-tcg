@@ -141,7 +141,7 @@
  { id: "138", name: "谷口愛季＆田村保乃", color: "青", cost: 7, power: 6500, hit: 2, suit: "♤", type: "unit",subType: ["バスター"],keyWord: ["ブライト","ヒット"], rarity: "R+", generation: "2期＆3期"  ,img:"images/138.jpg"},
  { id: "139", name: "中嶋優月＆増本綺良", color: "青", cost: 4, power: 3500, hit: 1, suit: "♧", type: "unit", rarity: "R+", generation: "2期＆3期" ,img:"images/139.jpg" },
  { id: "140", name: "的野美青＆村井優", color: "赤", cost: 6, power: 8000, hit: 2, suit: "♡", type: "unit", rarity: "R+", generation: "3期"  ,img:"images/140.jpg"},
- { id: "141", name: "向井純葉＆大園玲", color: "黒", cost: 4, power: 3500, hit: 1, suit: "♢", type: "unit", subType: ["バスター"], rarity: "R+", generation: "2期＆3期"  ,img:"images/141.jpg"},
+ { id: "141", name: "向井純葉＆大園玲", color: "黒", cost: 4, power: 3500, hit: 1, suit: "♢", type: "unit", subType: ["バスター"], keyWord: ["ブライト","パワー"], rarity: "R+", generation: "2期＆3期"  ,img:"images/141.jpg"},
  { id: "142", name: "村井優＆石森璃花", color: "青", cost: 2, power: 2500, hit: 1, suit: "♧", type: "unit", keyWord: ["スカウト","登場時"], rarity: "R+", generation: "3期"  ,img:"images/142.jpg"},
  { id: "143", name: "村山美羽＆小島 凪紗", color: "白", cost: 2, power: 2500, hit: 1, suit: "♢", type: "unit", rarity: "R+", generation: "3期" ,img:"images/143.jpg" }, 
  { id: "144",name: "山下瞳月＆的野美青", color: "赤", cost: 5, power: 5500, hit: 1, suit: "♢", type: "unit/buster",subType: ["バスター"], rarity: "R+", generation: "3期"  ,img:"images/144.jpg"},
