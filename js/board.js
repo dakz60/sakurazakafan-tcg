@@ -16,6 +16,13 @@ function renderBoardCardImages(entries) {
 
   return entries
     .map((entry) => {
+      const specialEntries = ["未所持カード", "他相談", "相談"];
+      const rawEntry = String(entry || "").trim();
+
+      if (specialEntries.includes(rawEntry)) {
+        return `<div class="board-card-note">${rawEntry}</div>`;
+      }
+
       const { id, count } = parseCardEntry(entry);
       const card = findCardById(id);
 
@@ -73,26 +80,26 @@ function renderBoardPost(post) {
   const place = (post.place || []).join("、") || "なし";
   const oshi = (post.oshi || []).join("、") || "なし";
   const twitterLink = post.twitterUrl
-    ? `<div><b>X：</b><a href="${post.twitterUrl}" target="_blank" rel="noopener noreferrer">投稿を見る</a></div>`
+    ? `<div><b>X:</b><a href="${post.twitterUrl}" target="_blank" rel="noopener noreferrer">投稿を見る</a></div>`
     : "";
 
   return `
     <div class="board-post">
-      <div><b>譲：</b>${give}</div>
+      <div><b>譲:</b>${give}</div>
       <div class="board-card-section">
         <div class="board-card-section-title">譲カード</div>
         <div class="board-card-grid">${giveImages}</div>
       </div>
 
-      <div><b>求：</b>${want}</div>
+      <div><b>求:</b>${want}</div>
       <div class="board-card-section">
         <div class="board-card-section-title">求カード</div>
         <div class="board-card-grid">${wantImages}</div>
       </div>
 
-      <div><b>方法：</b>${method}</div>
-      <div><b>場所：</b>${place}</div>
-      <div><b>推し：</b>${oshi}</div>
+      <div><b>方法:</b>${method}</div>
+      <div><b>場所:</b>${place}</div>
+      <div><b>推し:</b>${oshi}</div>
       ${twitterLink}
     </div>
   `;
