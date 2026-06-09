@@ -1,9 +1,9 @@
 let deck = [];
 let territoryCardId = null;
 let collectionFilter = "all";
-let collectionRarityFilter = "";
 let allCardsOwnershipFilter = "all";
-let allCardsRarityFilter = "";
+let collectionRarityFilters = [];
+let allCardsRarityFilters = [];
 
 function openTab(tabId, buttonEl) {
   document.querySelectorAll("button.tab").forEach((button) => button.classList.remove("active"));
@@ -173,7 +173,7 @@ function showAllCards() {
       const count = getCardCount(card.id);
       if (allCardsOwnershipFilter === "owned" && count === 0) return false;
       if (allCardsOwnershipFilter === "unowned" && count > 0) return false;
-      if (allCardsRarityFilter && card.rarity !== allCardsRarityFilter) return false;
+      if (allCardsRarityFilters.length > 0 && !allCardsRarityFilters.includes(card.rarity)) return false;
       return true;
     })
     .map((card) => {
@@ -214,7 +214,13 @@ function setAllCardsOwnershipFilter(nextFilter) {
 }
 
 function setAllCardsRarityFilter(nextFilter) {
-  allCardsRarityFilter = nextFilter;
+  if (nextFilter === "") {
+    allCardsRarityFilters = [];
+  } else if (allCardsRarityFilters.includes(nextFilter)) {
+    allCardsRarityFilters = allCardsRarityFilters.filter((filter) => filter !== nextFilter);
+  } else {
+    allCardsRarityFilters = [...allCardsRarityFilters, nextFilter];
+  }
 
   const buttonMap = {
     "": "allCardsRarityAll",
@@ -222,16 +228,17 @@ function setAllCardsRarityFilter(nextFilter) {
     PR: "allCardsRarityPR",
     SR: "allCardsRaritySR",
     "R+": "allCardsRarityRPlus",
+    R: "allCardsRarityR",
     "N+": "allCardsRarityNPlus",
+    N: "allCardsRarityN",
   };
 
-  Object.values(buttonMap).forEach((id) => {
+  Object.entries(buttonMap).forEach(([filter, id]) => {
     const button = document.getElementById(id);
-    if (button) button.classList.remove("active");
+    if (!button) return;
+    const isActive = filter === "" ? allCardsRarityFilters.length === 0 : allCardsRarityFilters.includes(filter);
+    button.classList.toggle("active", isActive);
   });
-
-  const activeButton = document.getElementById(buttonMap[nextFilter]);
-  if (activeButton) activeButton.classList.add("active");
 
   showAllCards();
 }
@@ -257,24 +264,31 @@ function setCollectionFilter(nextFilter) {
 }
 
 function setCollectionRarityFilter(nextFilter) {
-  collectionRarityFilter = nextFilter;
+  if (nextFilter === "") {
+    collectionRarityFilters = [];
+  } else if (collectionRarityFilters.includes(nextFilter)) {
+    collectionRarityFilters = collectionRarityFilters.filter((filter) => filter !== nextFilter);
+  } else {
+    collectionRarityFilters = [...collectionRarityFilters, nextFilter];
+  }
 
   const buttonMap = {
     "": "collectionRarityAll",
     SC: "collectionRaritySC",
     PR: "collectionRarityPR",
-    SR: "allCardsRaritySR",
+    SR: "collectionRaritySR",
     "R+": "collectionRarityRPlus",
+    R: "collectionRarityR",
     "N+": "collectionRarityNPlus",
+    N: "collectionRarityN",
   };
 
-  Object.values(buttonMap).forEach((id) => {
+  Object.entries(buttonMap).forEach(([filter, id]) => {
     const button = document.getElementById(id);
-    if (button) button.classList.remove("active");
+    if (!button) return;
+    const isActive = filter === "" ? collectionRarityFilters.length === 0 : collectionRarityFilters.includes(filter);
+    button.classList.toggle("active", isActive);
   });
-
-  const activeButton = document.getElementById(buttonMap[nextFilter]);
-  if (activeButton) activeButton.classList.add("active");
 
   showCollection();
 }
@@ -393,7 +407,7 @@ function showCollection() {
 
       if (collectionFilter === "owned" && count === 0) return false;
       if (collectionFilter === "unowned" && count > 0) return false;
-      if (collectionRarityFilter && card.rarity !== collectionRarityFilter) return false;
+      if (collectionRarityFilters.length > 0 && !collectionRarityFilters.includes(card.rarity)) return false;
 
       return true;
     })
