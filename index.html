@@ -1,363 +1,380 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>櫻坂TCG◢ ファンサイト</title>
-<link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>櫻坂TCG ファンサイト</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<h1>櫻坂TCG◢ ファンサイト</h1>
+  <h1>櫻坂TCG ファンサイト</h1>
 
-<div class="tab-row">
-  <button class="tab active" onclick="openTab('deck', this)">デッキ作成</button>
-  <button class="tab" onclick="openTab('collection', this)">コレクション</button>
-  <button class="tab" onclick="openTab('allcards', this)">カード一覧</button>
-  <button class="tab" onclick="openTab('trade', this)">トレード</button>
-  <button class="tab" onclick="openTab('board', this)">掲示板</button>
-</div>
+  <div class="tab-row">
+    <button class="tab active" onclick="openTab('deck', this)">デッキ作成</button>
+    <button class="tab" onclick="openTab('collection', this)">コレクション</button>
+    <button class="tab" onclick="openTab('allcards', this)">カード一覧</button>
+    <button class="tab" onclick="openTab('trade', this)">トレード</button>
+    <button class="tab" onclick="openTab('board', this)">掲示板</button>
+  </div>
 
-<div id="deck" class="tab-content active">
-  <h2>デッキ作成</h2>
-  <div id="releaseCountdown"></div>
+  <div id="deck" class="tab-content active">
+    <h2>デッキ作成</h2>
+    <div id="releaseCountdown"></div>
 
-  <div class="flex-row">
-    <div style="flex:2;" class="flex-col">
-      <div class="search-section">
-        <label>コスト：<input type="number" id="costMin" placeholder="最小"> 〜 <input type="number" id="costMax" placeholder="最大"></label>
-        <label>パワー：<input type="number" id="powerMin" placeholder="最小"> 〜 <input type="number" id="powerMax" placeholder="最大"></label>
-        <label>ヒット：<input type="number" id="hitMin" placeholder="最小"> 〜 <input type="number" id="hitMax" placeholder="最大"></label>
+    <div class="flex-row">
+      <div style="flex:2;" class="flex-col">
+        <div class="search-section">
+          <label>コスト:
+            <input type="number" id="costMin" placeholder="最小">
+            ～
+            <input type="number" id="costMax" placeholder="最大">
+          </label>
+          <label>パワー:
+            <input type="number" id="powerMin" placeholder="最小">
+            ～
+            <input type="number" id="powerMax" placeholder="最大">
+          </label>
+          <label>ヒット:
+            <input type="number" id="hitMin" placeholder="最小">
+            ～
+            <input type="number" id="hitMax" placeholder="最大">
+          </label>
+        </div>
+
+        <div class="search-section">
+          <label>タイプ:
+            <select id="typeFilter">
+              <option value="">すべて</option>
+              <option value="unit">ユニット</option>
+              <option value="ace">エース</option>
+              <option value="command">コマンド</option>
+              <option value="territory">テリトリー</option>
+            </select>
+          </label>
+
+          <label>色:
+            <select id="colorFilter">
+              <option value="">すべて</option>
+              <option value="白">白</option>
+              <option value="赤">赤</option>
+              <option value="青">青</option>
+              <option value="黒">黒</option>
+            </select>
+          </label>
+
+          <label>スート:
+            <select id="suitFilter">
+              <option value="">すべて</option>
+              <option value="♡">♡</option>
+              <option value="♢">♢</option>
+              <option value="♤">♤</option>
+              <option value="♧">♧</option>
+            </select>
+          </label>
+
+          <label>期別:
+            <select id="generationFilter">
+              <option value="">すべて</option>
+              <option value="2期">2期</option>
+              <option value="3期">3期</option>
+              <option value="4期">4期</option>
+            </select>
+          </label>
+
+          <label>トリガー:
+            <select id="subTypeFilter">
+              <option value="">すべて</option>
+              <option value="バスター">バスター</option>
+              <option value="ショット">ショット</option>
+              <option value="その他">その他</option>
+            </select>
+          </label>
+
+          <label>キーワード:
+            <select id="keyWordFilter">
+              <option value="">すべて</option>
+              <option value="ブライト">ブライト</option>
+              <option value="ブリッツ">ブリッツ</option>
+              <option value="パワー">パワー</option>
+              <option value="デコイ">デコイ</option>
+              <option value="バーサーク">バーサーク</option>
+              <option value="スカウト">スカウト</option>
+              <option value="スカウト2">スカウト2</option>
+              <option value="ヒット">ヒット</option>
+              <option value="回復">回復</option>
+              <option value="登場時">登場時</option>
+              <option value="ドロップ時">ドロップ時</option>
+            </select>
+          </label>
+
+          <label>レアリティ:
+            <select id="rarityFilter">
+              <option value="">すべて</option>
+              <option value="PR">PR</option>
+              <option value="BT">BT</option>
+              <option value="R">R</option>
+              <option value="R+">R+</option>
+              <option value="SC">SC</option>
+              <option value="N">N</option>
+              <option value="N+">N+</option>
+              <option value="SR">SR</option>
+            </select>
+          </label>
+
+          <label>カードID:
+            <input type="text" id="cardIdSearchBox" placeholder="IDで検索">
+          </label>
+        </div>
+
+        <div class="search-section">
+          <label>カード名検索:
+            <input type="text" id="searchBox" placeholder="カード名を入力" list="cardList">
+            <datalist id="cardList"></datalist>
+          </label>
+          <label>効果文検索:
+            <input type="text" id="effectSearchBox" placeholder="効果で検索">
+          </label>
+          <button onclick="search()">検索</button>
+        </div>
       </div>
 
-      <div class="search-section">
-        <label>タイプ：
-          <select id="typeFilter">
-            <option value="">すべて</option>
-            <option value="unit">ユニット</option>
-            <option value="ace">エース</option>
-            <option value="command">コマンド</option>
-            <option value="territory">テリトリー</option>
-          </select>
-        </label>
-        <label>色：
-          <select id="colorFilter">
-            <option value="">すべて</option>
-            <option value="白">白</option>
-            <option value="赤">赤</option>
-            <option value="青">青</option>
-            <option value="黒">黒</option>
-          </select>
-        </label>
-        <label>スート：
-          <select id="suitFilter">
-            <option value="">すべて</option>
-            <option value="♡">♡</option>
-            <option value="♢">♢</option>
-            <option value="♤">♤</option>
-            <option value="♧">♧</option>
-          </select>
-        </label>
-        <label>期別：
-          <select id="generationFilter">
-            <option value="">すべて</option>
-            <option value="2期">2期</option>
-            <option value="3期">3期</option>
-            <option value="4期">4期</option>
-          </select>
-        </label>
-        <label>トリガー：
-          <select id="subTypeFilter">
-            <option value="">すべて</option>
-            <option value="バスター">バスター</option>
-            <option value="ショット">ショット</option>
-            <option value="その他">その他</option>
-          </select>
-        </label>
-        <label>キーワード：
-          <select id="keyWordFilter">
-            <option value="">すべて</option>
-            <option value="ブライト">ブライト</option>
-            <option value="ブリッツ">ブリッツ</option>
-            <option value="パワー">パワー</option>
-            <option value="デコイ">デコイ</option>
-            <option value="バーサーク">バーサーク</option>
-            <option value="スカウト">スカウト</option>
-            <option value="スカウト2">スカウト2</option>
-            <option value="ヒット">ヒット</option>
-            <option value="回復">回復</option>
-            <option value="登場時">登場時</option>
-            <option value="ドロップ時">ドロップ時</option>
-          </select>
-        </label>
-        <label>レアリティ：
-          <select id="rarityFilter">
-            <option value="">すべて</option>
-            <option value="PR">PR</option>
-            <option value="BT">BT</option>
-            <option value="R">R</option>
-            <option value="R+">R+</option>
-            <option value="SC">SC</option>
-            <option value="N">N</option>
-            <option value="N+">N+</option>
-            <option value="SR">SR</option>
-          </select>
-        </label>
-        <label>カードID：
-          <input type="text" id="cardIdSearchBox" placeholder="IDで検索">
-        </label>
-      </div>
-
-      <div class="search-section">
-        <label>カード名検索：
-          <input type="text" id="searchBox" placeholder="カード名を入力" list="cardList">
-          <datalist id="cardList"></datalist>
-        </label>
-        <label>効果検索：
-          <input type="text" id="effectSearchBox" placeholder="効果で検索">
-        </label>
-        <button onclick="search()">検索</button>
+      <div class="daily-card-panel">
+        <h3>ランダムカード表示</h3>
+        <div id="dailyCard"></div>
+        <div class="daily-card-actions">
+          <button onclick="rerollDailyCard()">再抽選</button>
+          <input type="text" id="manualCardId" placeholder="カードID">
+          <button onclick="showManualCard()">表示</button>
+        </div>
       </div>
     </div>
 
-    <div class="daily-card-panel">
-      <h3>🌸ランダムカード🌸</h3>
-      <div id="dailyCard"></div>
-      <div class="daily-card-actions">
-        <button onclick="rerollDailyCard()">🌸</button>
-        <input type="text" id="manualCardId" placeholder="カードID">
-        <button onclick="showManualCard()">表示</button>
+    <div class="flex-row">
+      <div style="flex:2;">
+        <h2>検索結果</h2>
+        <div id="result"></div>
+      </div>
+      <div style="flex:1;">
+        <h3>デッキ状況</h3>
+        <div id="deckStatus"></div>
       </div>
     </div>
-  </div>
 
-  <div class="flex-row">
-    <div style="flex:2;">
-      <h2>検索結果</h2>
-      <div id="result"></div>
+    <hr>
+
+    <div id="deckContainer" class="white-mode">
+      <div id="deckImages"></div>
+      <div id="territoryImage"></div>
     </div>
-    <div style="flex:1;">
-      <h3>デッキ状況</h3>
-      <div id="deckStatus"></div>
+
+    <button onclick="checkDeckRules()">ルールチェック</button>
+    <button onclick="toggleBackground()">on/off</button>
+    <div id="deckCheckResult"></div>
+
+    <h2>デッキコード</h2>
+    <textarea id="deckCodeBox" placeholder="ここにデッキコードを入力"></textarea><br>
+    <button onclick="generateDeckCode()">デッキコード生成</button>
+    <button onclick="loadDeckFromCode()">デッキ復元</button>
+    <button onclick="copyDeckCode()">コピー</button>
+    <div id="deckCodeResult"></div>
+  </div>
+
+  <div id="collection" class="tab-content">
+    <h2>コレクション</h2>
+
+    <div class="filter-button-row">
+      <button id="collectionFilterAll" class="filter-button active" onclick="setCollectionFilter('all')">すべて</button>
+      <button id="collectionFilterOwned" class="filter-button" onclick="setCollectionFilter('owned')">所有</button>
+      <button id="collectionFilterUnowned" class="filter-button" onclick="setCollectionFilter('unowned')">未所有</button>
     </div>
+
+    <div class="filter-button-row">
+      <button id="collectionRarityAll" class="filter-button active" onclick="setCollectionRarityFilter('')">全レアリティ</button>
+      <button id="collectionRaritySC" class="filter-button" onclick="setCollectionRarityFilter('SC')">SC</button>
+      <button id="collectionRarityPR" class="filter-button" onclick="setCollectionRarityFilter('PR')">PR</button>
+      <button id="collectionRaritySR" class="filter-button" onclick="setCollectionRarityFilter('SR')">SR</button>
+      <button id="collectionRarityRPlus" class="filter-button" onclick="setCollectionRarityFilter('R+')">R+</button>
+      <button id="collectionRarityR" class="filter-button" onclick="setCollectionRarityFilter('R')">R</button>
+      <button id="collectionRarityNPlus" class="filter-button" onclick="setCollectionRarityFilter('N+')">N+</button>
+      <button id="collectionRarityN" class="filter-button" onclick="setCollectionRarityFilter('N')">N</button>
+    </div>
+
+    <div id="collectionList"></div>
   </div>
 
-  <hr>
+  <div id="allcards" class="tab-content">
+    <h2>カード一覧</h2>
 
-  <div id="deckContainer" class="white-mode">
-    <div id="deckImages"></div>
-    <div id="territoryImage"></div>
+    <div class="filter-button-row">
+      <button id="allCardsOwnershipAll" class="filter-button active" onclick="setAllCardsOwnershipFilter('all')">すべて</button>
+      <button id="allCardsOwnershipOwned" class="filter-button" onclick="setAllCardsOwnershipFilter('owned')">所持</button>
+      <button id="allCardsOwnershipUnowned" class="filter-button" onclick="setAllCardsOwnershipFilter('unowned')">未所持</button>
+    </div>
+
+    <div class="filter-button-row">
+      <button id="allCardsRarityAll" class="filter-button active" onclick="setAllCardsRarityFilter('')">全レアリティ</button>
+      <button id="allCardsRaritySC" class="filter-button" onclick="setAllCardsRarityFilter('SC')">SC</button>
+      <button id="allCardsRarityPR" class="filter-button" onclick="setAllCardsRarityFilter('PR')">PR</button>
+      <button id="allCardsRaritySR" class="filter-button" onclick="setAllCardsRarityFilter('SR')">SR</button>
+      <button id="allCardsRarityRPlus" class="filter-button" onclick="setAllCardsRarityFilter('R+')">R+</button>
+      <button id="allCardsRarityR" class="filter-button" onclick="setAllCardsRarityFilter('R')">R</button>
+      <button id="allCardsRarityNPlus" class="filter-button" onclick="setAllCardsRarityFilter('N+')">N+</button>
+      <button id="allCardsRarityN" class="filter-button" onclick="setAllCardsRarityFilter('N')">N</button>
+    </div>
+
+    <div id="cardListAll"></div>
   </div>
 
-  <button onclick="checkDeckRules()">完成チェック</button>
-  <button onclick="toggleBackground()">on/off</button>
-  <div id="deckCheckResult"></div>
+  <div id="trade" class="tab-content">
+    <h2>トレード</h2>
 
-  <h2>デッキコード</h2>
-  <textarea id="deckCodeBox" placeholder="ここにデッキコードを入力"></textarea><br>
-  <button onclick="generateDeckCode()">デッキコード生成</button>
-  <button onclick="loadDeckFromCode()">デッキ復元</button>
-  <button onclick="copyDeckCode()">コピー</button>
-  <div id="deckCodeResult"></div>
-</div>
-
-<div id="collection" class="tab-content">
-  <h2>コレクション</h2>
-  <div class="filter-button-row">
-    <button id="collectionFilterAll" class="filter-button active" onclick="setCollectionFilter('all')">すべて</button>
-    <button id="collectionFilterOwned" class="filter-button" onclick="setCollectionFilter('owned')">所有</button>
-    <button id="collectionFilterUnowned" class="filter-button" onclick="setCollectionFilter('unowned')">未所有</button>
-  </div>
-  <div class="filter-button-row">
-    <button id="collectionRarityAll" class="filter-button active" onclick="setCollectionRarityFilter('')">全レアリティ</button>
-    <button id="collectionRaritySC" class="filter-button" onclick="setCollectionRarityFilter('SC')">SC</button>
-    <button id="collectionRarityPR" class="filter-button" onclick="setCollectionRarityFilter('PR')">PR</button>
-    <button id="collectionRaritySR" class="filter-button" onclick="setCollectionRarityFilter('SR')">SR</button>
-    <button id="collectionRarityRPlus" class="filter-button" onclick="setCollectionRarityFilter('R+')">R+</button>
-    <button id="collectionRarityNPlus" class="filter-button" onclick="setCollectionRarityFilter('N+')">N+</button>
-    <button id="collectionRarityR" class="filter-button" onclick="setCollectionRarityFilter('R')">R</button>
-    <button id="collectionRarityN" class="filter-button" onclick="setCollectionRarityFilter('N')">N</button>
-  </div>
-  <div id="collectionList"></div>
-</div>
-
-<div id="allcards" class="tab-content">
-  <h2>カード一覧</h2>
-  <div class="filter-button-row">
-    <button id="allCardsOwnershipAll" class="filter-button active" onclick="setAllCardsOwnershipFilter('all')">すべて</button>
-    <button id="allCardsOwnershipOwned" class="filter-button" onclick="setAllCardsOwnershipFilter('owned')">所持</button>
-    <button id="allCardsOwnershipUnowned" class="filter-button" onclick="setAllCardsOwnershipFilter('unowned')">未所持</button>
-  </div>
-  <div class="filter-button-row">
-    <button id="allCardsRarityAll" class="filter-button active" onclick="setAllCardsRarityFilter('')">全レアリティ</button>
-    <button id="allCardsRaritySC" class="filter-button" onclick="setAllCardsRarityFilter('SC')">SC</button>
-    <button id="allCardsRarityPR" class="filter-button" onclick="setAllCardsRarityFilter('PR')">PR</button>
-    <button id="allCardsRaritySR" class="filter-button" onclick="setAllCardsRarityFilter('SR')">SR</button>
-    <button id="allCardsRarityRPlus" class="filter-button" onclick="setAllCardsRarityFilter('R+')">R+</button>
-    <button id="allCardsRarityNPlus" class="filter-button" onclick="setAllCardsRarityFilter('N+')">N+</button>
-    <button id="allCardsRarityR" class="filter-button" onclick="setAllCardsRarityFilter('R')">R</button>
-    <button id="allCardsRarityN" class="filter-button" onclick="setAllCardsRarityFilter('N')">N</button>
-  </div>
-  <div id="cardListAll"></div>
-</div>
-
-<div id="trade" class="tab-content">
-  <h2>トレード</h2>
-
-  <label>譲：
-    <textarea id="tradeGive" rows="5" placeholder="カードID または カードID*枚数"></textarea>
-  </label>
-
-  <label>求：
-    <textarea id="tradeWant" rows="5" placeholder="未所持のカード000,他相談999"></textarea>
-  </label>
-
-  <label>方法：</label>
-  <div class="board-check-group">
-    <label><input type="checkbox" name="tradeMethod" value="会場手渡し">会場手渡し</label>
-    <label><input type="checkbox" name="tradeMethod" value="都内手渡し">都内手渡し</label>
-    <label><input type="checkbox" name="tradeMethod" value="郵送">郵送</label>
-  </div>
-
-  <label>場所：</label>
-  <div class="board-check-group">
-    <label><input type="checkbox" name="tradePlace" value="京都リアミ">京都リアミ</label>
-    <label><input type="checkbox" name="tradePlace" value="幕張リアミ">幕張リアミ</label>
-    <label><input type="checkbox" name="tradePlace" value="バクラ">バクラ</label>
-    <label><input type="checkbox" name="tradePlace" value="4期ラ">4期ラ</label>
-    <label><input type="checkbox" name="tradePlace" value="ツアー静岡">ツアー静岡</label>
-    <label><input type="checkbox" name="tradePlace" value="ツアー兵庫">ツアー兵庫</label>
-    <label><input type="checkbox" name="tradePlace" value="ツアー広島">ツアー広島</label>
-    <label><input type="checkbox" name="tradePlace" value="ツアー千葉">ツアー千葉</label>
-    <label><input type="checkbox" name="tradePlace" value="ツアー宮城">ツアー宮城</label>
-    <label><input type="checkbox" name="tradePlace" value="ツアー香川">ツアー香川</label>
-  </div>
-
-  <label>メンバー：</label>
-  <div class="board-check-group">
-    <label><input type="checkbox" name="tradeOshi" value="井上梨名">井上梨名</label>
-    <label><input type="checkbox" name="tradeOshi" value="遠藤光莉">遠藤光莉</label>
-    <label><input type="checkbox" name="tradeOshi" value="大園玲">大園玲</label>
-    <label><input type="checkbox" name="tradeOshi" value="大沼晶保">大沼晶保</label>
-    <label><input type="checkbox" name="tradeOshi" value="幸阪茉里乃">幸阪茉里乃</label>
-    <label><input type="checkbox" name="tradeOshi" value="武元唯衣">武元唯衣</label>
-    <label><input type="checkbox" name="tradeOshi" value="田村保乃">田村保乃</label>
-    <label><input type="checkbox" name="tradeOshi" value="藤吉夏鈴">藤吉夏鈴</label>
-    <label><input type="checkbox" name="tradeOshi" value="増本綺良">増本綺良</label>
-    <label><input type="checkbox" name="tradeOshi" value="松田里奈">松田里奈</label>
-    <label><input type="checkbox" name="tradeOshi" value="森田ひかる">森田ひかる</label>
-    <label><input type="checkbox" name="tradeOshi" value="守屋麗奈">守屋麗奈</label>
-    <label><input type="checkbox" name="tradeOshi" value="山﨑天">山﨑天</label>
-    <label><input type="checkbox" name="tradeOshi" value="石森璃花">石森璃花</label>
-    <label><input type="checkbox" name="tradeOshi" value="遠藤理子">遠藤理子</label>
-    <label><input type="checkbox" name="tradeOshi" value="小田倉麗奈">小田倉麗奈</label>
-    <label><input type="checkbox" name="tradeOshi" value="小島凪紗">小島凪紗</label>
-    <label><input type="checkbox" name="tradeOshi" value="谷口愛季">谷口愛季</label>
-    <label><input type="checkbox" name="tradeOshi" value="中嶋優月">中嶋優月</label>
-    <label><input type="checkbox" name="tradeOshi" value="的野美青">的野美青</label>
-    <label><input type="checkbox" name="tradeOshi" value="向井純葉">向井純葉</label>
-    <label><input type="checkbox" name="tradeOshi" value="村井優">村井優</label>
-    <label><input type="checkbox" name="tradeOshi" value="村山美羽">村山美羽</label>
-    <label><input type="checkbox" name="tradeOshi" value="山下瞳月">山下瞳月</label>
-    <label><input type="checkbox" name="tradeOshi" value="浅井恋乃未">浅井恋乃未</label>
-    <label><input type="checkbox" name="tradeOshi" value="稲熊ひな">稲熊ひな</label>
-    <label><input type="checkbox" name="tradeOshi" value="勝又春">勝又春</label>
-    <label><input type="checkbox" name="tradeOshi" value="佐藤愛桜">佐藤愛桜</label>
-    <label><input type="checkbox" name="tradeOshi" value="中川智尋">中川智尋</label>
-    <label><input type="checkbox" name="tradeOshi" value="松本和子">松本和子</label>
-    <label><input type="checkbox" name="tradeOshi" value="目黒陽色">目黒陽色</label>
-    <label><input type="checkbox" name="tradeOshi" value="山川宇衣">山川宇衣</label>
-    <label><input type="checkbox" name="tradeOshi" value="山田桃実">山田桃実</label>
-  </div>
-
-  <div class="trade-actions">
-    <button onclick="previewTradeText()">投稿文作成</button>
-    <button onclick="copyTradeText()">コピー</button>
-    <button onclick="postTrade()">Xに投稿</button>
-  </div>
-
-  <textarea id="tradePreview" rows="8" placeholder="ここに投稿文が表示されます"></textarea>
-</div>
-
-<div id="board" class="tab-content">
-  <h2>掲示板</h2>
-
-  <div class="search-section board-search-grid">
-    <label>譲検索1：
-      <input type="text" id="boardGiveSearch1" placeholder="メンバー名">
-    </label>
-    <label>譲検索2：
-      <input type="text" id="boardGiveSearch2" placeholder="メンバー名">
-    </label>
-    <label>譲検索3：
-      <select id="boardGiveSearch3">
-        <option value="">レアリティ</option>
-        <option value="PR">PR</option>
-        <option value="BT">BT</option>
-        <option value="R">R</option>
-        <option value="R+">R+</option>
-        <option value="SC">SC</option>
-        <option value="N">N</option>
-        <option value="N+">N+</option>
-        <option value="SR">SR</option>
-      </select>
+    <label>譲：
+      <textarea id="tradeGive" rows="5" placeholder="カードID または カードID*枚数"></textarea>
     </label>
 
-    <label>求検索1：
-      <input type="text" id="boardWantSearch1" placeholder="メンバー名">
+    <label>求：
+      <textarea id="tradeWant" rows="5" placeholder="未所持カード、他相談、カードID など"></textarea>
     </label>
-    <label>求検索2：
-      <input type="text" id="boardWantSearch2" placeholder="メンバー名">
-    </label>
-    <label>求検索3：
-      <select id="boardWantSearch3">
-        <option value="">レアリティ</option>
-        <option value="PR">PR</option>
-        <option value="BT">BT</option>
-        <option value="R">R</option>
-        <option value="R+">R+</option>
-        <option value="SC">SC</option>
-        <option value="N">N</option>
-        <option value="N+">N+</option>
-        <option value="SR">SR</option>
-      </select>
-    </label>
+
+    <label>方法：</label>
+    <div class="board-check-group">
+      <label><input type="checkbox" name="tradeMethod" value="会場手渡し">会場手渡し</label>
+      <label><input type="checkbox" name="tradeMethod" value="都内手渡し">都内手渡し</label>
+      <label><input type="checkbox" name="tradeMethod" value="郵送">郵送</label>
+    </div>
+
+    <label>場所：</label>
+    <div class="board-check-group">
+      <label><input type="checkbox" name="tradePlace" value="東京リアミ">東京リアミ</label>
+      <label><input type="checkbox" name="tradePlace" value="京都リアミ">京都リアミ</label>
+      <label><input type="checkbox" name="tradePlace" value="バクラ">バクラ</label>
+      <label><input type="checkbox" name="tradePlace" value="4thアニラ">4thアニラ</label>
+      <label><input type="checkbox" name="tradePlace" value="ツアー福岡">ツアー福岡</label>
+      <label><input type="checkbox" name="tradePlace" value="ツアー広島">ツアー広島</label>
+      <label><input type="checkbox" name="tradePlace" value="ツアー宮城">ツアー宮城</label>
+      <label><input type="checkbox" name="tradePlace" value="ツアー愛知">ツアー愛知</label>
+      <label><input type="checkbox" name="tradePlace" value="ツアー東京">ツアー東京</label>
+      <label><input type="checkbox" name="tradePlace" value="ツアー大阪">ツアー大阪</label>
+    </div>
+
+    <label>メンバー：</label>
+    <div class="board-check-group">
+      <label><input type="checkbox" name="tradeOshi" value="井上梨名">井上梨名</label>
+      <label><input type="checkbox" name="tradeOshi" value="遠藤光莉">遠藤光莉</label>
+      <label><input type="checkbox" name="tradeOshi" value="大園玲">大園玲</label>
+      <label><input type="checkbox" name="tradeOshi" value="大沼晶保">大沼晶保</label>
+      <label><input type="checkbox" name="tradeOshi" value="幸阪茉里乃">幸阪茉里乃</label>
+      <label><input type="checkbox" name="tradeOshi" value="武元唯衣">武元唯衣</label>
+      <label><input type="checkbox" name="tradeOshi" value="田村保乃">田村保乃</label>
+      <label><input type="checkbox" name="tradeOshi" value="藤吉夏鈴">藤吉夏鈴</label>
+      <label><input type="checkbox" name="tradeOshi" value="増本綺良">増本綺良</label>
+      <label><input type="checkbox" name="tradeOshi" value="松田里奈">松田里奈</label>
+      <label><input type="checkbox" name="tradeOshi" value="森田ひかる">森田ひかる</label>
+      <label><input type="checkbox" name="tradeOshi" value="守屋麗奈">守屋麗奈</label>
+      <label><input type="checkbox" name="tradeOshi" value="山﨑天">山﨑天</label>
+      <label><input type="checkbox" name="tradeOshi" value="石森璃花">石森璃花</label>
+      <label><input type="checkbox" name="tradeOshi" value="遠藤理子">遠藤理子</label>
+      <label><input type="checkbox" name="tradeOshi" value="小田倉麗奈">小田倉麗奈</label>
+      <label><input type="checkbox" name="tradeOshi" value="小島 凪紗">小島 凪紗</label>
+      <label><input type="checkbox" name="tradeOshi" value="谷口愛季">谷口愛季</label>
+      <label><input type="checkbox" name="tradeOshi" value="中嶋優月">中嶋優月</label>
+      <label><input type="checkbox" name="tradeOshi" value="的野美青">的野美青</label>
+      <label><input type="checkbox" name="tradeOshi" value="向井純葉">向井純葉</label>
+      <label><input type="checkbox" name="tradeOshi" value="村井優">村井優</label>
+      <label><input type="checkbox" name="tradeOshi" value="村山美羽">村山美羽</label>
+      <label><input type="checkbox" name="tradeOshi" value="山下瞳月">山下瞳月</label>
+    </div>
+
+    <div class="trade-actions">
+      <button onclick="previewTradeText()">投稿文プレビュー</button>
+      <button onclick="copyTradeText()">コピー</button>
+      <button onclick="postTrade()">Xに投稿</button>
+    </div>
+
+    <textarea id="tradePreview" rows="8" placeholder="ここに投稿文が表示されます"></textarea>
+    <div id="tradeTextCount"></div>
   </div>
 
-  <label>場所：</label>
-  <div class="board-check-group">
-    <label><input type="checkbox" name="boardPlace" value="京都リアミ">京都リアミ</label>
-    <label><input type="checkbox" name="boardPlace" value="幕張リアミ">幕張リアミ</label>
-    <label><input type="checkbox" name="boardPlace" value="バクラ">バクラ</label>
-    <label><input type="checkbox" name="boardPlace" value="4期ラ">4期ラ</label>
-    <label><input type="checkbox" name="boardPlace" value="ツアー静岡">ツアー静岡</label>
-    <label><input type="checkbox" name="boardPlace" value="ツアー兵庫">ツアー兵庫</label>
-    <label><input type="checkbox" name="boardPlace" value="ツアー広島">ツアー広島</label>
-    <label><input type="checkbox" name="boardPlace" value="ツアー千葉">ツアー千葉</label>
-    <label><input type="checkbox" name="boardPlace" value="ツアー宮城">ツアー宮城</label>
-    <label><input type="checkbox" name="boardPlace" value="ツアー香川">ツアー香川</label>
+  <div id="board" class="tab-content">
+    <h2>掲示板</h2>
+
+    <div class="search-section board-search-grid">
+      <label>譲検索1：
+        <input type="text" id="boardGiveSearch1" placeholder="メンバー名">
+      </label>
+      <label>譲検索2：
+        <input type="text" id="boardGiveSearch2" placeholder="メンバー名">
+      </label>
+      <label>譲検索3：
+        <select id="boardGiveSearch3">
+          <option value="">レアリティ</option>
+          <option value="PR">PR</option>
+          <option value="BT">BT</option>
+          <option value="R">R</option>
+          <option value="R+">R+</option>
+          <option value="SC">SC</option>
+          <option value="N">N</option>
+          <option value="N+">N+</option>
+          <option value="SR">SR</option>
+        </select>
+      </label>
+
+      <label>求検索1：
+        <input type="text" id="boardWantSearch1" placeholder="メンバー名">
+      </label>
+      <label>求検索2：
+        <input type="text" id="boardWantSearch2" placeholder="メンバー名">
+      </label>
+      <label>求検索3：
+        <select id="boardWantSearch3">
+          <option value="">レアリティ</option>
+          <option value="PR">PR</option>
+          <option value="BT">BT</option>
+          <option value="R">R</option>
+          <option value="R+">R+</option>
+          <option value="SC">SC</option>
+          <option value="N">N</option>
+          <option value="N+">N+</option>
+          <option value="SR">SR</option>
+        </select>
+      </label>
+    </div>
+
+    <label>場所：</label>
+    <div class="board-check-group">
+      <label><input type="checkbox" name="boardPlace" value="東京リアミ">東京リアミ</label>
+      <label><input type="checkbox" name="boardPlace" value="京都リアミ">京都リアミ</label>
+      <label><input type="checkbox" name="boardPlace" value="バクラ">バクラ</label>
+      <label><input type="checkbox" name="boardPlace" value="4thアニラ">4thアニラ</label>
+      <label><input type="checkbox" name="boardPlace" value="ツアー福岡">ツアー福岡</label>
+      <label><input type="checkbox" name="boardPlace" value="ツアー広島">ツアー広島</label>
+      <label><input type="checkbox" name="boardPlace" value="ツアー宮城">ツアー宮城</label>
+      <label><input type="checkbox" name="boardPlace" value="ツアー愛知">ツアー愛知</label>
+      <label><input type="checkbox" name="boardPlace" value="ツアー東京">ツアー東京</label>
+      <label><input type="checkbox" name="boardPlace" value="ツアー大阪">ツアー大阪</label>
+    </div>
+
+    <label>方法：</label>
+    <div class="board-check-group">
+      <label><input type="checkbox" name="boardMethod" value="会場手渡し">会場手渡し</label>
+      <label><input type="checkbox" name="boardMethod" value="都内手渡し">都内手渡し</label>
+      <label><input type="checkbox" name="boardMethod" value="郵送">郵送</label>
+    </div>
+
+    <div class="trade-actions">
+      <button onclick="showBoard()">検索</button>
+      <button onclick="resetBoardFilters()">リセット</button>
+    </div>
+
+    <div id="boardList"></div>
   </div>
 
-  <label>方法：</label>
-  <div class="board-check-group">
-    <label><input type="checkbox" name="boardMethod" value="会場手渡し">会場手渡し</label>
-    <label><input type="checkbox" name="boardMethod" value="都内手渡し">都内手渡し</label>
-    <label><input type="checkbox" name="boardMethod" value="郵送">郵送</label>
-  </div>
-
-  <div class="trade-actions">
-    <button onclick="showBoard()">検索</button>
-    <button onclick="resetBoardFilters()">リセット</button>
-  </div>
-
-  <div id="boardList"></div>
-</div>
-
-<script src="data/cards.js"></script>
-<script src="data/boardPosts.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
-<script src="js/main.js"></script>
-<script src="js/board.js"></script>
+  <script src="data/cards.js"></script>
+  <script src="data/boardPosts.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/board.js"></script>
 
 </body>
 </html>
