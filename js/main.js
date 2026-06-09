@@ -474,7 +474,7 @@ function search() {
     filtered = filtered.filter((card) => {
       if (!card.type) return false;
       const types = String(card.type).split("/");
-      if (typeFilter === "unit") return types.includes("unit");
+      if (typeFilter === "unit") return card.type === "unit" || card.type === "unit/buster";
       if (typeFilter === "ace") return types.includes("ace");
       return card.type === typeFilter;
     });
@@ -679,6 +679,7 @@ function updateDeckStatus() {
     .join("<br>");
 
   deckStatus.innerHTML = `
+    デッキ枚数：${deck.length}/50枚<br>
     ユニット：${unitCount}枚<br>
     コマンド：${commandCount}枚<br>
     バスター：${busterCount}枚<br>
