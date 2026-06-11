@@ -73,7 +73,7 @@ function formatCardEntry(entryText) {
   }
 
   const suffix = count > 1 ? `×${count}` : "";
-  return `${card.name}(${card.rarity})${suffix}`;
+  return `${card.name}(${card.rarity || "-"})${suffix}`;
 }
 
 function convertIdsToNames(idText) {
@@ -309,6 +309,13 @@ function updateTradeGiveBox(entries) {
   updateTradePreview(buildTradeText());
 }
 
+function updateTradeWantBox(entries) {
+  const tradeWant = document.getElementById("tradeWant");
+  if (!tradeWant) return;
+  tradeWant.value = entries.join("\n");
+  updateTradePreview(buildTradeText());
+}
+
 function addCollectionCardToTradeGive(cardId) {
   const tradeGive = document.getElementById("tradeGive");
   if (!tradeGive) return;
@@ -344,6 +351,41 @@ function removeCollectionCardFromTradeGive(cardId) {
   updateTradeGiveBox(entries);
 }
 
+function addCollectionCardToTradeWant(cardId) {
+  const tradeWant = document.getElementById("tradeWant");
+  if (!tradeWant) return;
+
+  const entries = parseTradeEntries(tradeWant.value);
+  const index = entries.findIndex((entry) => parseCardEntry(entry).id === String(cardId));
+
+  if (index === -1) {
+    entries.push(String(cardId));
+  } else {
+    const parsed = parseCardEntry(entries[index]);
+    entries[index] = `${parsed.id}*${parsed.count + 1}`;
+  }
+
+  updateTradeWantBox(entries);
+}
+
+function removeCollectionCardFromTradeWant(cardId) {
+  const tradeWant = document.getElementById("tradeWant");
+  if (!tradeWant) return;
+
+  const entries = parseTradeEntries(tradeWant.value);
+  const index = entries.findIndex((entry) => parseCardEntry(entry).id === String(cardId));
+  if (index === -1) return;
+
+  const parsed = parseCardEntry(entries[index]);
+  if (parsed.count <= 1) {
+    entries.splice(index, 1);
+  } else {
+    entries[index] = `${parsed.id}*${parsed.count - 1}`;
+  }
+
+  updateTradeWantBox(entries);
+}
+
 function showCollection() {
   const container = document.getElementById("collectionList");
   if (!container) return;
@@ -356,8 +398,8 @@ function showCollection() {
   container.innerHTML = cards
     .filter((card) => {
       const count = getCardCount(card.id);
-      if (collectionFilter === "owned" && count === 0) return false;
-      if (collectionFilter === "unowned" && count > 0) return false;
+      if (collectionFilter === "owned") return count > 0;
+      if (collectionFilter === "unowned") return count === 0;
       if (collectionRarityFilters.length > 0 && !collectionRarityFilters.includes(card.rarity)) return false;
       return true;
     })
@@ -375,8 +417,10 @@ function showCollection() {
             onchange="handleCardCountChange('${card.id}', this.value)"
           >
           <div class="collection-trade-actions">
-            <button type="button" onclick="addCollectionCardToTradeGive('${card.id}')">+譲</button>
-            <button type="button" onclick="removeCollectionCardFromTradeGive('${card.id}')">-譲</button>
+            <button type="button" onclick="addCollectionCardToTradeGive('${card.id}')">譲＋</button>
+            <button type="button" onclick="removeCollectionCardFromTradeGive('${card.id}')">譲－</button>
+            <button type="button" onclick="addCollectionCardToTradeWant('${card.id}')">求＋</button>
+            <button type="button" onclick="removeCollectionCardFromTradeWant('${card.id}')">求－</button>
           </div>
         </div>
       `;
@@ -634,18 +678,8 @@ function updateDeckStatus() {
   let commandCount = 0;
   let busterCount = 0;
   let shotCount = 0;
-  const colorCounts = {
-    白: 0,
-    赤: 0,
-    青: 0,
-    黒: 0,
-  };
-  const suitCounts = {
-    "♤": 0,
-    "♡": 0,
-    "♢": 0,
-    "♧": 0,
-  };
+  const colorCounts = { 白: 0, 赤: 0, 青: 0, 黒: 0 };
+  const suitCounts = { "♤": 0, "♡": 0, "♢": 0, "♧": 0 };
 
   deck.forEach((id) => {
     const card = findCardById(id);
