@@ -740,7 +740,7 @@ function checkDeckRules() {
   if (shotCount > 12) msg += `ショットカードは最大12枚です（現在${shotCount}枚）<br>`;
 
   const result = document.getElementById("deckCheckResult");
-  if (result) result.innerHTML = msg || "OKです。ルール内です。";
+  if (result) result.innerHTML = msg || "カードゲームでも、咲け";
 }
 
 function generateDeckCode() {
