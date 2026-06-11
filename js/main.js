@@ -4,18 +4,16 @@ let collectionFilter = "all";
 let allCardsOwnershipFilter = "all";
 let collectionRarityFilters = [];
 let allCardsRarityFilters = [];
+let isSortingDeck = false;
+let deckSortable = null;
 
 function openTab(tabId, buttonEl) {
   document.querySelectorAll("button.tab").forEach((button) => button.classList.remove("active"));
-  if (buttonEl) {
-    buttonEl.classList.add("active");
-  }
+  if (buttonEl) buttonEl.classList.add("active");
 
   document.querySelectorAll(".tab-content").forEach((content) => content.classList.remove("active"));
   const tab = document.getElementById(tabId);
-  if (tab) {
-    tab.classList.add("active");
-  }
+  if (tab) tab.classList.add("active");
 
   if (tabId === "collection") showCollection();
   if (tabId === "allcards") showAllCards();
@@ -25,7 +23,7 @@ function openTab(tabId, buttonEl) {
 function normalizeSearchText(text) {
   return String(text || "")
     .replace(/\s+/g, "")
-    .replace(/山崎/g, "山﨑")
+    .replace(/　/g, "")
     .trim()
     .toLowerCase();
 }
@@ -36,16 +34,20 @@ function getCheckedValues(name) {
 
 function parseTradeEntries(text) {
   return String(text || "")
-    .split(/[\n,、]+/)
+    .split(/[\n,]+/)
     .map((item) => item.trim())
     .filter(Boolean);
 }
 
 function parseCardEntry(entryText) {
-  const [rawId, rawCount] = String(entryText || "").split(/[＊*×x]/);
+  const match = String(entryText || "").trim().match(/^(.+?)(?:[\*x×](\d+))?$/i);
+  if (!match) {
+    return { id: "", count: 1 };
+  }
+
   return {
-    id: String(rawId || "").trim(),
-    count: Math.max(1, parseInt(rawCount, 10) || 1),
+    id: String(match[1] || "").trim(),
+    count: Math.max(1, parseInt(match[2], 10) || 1),
   };
 }
 
@@ -60,7 +62,7 @@ function getCardSubTypes(card) {
 }
 
 function formatCardEntry(entryText) {
-  const specialEntries = ["未所持カード", "他相談", "相談"];
+  const specialEntries = ["未所持のカード", "他相談", "希望なし"];
   const rawEntry = String(entryText || "").trim();
   if (specialEntries.includes(rawEntry)) return rawEntry;
 
@@ -80,7 +82,7 @@ function convertIdsToNames(idText) {
 
 function formatCompactCardEntry(entryText) {
   const { id, count } = parseCardEntry(entryText);
-  return count > 1 ? `${id}×${count}` : id;
+  return count > 1 ? `${id}*${count}` : id;
 }
 
 function convertIdsToCompactList(idText) {
@@ -89,8 +91,8 @@ function convertIdsToCompactList(idText) {
 
 function shortenTradeValues(values) {
   const labelMap = {
-    会場手渡し: "会場",
-    都内手渡し: "都内",
+    "現地手渡しのみ": "現地手渡し",
+    "郵送・別配送可": "郵送可",
   };
 
   return values.map((value) => labelMap[value] || value).join(",");
@@ -115,8 +117,8 @@ function updateReleaseCountdown() {
   let text = "";
 
   if (diff < 0) text = `発売まであと${Math.abs(diff)}日`;
-  else if (diff === 0) text = "本日発売！";
-  else text = `発売から${diff}日!!`;
+  else if (diff === 0) text = "本日発売";
+  else text = `発売から${diff}日`;
 
   const countdown = document.getElementById("releaseCountdown");
   if (countdown) countdown.textContent = text;
@@ -178,8 +180,7 @@ function showAllCards() {
     })
     .map((card) => {
       const count = getCardCount(card.id);
-      const ownershipText = count > 0 ? `所持 ${count}枚` : "未所持";
-
+      const ownershipText = count > 0 ? `所持数:${count}` : "未所持";
       return `
         <div class="cardAll">
           <img src="${card.img}" alt="${card.name}" loading="lazy">
@@ -226,11 +227,8 @@ function setAllCardsRarityFilter(nextFilter) {
     "": "allCardsRarityAll",
     SC: "allCardsRaritySC",
     PR: "allCardsRarityPR",
-    SR: "allCardsRaritySR",
     "R+": "allCardsRarityRPlus",
-    R: "allCardsRarityR",
     "N+": "allCardsRarityNPlus",
-    N: "allCardsRarityN",
   };
 
   Object.entries(buttonMap).forEach(([filter, id]) => {
@@ -276,11 +274,8 @@ function setCollectionRarityFilter(nextFilter) {
     "": "collectionRarityAll",
     SC: "collectionRaritySC",
     PR: "collectionRarityPR",
-    SR: "collectionRaritySR",
     "R+": "collectionRarityRPlus",
-    R: "collectionRarityR",
     "N+": "collectionRarityNPlus",
-    N: "collectionRarityN",
   };
 
   Object.entries(buttonMap).forEach(([filter, id]) => {
@@ -305,7 +300,6 @@ function updateCardCount(cardId, value) {
 function handleCardCountChange(cardId, value) {
   updateCardCount(cardId, value);
   showCollection();
-  showAllCards();
 }
 
 function updateTradeGiveBox(entries) {
@@ -350,53 +344,11 @@ function removeCollectionCardFromTradeGive(cardId) {
   updateTradeGiveBox(entries);
 }
 
-function updateTradeWantBox(entries) {
-  const tradeWant = document.getElementById("tradeWant");
-  if (!tradeWant) return;
-  tradeWant.value = entries.join("\n");
-  updateTradePreview(buildTradeText());
-}
-
-function addCollectionCardToTradeWant(cardId) {
-  const tradeWant = document.getElementById("tradeWant");
-  if (!tradeWant) return;
-
-  const entries = parseTradeEntries(tradeWant.value);
-  const index = entries.findIndex((entry) => parseCardEntry(entry).id === String(cardId));
-
-  if (index === -1) {
-    entries.push(String(cardId));
-  } else {
-    const parsed = parseCardEntry(entries[index]);
-    entries[index] = `${parsed.id}*${parsed.count + 1}`;
-  }
-
-  updateTradeWantBox(entries);
-}
-
-function removeCollectionCardFromTradeWant(cardId) {
-  const tradeWant = document.getElementById("tradeWant");
-  if (!tradeWant) return;
-
-  const entries = parseTradeEntries(tradeWant.value);
-  const index = entries.findIndex((entry) => parseCardEntry(entry).id === String(cardId));
-  if (index === -1) return;
-
-  const parsed = parseCardEntry(entries[index]);
-  if (parsed.count <= 1) {
-    entries.splice(index, 1);
-  } else {
-    entries[index] = `${parsed.id}*${parsed.count - 1}`;
-  }
-
-  updateTradeWantBox(entries);
-}
-
 function showCollection() {
   const container = document.getElementById("collectionList");
   if (!container) return;
 
-  if (!cards || cards.length === 0) {
+  if (typeof cards === "undefined" || !cards || cards.length === 0) {
     container.textContent = "カードデータがありません";
     return;
   }
@@ -404,11 +356,9 @@ function showCollection() {
   container.innerHTML = cards
     .filter((card) => {
       const count = getCardCount(card.id);
-
       if (collectionFilter === "owned" && count === 0) return false;
       if (collectionFilter === "unowned" && count > 0) return false;
       if (collectionRarityFilters.length > 0 && !collectionRarityFilters.includes(card.rarity)) return false;
-
       return true;
     })
     .map((card) => {
@@ -425,10 +375,8 @@ function showCollection() {
             onchange="handleCardCountChange('${card.id}', this.value)"
           >
           <div class="collection-trade-actions">
-            <button type="button" onclick="addCollectionCardToTradeGive('${card.id}')">譲＋</button>
-            <button type="button" onclick="removeCollectionCardFromTradeGive('${card.id}')">譲－</button>
-            <button type="button" onclick="addCollectionCardToTradeWant('${card.id}')">求＋</button>
-            <button type="button" onclick="removeCollectionCardFromTradeWant('${card.id}')">求－</button>
+            <button type="button" onclick="addCollectionCardToTradeGive('${card.id}')">+譲</button>
+            <button type="button" onclick="removeCollectionCardFromTradeGive('${card.id}')">-譲</button>
           </div>
         </div>
       `;
@@ -517,17 +465,17 @@ function search() {
       const imgTag = `<img src="${card.img}" loading="lazy" alt="${card.name}" style="width:85px; height:auto; border-radius:5px; margin-right:5px;">`;
       const subTypes = getCardSubTypes(card).length > 0 ? getCardSubTypes(card).join(",") : "-";
       const keyWords = Array.isArray(card.keyWord) ? card.keyWord.join(",") : "-";
-      const suitInfo = card.type && String(card.type).includes("unit") ? ` | スート:${card.suit || "-"}` : "";
+      const suit = card.suit || "-";
 
       const info =
         card.type === "command" || card.type === "territory"
-          ? `コスト:${card.cost} | 効果:${card.effect || "-"} | レアリティ:${card.rarity || "-"} | 期別:${card.generation || "-"} | トリガー:${subTypes} | キーワード:${keyWords} | カードID:${card.id}`
-          : `コスト:${card.cost} | 効果:${card.effect || "-"} | パワー:${card.power || "-"} | ヒット:${card.hit || "-"}${suitInfo} | レアリティ:${card.rarity || "-"} | 期別:${card.generation || "-"} | トリガー:${subTypes} | キーワード:${keyWords} | カードID:${card.id}`;
+          ? `コスト:${card.cost} | 効果:${card.effect || "-"} | スート:${suit} | レアリティ:${card.rarity || "-"} | 期:${card.generation || "-"} | サブタイプ:${subTypes} | キーワード:${keyWords} | カードID:${card.id}`
+          : `コスト:${card.cost} | 効果:${card.effect || "-"} | パワー:${card.power || "-"} | ヒット:${card.hit || "-"} | スート:${suit} | レアリティ:${card.rarity || "-"} | 期:${card.generation || "-"} | サブタイプ:${subTypes} | キーワード:${keyWords} | カードID:${card.id}`;
 
       return `<div class="${colorClass}" style="display:flex; align-items:center; margin-bottom:5px;">
         ${imgTag}<div>${card.name} | ${info}<br>
-        <button onclick="addToDeck('${card.id}')">＋</button>
-        <button onclick="removeFromDeck('${card.id}')">－</button></div></div>`;
+        <button onclick="addToDeck('${card.id}')">追加</button>
+        <button onclick="removeFromDeck('${card.id}')">削除</button></div></div>`;
     })
     .join("");
 }
@@ -582,27 +530,82 @@ function removeFromDeck(id) {
   updateDeckStatus();
 }
 
+function moveDeckCard(fromIndex, toIndex) {
+  if (fromIndex == null || toIndex == null) return;
+  if (fromIndex === toIndex) return;
+  if (fromIndex < 0 || fromIndex >= deck.length) return;
+
+  const safeToIndex = Math.max(0, Math.min(toIndex, deck.length));
+  const moved = deck.splice(fromIndex, 1)[0];
+  const adjustedToIndex = fromIndex < safeToIndex ? safeToIndex - 1 : safeToIndex;
+  deck.splice(adjustedToIndex, 0, moved);
+  updateDeckImages();
+  updateDeckStatus();
+}
+
+function setupDeckSortable() {
+  const deckDiv = document.getElementById("deckImages");
+  if (!deckDiv || typeof Sortable === "undefined") return;
+  if (deckSortable) return;
+
+  deckSortable = Sortable.create(deckDiv, {
+    animation: 150,
+    draggable: ".deck-card-slot",
+    ghostClass: "deck-sort-ghost",
+    chosenClass: "deck-sort-chosen",
+    dragClass: "deck-sort-drag",
+    onStart() {
+      isSortingDeck = true;
+    },
+    onEnd(event) {
+      const fromIndex = event.oldDraggableIndex;
+      const toIndex = event.newDraggableIndex;
+
+      if (fromIndex != null && toIndex != null && fromIndex !== toIndex) {
+        const moved = deck.splice(fromIndex, 1)[0];
+        deck.splice(toIndex, 0, moved);
+      }
+
+      updateDeckImages();
+      updateDeckStatus();
+      setTimeout(() => {
+        isSortingDeck = false;
+      }, 0);
+    },
+  });
+}
+
 function updateDeckImages() {
   const deckDiv = document.getElementById("deckImages");
   const territoryDiv = document.getElementById("territoryImage");
   if (!deckDiv || !territoryDiv) return;
 
   deckDiv.innerHTML = "";
-  deck.slice(0, 50).forEach((cardId) => {
+  deck.slice(0, 50).forEach((cardId, index) => {
     const card = findCardById(cardId);
     if (!card) return;
+
+    const slot = document.createElement("div");
+    slot.className = "deck-slot deck-card-slot";
+    slot.dataset.index = String(index);
 
     const img = document.createElement("img");
     img.src = card.img;
     img.alt = card.name;
-    img.onclick = () => removeFromDeck(card.id);
-    deckDiv.appendChild(img);
+    img.dataset.index = String(index);
+    img.onclick = () => {
+      if (isSortingDeck) return;
+      removeFromDeck(card.id);
+    };
+
+    slot.appendChild(img);
+    deckDiv.appendChild(slot);
   });
 
   for (let i = deck.length; i < 50; i += 1) {
     const placeholder = document.createElement("div");
-    placeholder.style.width = "110px";
-    placeholder.style.height = "152px";
+    placeholder.className = "deck-slot deck-placeholder-slot";
+    placeholder.dataset.index = String(i);
     deckDiv.appendChild(placeholder);
   }
 
@@ -631,49 +634,38 @@ function updateDeckStatus() {
   let commandCount = 0;
   let busterCount = 0;
   let shotCount = 0;
-
   const colorCounts = {
     白: 0,
     赤: 0,
     青: 0,
     黒: 0,
   };
-
   const suitCounts = {
+    "♤": 0,
     "♡": 0,
     "♢": 0,
-    "♤": 0,
     "♧": 0,
   };
 
   deck.forEach((id) => {
     const card = findCardById(id);
     if (!card) return;
-
     if (card.type && String(card.type).includes("unit")) unitCount += 1;
     if (card.type === "command") commandCount += 1;
     if (getCardSubTypes(card).includes("バスター")) busterCount += 1;
     if (getCardSubTypes(card).includes("ショット")) shotCount += 1;
-
-    if (card.color && colorCounts[card.color] !== undefined) {
-      colorCounts[card.color] += 1;
-    }
-
+    if (card.color && colorCounts[card.color] !== undefined) colorCounts[card.color] += 1;
     if (card.suit) {
       Object.keys(suitCounts).forEach((suit) => {
-        if (String(card.suit).includes(suit)) {
-          suitCounts[suit] += 1;
-        }
+        if (String(card.suit).includes(suit)) suitCounts[suit] += 1;
       });
     }
   });
 
   const totalDeckCards = deck.length || 1;
-
   const colorSummary = Object.entries(colorCounts)
-    .map(([color, count]) => `${color}：${count}枚 (${Math.round((count / totalDeckCards) * 100)}%)`)
+    .map(([color, count]) => `${color}：${count}枚(${Math.round((count / totalDeckCards) * 100)}%)`)
     .join("<br>");
-
   const suitSummary = Object.entries(suitCounts)
     .map(([suit, count]) => `${suit}：${count}枚`)
     .join("<br>");
@@ -686,10 +678,10 @@ function updateDeckStatus() {
     ショット：${shotCount}枚<br>
     テリトリー：${territoryCardId ? "あり" : "なし"}<br>
     <br>
-    色内訳<br>
+    色構成<br>
     ${colorSummary}<br>
     <br>
-    スート内訳<br>
+    スート構成<br>
     ${suitSummary}
   `;
 }
@@ -714,7 +706,7 @@ function checkDeckRules() {
   if (shotCount > 12) msg += `ショットカードは最大12枚です（現在${shotCount}枚）<br>`;
 
   const result = document.getElementById("deckCheckResult");
-  if (result) result.innerHTML = msg || "咲け、咲け、櫻坂46";
+  if (result) result.innerHTML = msg || "OKです。ルール内です。";
 }
 
 function generateDeckCode() {
@@ -728,7 +720,7 @@ function generateDeckCode() {
   const deckCodeBox = document.getElementById("deckCodeBox");
   const deckCodeResult = document.getElementById("deckCodeResult");
   if (deckCodeBox) deckCodeBox.value = `${territoryId}|${idList}`;
-  if (deckCodeResult) deckCodeResult.textContent = "デッキコード生成完了！";
+  if (deckCodeResult) deckCodeResult.textContent = "デッキコードを生成しました";
 }
 
 function loadDeckFromCode() {
@@ -749,9 +741,9 @@ function loadDeckFromCode() {
     updateDeckImages();
     updateDeckStatus();
     const deckCodeResult = document.getElementById("deckCodeResult");
-    if (deckCodeResult) deckCodeResult.textContent = "デッキ復元完了！";
+    if (deckCodeResult) deckCodeResult.textContent = "デッキを読み込みました";
   } catch (error) {
-    alert("無効なコードです");
+    alert("正しいコードではありません");
   }
 }
 
@@ -766,7 +758,7 @@ function copyDeckCode() {
     .writeText(deckCodeBox.value)
     .then(() => {
       const deckCodeResult = document.getElementById("deckCodeResult");
-      if (deckCodeResult) deckCodeResult.textContent = "コピーしました！";
+      if (deckCodeResult) deckCodeResult.textContent = "コピーしました";
     })
     .catch(() => {
       alert("コピーに失敗しました");
@@ -817,9 +809,9 @@ function buildCompactTradeText() {
   return `【櫻坂TCG】
 譲 ${give}
 求 ${want}
-方 ${method}
-場 ${place}
-推 ${oshi}
+方法 ${method}
+場所 ${place}
+推し ${oshi}
 #櫻坂TCGトレード`;
 }
 
@@ -835,8 +827,8 @@ function updateTradePreview(text) {
 
   const tradeTextCount = document.getElementById("tradeTextCount");
   if (tradeTextCount) {
-    const overText = text.length > TWITTER_TEXT_LIMIT ? "（長すぎます）" : "";
-    tradeTextCount.textContent = `${text.length}/${TWITTER_TEXT_LIMIT}文字 ${overText}`;
+    const overText = text.length > TWITTER_TEXT_LIMIT ? " 文字数オーバー" : "";
+    tradeTextCount.textContent = `${text.length}/${TWITTER_TEXT_LIMIT}文字${overText}`;
   }
 }
 
@@ -863,7 +855,7 @@ function postTrade() {
   updateTradePreview(text);
 
   if (text.length > TWITTER_TEXT_LIMIT) {
-    alert("投稿文が280文字を超えています。カード枚数を減らすか、推し・場所などを短くしてください。");
+    alert("投稿文が280文字を超えています。カード枚数や場所などを減らしてください。");
     return;
   }
 
@@ -872,23 +864,13 @@ function postTrade() {
 }
 
 window.addEventListener("load", () => {
+  setupDeckSortable();
   updateReleaseCountdown();
   showDailyCard();
   setupSearchSuggestions();
   showCollection();
   showAllCards();
   updateDeckStatus();
-
-  const deckImages = document.getElementById("deckImages");
-  if (deckImages && typeof Sortable !== "undefined") {
-    Sortable.create(deckImages, {
-      animation: 150,
-      onEnd(evt) {
-        const moved = deck.splice(evt.oldIndex, 1)[0];
-        deck.splice(evt.newIndex, 0, moved);
-      },
-    });
-  }
 
   const params = new URLSearchParams(window.location.search);
   const deckParam = params.get("deck");
