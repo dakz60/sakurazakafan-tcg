@@ -173,9 +173,14 @@ function showAllCards() {
   container.innerHTML = cards
     .filter((card) => {
       const count = getCardCount(card.id);
-      if (allCardsOwnershipFilter === "owned" && count === 0) return false;
-      if (allCardsOwnershipFilter === "unowned" && count > 0) return false;
-      if (allCardsRarityFilters.length > 0 && !allCardsRarityFilters.includes(card.rarity)) return false;
+      const matchesOwnership =
+        allCardsOwnershipFilter === "all" ||
+        (allCardsOwnershipFilter === "owned" && count > 0) ||
+        (allCardsOwnershipFilter === "unowned" && count === 0);
+      const matchesRarity =
+        allCardsRarityFilters.length === 0 || allCardsRarityFilters.includes(card.rarity);
+      if (!matchesOwnership) return false;
+      if (!matchesRarity) return false;
       return true;
     })
     .map((card) => {
@@ -398,9 +403,14 @@ function showCollection() {
   container.innerHTML = cards
     .filter((card) => {
       const count = getCardCount(card.id);
-      if (collectionFilter === "owned") return count > 0;
-      if (collectionFilter === "unowned") return count === 0;
-      if (collectionRarityFilters.length > 0 && !collectionRarityFilters.includes(card.rarity)) return false;
+      const matchesOwnership =
+        collectionFilter === "all" ||
+        (collectionFilter === "owned" && count > 0) ||
+        (collectionFilter === "unowned" && count === 0);
+      const matchesRarity =
+        collectionRarityFilters.length === 0 || collectionRarityFilters.includes(card.rarity);
+      if (!matchesOwnership) return false;
+      if (!matchesRarity) return false;
       return true;
     })
     .map((card) => {
@@ -574,19 +584,6 @@ function removeFromDeck(id) {
   updateDeckStatus();
 }
 
-function moveDeckCard(fromIndex, toIndex) {
-  if (fromIndex == null || toIndex == null) return;
-  if (fromIndex === toIndex) return;
-  if (fromIndex < 0 || fromIndex >= deck.length) return;
-
-  const safeToIndex = Math.max(0, Math.min(toIndex, deck.length));
-  const moved = deck.splice(fromIndex, 1)[0];
-  const adjustedToIndex = fromIndex < safeToIndex ? safeToIndex - 1 : safeToIndex;
-  deck.splice(adjustedToIndex, 0, moved);
-  updateDeckImages();
-  updateDeckStatus();
-}
-
 function setupDeckSortable() {
   const deckDiv = document.getElementById("deckImages");
   if (!deckDiv || typeof Sortable === "undefined") return;
@@ -595,9 +592,6 @@ function setupDeckSortable() {
   deckSortable = Sortable.create(deckDiv, {
     animation: 150,
     draggable: ".deck-card-slot",
-    ghostClass: "deck-sort-ghost",
-    chosenClass: "deck-sort-chosen",
-    dragClass: "deck-sort-drag",
     onStart() {
       isSortingDeck = true;
     },
@@ -740,7 +734,7 @@ function checkDeckRules() {
   if (shotCount > 12) msg += `ショットカードは最大12枚です（現在${shotCount}枚）<br>`;
 
   const result = document.getElementById("deckCheckResult");
-  if (result) result.innerHTML = msg || "カードゲームでも、咲け";
+  if (result) result.innerHTML = msg || "OKです。ルール内です。";
 }
 
 function generateDeckCode() {
