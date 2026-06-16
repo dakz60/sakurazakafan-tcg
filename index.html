@@ -25,17 +25,17 @@
     <div class="flex-row">
       <div style="flex:2;" class="flex-col">
         <div class="search-section">
-          <label>コスト:
+          <label>コスト
             <input type="number" id="costMin" placeholder="最小">
             ～
             <input type="number" id="costMax" placeholder="最大">
           </label>
-          <label>パワー:
+          <label>パワー
             <input type="number" id="powerMin" placeholder="最小">
             ～
             <input type="number" id="powerMax" placeholder="最大">
           </label>
-          <label>ヒット:
+          <label>ヒット
             <input type="number" id="hitMin" placeholder="最小">
             ～
             <input type="number" id="hitMax" placeholder="最大">
@@ -43,7 +43,7 @@
         </div>
 
         <div class="search-section">
-          <label>タイプ:
+          <label>タイプ
             <select id="typeFilter">
               <option value="">すべて</option>
               <option value="unit">ユニット</option>
@@ -53,7 +53,7 @@
             </select>
           </label>
 
-          <label>色:
+          <label>色
             <select id="colorFilter">
               <option value="">すべて</option>
               <option value="白">白</option>
@@ -63,17 +63,17 @@
             </select>
           </label>
 
-          <label>スート:
+          <label>スート
             <select id="suitFilter">
               <option value="">すべて</option>
+              <option value="♤">♤</option>
               <option value="♡">♡</option>
               <option value="♢">♢</option>
-              <option value="♤">♤</option>
               <option value="♧">♧</option>
             </select>
           </label>
 
-          <label>期別:
+          <label>期
             <select id="generationFilter">
               <option value="">すべて</option>
               <option value="2期">2期</option>
@@ -82,7 +82,7 @@
             </select>
           </label>
 
-          <label>トリガー:
+          <label>サブタイプ
             <select id="subTypeFilter">
               <option value="">すべて</option>
               <option value="バスター">バスター</option>
@@ -91,7 +91,7 @@
             </select>
           </label>
 
-          <label>キーワード:
+          <label>キーワード
             <select id="keyWordFilter">
               <option value="">すべて</option>
               <option value="ブライト">ブライト</option>
@@ -108,11 +108,12 @@
             </select>
           </label>
 
-          <label>レアリティ:
+          <label>レアリティ
             <select id="rarityFilter">
               <option value="">すべて</option>
               <option value="PR">PR</option>
               <option value="BT">BT</option>
+              <option value="LLC">LLC</option>
               <option value="R">R</option>
               <option value="R+">R+</option>
               <option value="SC">SC</option>
@@ -122,17 +123,17 @@
             </select>
           </label>
 
-          <label>カードID:
+          <label>カードID
             <input type="text" id="cardIdSearchBox" placeholder="IDで検索">
           </label>
         </div>
 
         <div class="search-section">
-          <label>カード名検索:
+          <label>カード名検索
             <input type="text" id="searchBox" placeholder="カード名を入力" list="cardList">
             <datalist id="cardList"></datalist>
           </label>
-          <label>効果文検索:
+          <label>効果検索
             <input type="text" id="effectSearchBox" placeholder="効果で検索">
           </label>
           <button onclick="search()">検索</button>
@@ -143,7 +144,7 @@
         <h3>ランダムカード表示</h3>
         <div id="dailyCard"></div>
         <div class="daily-card-actions">
-          <button onclick="rerollDailyCard()">🌸</button>
+          <button onclick="rerollDailyCard()">更新</button>
           <input type="text" id="manualCardId" placeholder="カードID">
           <button onclick="showManualCard()">表示</button>
         </div>
@@ -175,7 +176,7 @@
     <h2>デッキコード</h2>
     <textarea id="deckCodeBox" placeholder="ここにデッキコードを入力"></textarea><br>
     <button onclick="generateDeckCode()">デッキコード生成</button>
-    <button onclick="loadDeckFromCode()">デッキ復元</button>
+    <button onclick="loadDeckFromCode()">デッキ読込</button>
     <button onclick="copyDeckCode()">コピー</button>
     <div id="deckCodeResult"></div>
   </div>
@@ -208,8 +209,8 @@
 
     <div class="filter-button-row">
       <button id="allCardsOwnershipAll" class="filter-button active" onclick="setAllCardsOwnershipFilter('all')">すべて</button>
-      <button id="allCardsOwnershipOwned" class="filter-button" onclick="setAllCardsOwnershipFilter('owned')">所持</button>
-      <button id="allCardsOwnershipUnowned" class="filter-button" onclick="setAllCardsOwnershipFilter('unowned')">未所持</button>
+      <button id="allCardsOwnershipOwned" class="filter-button" onclick="setAllCardsOwnershipFilter('owned')">所有</button>
+      <button id="allCardsOwnershipUnowned" class="filter-button" onclick="setAllCardsOwnershipFilter('unowned')">未所有</button>
     </div>
 
     <div class="filter-button-row">
@@ -229,36 +230,36 @@
   <div id="trade" class="tab-content">
     <h2>トレード</h2>
 
-    <label>譲：
+    <label>譲
       <textarea id="tradeGive" rows="5" placeholder="カードID または カードID*枚数"></textarea>
     </label>
 
-    <label>求：
-      <textarea id="tradeWant" rows="5" placeholder="未所持カード、他相談、カードID など"></textarea>
+    <label>求
+      <textarea id="tradeWant" rows="5" placeholder="未所持のカード、他相談、カードID など"></textarea>
     </label>
 
-    <label>方法：</label>
+    <label>方法</label>
     <div class="board-check-group">
-      <label><input type="checkbox" name="tradeMethod" value="会場手渡し">会場手渡し</label>
-      <label><input type="checkbox" name="tradeMethod" value="都内手渡し">都内手渡し</label>
+      <label><input type="checkbox" name="tradeMethod" value="現地手渡しのみ">現地手渡しのみ</label>
+      <label><input type="checkbox" name="tradeMethod" value="郵送・別配送可">郵送・別配送可</label>
       <label><input type="checkbox" name="tradeMethod" value="郵送">郵送</label>
     </div>
 
-    <label>場所：</label>
+    <label>場所</label>
     <div class="board-check-group">
-      <label><input type="checkbox" name="tradePlace" value="東京リアミ">東京リアミ</label>
-      <label><input type="checkbox" name="tradePlace" value="京都リアミ">京都リアミ</label>
+      <label><input type="checkbox" name="tradePlace" value="東京">東京</label>
+      <label><input type="checkbox" name="tradePlace" value="大阪">大阪</label>
       <label><input type="checkbox" name="tradePlace" value="バクラ">バクラ</label>
       <label><input type="checkbox" name="tradePlace" value="4thアニラ">4thアニラ</label>
-      <label><input type="checkbox" name="tradePlace" value="ツアー福岡">ツアー福岡</label>
-      <label><input type="checkbox" name="tradePlace" value="ツアー広島">ツアー広島</label>
-      <label><input type="checkbox" name="tradePlace" value="ツアー宮城">ツアー宮城</label>
       <label><input type="checkbox" name="tradePlace" value="ツアー愛知">ツアー愛知</label>
+      <label><input type="checkbox" name="tradePlace" value="ツアー福岡">ツアー福岡</label>
+      <label><input type="checkbox" name="tradePlace" value="ツアー宮城">ツアー宮城</label>
+      <label><input type="checkbox" name="tradePlace" value="ツアー神奈川">ツアー神奈川</label>
       <label><input type="checkbox" name="tradePlace" value="ツアー東京">ツアー東京</label>
       <label><input type="checkbox" name="tradePlace" value="ツアー大阪">ツアー大阪</label>
     </div>
 
-    <label>メンバー：</label>
+    <label>メンバー</label>
     <div class="board-check-group">
       <label><input type="checkbox" name="tradeOshi" value="井上梨名">井上梨名</label>
       <label><input type="checkbox" name="tradeOshi" value="遠藤光莉">遠藤光莉</label>
@@ -276,7 +277,7 @@
       <label><input type="checkbox" name="tradeOshi" value="石森璃花">石森璃花</label>
       <label><input type="checkbox" name="tradeOshi" value="遠藤理子">遠藤理子</label>
       <label><input type="checkbox" name="tradeOshi" value="小田倉麗奈">小田倉麗奈</label>
-      <label><input type="checkbox" name="tradeOshi" value="小島 凪紗">小島 凪紗</label>
+      <label><input type="checkbox" name="tradeOshi" value="小島凪紗">小島凪紗</label>
       <label><input type="checkbox" name="tradeOshi" value="谷口愛季">谷口愛季</label>
       <label><input type="checkbox" name="tradeOshi" value="中嶋優月">中嶋優月</label>
       <label><input type="checkbox" name="tradeOshi" value="的野美青">的野美青</label>
@@ -300,13 +301,13 @@
     <h2>掲示板</h2>
 
     <div class="search-section board-search-grid">
-      <label>譲検索1：
-        <input type="text" id="boardGiveSearch1" placeholder="メンバー名">
+      <label>譲検索1
+        <input type="text" id="boardGiveSearch1" placeholder="メンバー名など">
       </label>
-      <label>譲検索2：
-        <input type="text" id="boardGiveSearch2" placeholder="メンバー名">
+      <label>譲検索2
+        <input type="text" id="boardGiveSearch2" placeholder="メンバー名など">
       </label>
-      <label>譲検索3：
+      <label>譲検索3
         <select id="boardGiveSearch3">
           <option value="">レアリティ</option>
           <option value="PR">PR</option>
@@ -320,13 +321,13 @@
         </select>
       </label>
 
-      <label>求検索1：
-        <input type="text" id="boardWantSearch1" placeholder="メンバー名">
+      <label>求検索1
+        <input type="text" id="boardWantSearch1" placeholder="メンバー名など">
       </label>
-      <label>求検索2：
-        <input type="text" id="boardWantSearch2" placeholder="メンバー名">
+      <label>求検索2
+        <input type="text" id="boardWantSearch2" placeholder="メンバー名など">
       </label>
-      <label>求検索3：
+      <label>求検索3
         <select id="boardWantSearch3">
           <option value="">レアリティ</option>
           <option value="PR">PR</option>
@@ -341,24 +342,24 @@
       </label>
     </div>
 
-    <label>場所：</label>
+    <label>場所</label>
     <div class="board-check-group">
-      <label><input type="checkbox" name="boardPlace" value="東京リアミ">東京リアミ</label>
-      <label><input type="checkbox" name="boardPlace" value="京都リアミ">京都リアミ</label>
+      <label><input type="checkbox" name="boardPlace" value="東京">東京</label>
+      <label><input type="checkbox" name="boardPlace" value="大阪">大阪</label>
       <label><input type="checkbox" name="boardPlace" value="バクラ">バクラ</label>
       <label><input type="checkbox" name="boardPlace" value="4thアニラ">4thアニラ</label>
-      <label><input type="checkbox" name="boardPlace" value="ツアー福岡">ツアー福岡</label>
-      <label><input type="checkbox" name="boardPlace" value="ツアー広島">ツアー広島</label>
-      <label><input type="checkbox" name="boardPlace" value="ツアー宮城">ツアー宮城</label>
       <label><input type="checkbox" name="boardPlace" value="ツアー愛知">ツアー愛知</label>
+      <label><input type="checkbox" name="boardPlace" value="ツアー福岡">ツアー福岡</label>
+      <label><input type="checkbox" name="boardPlace" value="ツアー宮城">ツアー宮城</label>
+      <label><input type="checkbox" name="boardPlace" value="ツアー神奈川">ツアー神奈川</label>
       <label><input type="checkbox" name="boardPlace" value="ツアー東京">ツアー東京</label>
       <label><input type="checkbox" name="boardPlace" value="ツアー大阪">ツアー大阪</label>
     </div>
 
-    <label>方法：</label>
+    <label>方法</label>
     <div class="board-check-group">
-      <label><input type="checkbox" name="boardMethod" value="会場手渡し">会場手渡し</label>
-      <label><input type="checkbox" name="boardMethod" value="都内手渡し">都内手渡し</label>
+      <label><input type="checkbox" name="boardMethod" value="現地手渡しのみ">現地手渡しのみ</label>
+      <label><input type="checkbox" name="boardMethod" value="郵送・別配送可">郵送・別配送可</label>
       <label><input type="checkbox" name="boardMethod" value="郵送">郵送</label>
     </div>
 
@@ -375,6 +376,5 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
   <script src="js/main.js"></script>
   <script src="js/board.js"></script>
-
 </body>
 </html>
