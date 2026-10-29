@@ -1,46 +1,83 @@
-body {
-  font-family: sans-serif;
-  background: white;
-  color: rgb(241,157,181);
-  margin: 0 auto;
-  padding: 20px;
-  max-width: 1400px;
-  font-size: 16px;
+:root {
+  --pink: rgb(241, 157, 181);
+  --border: #ccc;
+}
+
+* {
   box-sizing: border-box;
 }
 
-h1, h2 {
+body {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+  background: white;
+  color: var(--pink);
+  font-family: sans-serif;
+  font-size: 16px;
+}
+
+img {
+  max-width: 100%;
+}
+
+h1,
+h2 {
+  color: var(--pink);
   text-align: center;
-  color: rgb(241,157,181);
+}
+
+button,
+input,
+select,
+textarea {
+  margin: 5px;
+  padding: 6px;
+  border: 1px solid var(--pink);
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+button {
+  cursor: pointer;
+}
+
+input,
+select,
+textarea {
+  color: black;
+}
+
+textarea {
+  width: 100%;
+  resize: vertical;
+}
+
+hr {
+  border: 1px solid var(--pink);
 }
 
 .tab-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
   justify-content: center;
+  gap: 6px;
 }
 
 button.tab {
-  background: rgb(241,157,181);
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-  border-radius: 5px;
-  transition: all 0.2s;
   flex: 1 1 140px;
+  padding: 10px 20px;
+  border: none;
+  background: var(--pink);
+  color: white;
+  transition: 0.2s;
 }
 
+button.tab:hover,
 button.tab.active {
+  border: 1px solid var(--pink);
   background: white;
-  color: rgb(241,157,181);
-  border: 1px solid rgb(241,157,181);
-}
-
-button.tab:hover {
-  background: white;
-  color: rgb(241,157,181);
+  color: var(--pink);
 }
 
 .tab-content {
@@ -52,143 +89,16 @@ button.tab:hover {
   display: block;
 }
 
-input, select, button, textarea {
-  margin: 5px;
-  padding: 6px;
-  border-radius: 5px;
-  border: 1px solid rgb(241,157,181);
-  font-size: 16px;
-  box-sizing: border-box;
-}
-
-input, select, textarea {
-  color: black;
-}
-
-textarea {
-  width: 100%;
-  resize: vertical;
-  box-sizing: border-box;
-}
-
-button {
-  cursor: pointer;
-}
-
-hr {
-  border: 1px solid rgb(241,157,181);
-}
-
-.card-white {
-  color: rgb(241,157,181);
-  background-color: rgba(241,157,181,0.1);
-  padding: 10px;
-  margin: 6px 0;
-  border-radius: 10px;
-}
-
-.card-red {
-  color: white;
-  background-color: rgba(241,157,181,0.6);
-  padding: 10px;
-  margin: 6px 0;
-  border-radius: 10px;
-}
-
-.card-blue {
-  color: white;
-  background-color: rgba(68,170,255,0.4);
-  padding: 10px;
-  margin: 6px 0;
-  border-radius: 10px;
-}
-
-.card-black {
-  color: white;
-  background-color: rgba(0,0,0,0.4);
-  padding: 10px;
-  margin: 6px 0;
-  border-radius: 10px;
-}
-
 .flex-row {
   display: flex;
-  gap: 40px;
-  align-items: flex-start;
   flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 40px;
 }
 
 .flex-col {
   display: flex;
   flex-direction: column;
-}
-
-#deckContainer {
-  display: flex;
-  gap: 20px;
-  align-items: flex-start;
-  margin-top: 20px;
-  padding: 20px;
-  border-radius: 20px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-  min-height: 700px;
-  overflow-x: auto;
-}
-
-#deckContainer.white-mode {
-  background: white;
-}
-
-#deckContainer.mat-mode {
-  background-image: url("../images/plm.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
-#deckImages {
-  display: grid;
-  grid-template-columns: repeat(10, 98px);
-  grid-template-rows: repeat(5, 140px);
-  gap: 1px;
-  justify-items: center;
-  align-items: center;
-  min-width: max-content;
-}
-
-#deckImages img {
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  object-fit: cover;
-  width: 98px;
-  height: 140px;
-  cursor: grab;
-}
-
-#territoryImage {
-  width: 180px;
-  min-width: 180px;
-}
-
-#territoryImage img {
-  width: 270px;
-  height: 180px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  display: block;
-  margin: 5px auto;
-}
-
-#releaseCountdown,
-#deckCheckResult,
-#deckCodeResult {
-  text-align: center;
-  font-weight: bold;
-  margin: 10px 0;
-}
-
-#deckCheckResult {
-  color: rgb(241,50,50);
 }
 
 .search-section {
@@ -205,6 +115,134 @@ hr {
   overflow-y: auto;
 }
 
+.card-white,
+.card-red,
+.card-blue,
+.card-black {
+  margin: 6px 0;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.card-white {
+  background: rgba(241, 157, 181, 0.1);
+  color: var(--pink);
+}
+
+.card-red {
+  background: rgba(241, 157, 181, 0.6);
+  color: white;
+}
+
+.card-blue {
+  background: rgba(68, 170, 255, 0.4);
+  color: white;
+}
+
+.card-black {
+  background: rgba(0, 0, 0, 0.4);
+  color: white;
+}
+
+.daily-card-panel {
+  flex: 1;
+  padding: 24px;
+  border: 2px solid var(--pink);
+  border-radius: 40px;
+}
+
+.daily-card-panel h3 {
+  text-align: center;
+}
+
+.daily-card-actions {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.daily-card-actions input {
+  width: 72px;
+}
+
+#releaseCountdown,
+#deckCheckResult,
+#deckCodeResult {
+  margin: 10px 0;
+  font-weight: bold;
+  text-align: center;
+}
+
+#deckCheckResult {
+  color: rgb(241, 50, 50);
+}
+
+#deckContainer {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  min-height: 700px;
+  margin-top: 20px;
+  padding: 20px;
+  overflow-x: auto;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+#deckContainer.white-mode {
+  background: white;
+}
+
+#deckContainer.mat-mode {
+  background: url("../images/plm.jpg") center / cover no-repeat;
+}
+
+#deckImages {
+  display: grid;
+  grid-template-columns: repeat(10, 98px);
+  grid-template-rows: repeat(5, 140px);
+  gap: 1px;
+  min-width: max-content;
+  align-items: center;
+  justify-items: center;
+}
+
+#deckImages .deck-slot {
+  display: flex;
+  width: 98px;
+  height: 140px;
+  align-items: center;
+  justify-content: center;
+}
+
+#deckImages .deck-placeholder-slot {
+  border: 1px dashed rgba(241, 157, 181, 0.25);
+  border-radius: 5px;
+}
+
+#deckImages img {
+  width: 98px;
+  height: 140px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  object-fit: cover;
+  cursor: grab;
+}
+
+#territoryImage {
+  width: 180px;
+  min-width: 180px;
+}
+
+#territoryImage img {
+  display: block;
+  width: 270px;
+  height: 180px;
+  margin: 5px auto;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  object-fit: cover;
+}
+
 #collectionList,
 #cardListAll {
   display: flex;
@@ -214,12 +252,12 @@ hr {
 
 .cardAll {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   width: 110px;
   margin-bottom: 10px;
-  border: 1px solid #ccc;
   padding: 5px;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid var(--border);
   border-radius: 8px;
   background: #f9f9f9;
   text-align: center;
@@ -228,29 +266,9 @@ hr {
 .cardAll img {
   width: 80px;
   height: 120px;
-  object-fit: cover;
+  border: 1px solid var(--border);
   border-radius: 5px;
-  border: 1px solid #ccc;
-}
-
-.daily-card-panel {
-  flex: 1;
-  border: 2px solid rgb(241,157,181);
-  border-radius: 40px;
-  padding: 24px;
-}
-
-.daily-card-panel h3 {
-  text-align: center;
-}
-
-.daily-card-actions {
-  text-align: center;
-  margin-top: 10px;
-}
-
-.daily-card-actions input {
-  width: 72px;
+  object-fit: cover;
 }
 
 .filter-button-row {
@@ -263,11 +281,12 @@ hr {
 
 .filter-button {
   background: white;
-  color: rgb(241,157,181);
+  color: var(--pink);
 }
 
-.filter-button.active {
-  background: rgb(241,157,181);
+.filter-button.active,
+.filter-button[data-active="true"] {
+  background: var(--pink);
   color: white;
 }
 
@@ -282,19 +301,19 @@ hr {
 }
 
 .collection-card-name {
-  text-align: center;
-  font-size: 16px;
   margin-top: 6px;
-  color: rgb(241,157,181);
+  color: var(--pink);
+  font-size: 16px;
   font-weight: bold;
+  text-align: center;
 }
 
 .collection-trade-actions {
   display: flex;
-  gap: 6px;
-  justify-content: center;
-  margin-top: 6px;
   flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 6px;
 }
 
 .collection-trade-actions button {
@@ -303,16 +322,16 @@ hr {
   font-size: 13px;
 }
 
-#collectionList input[type=number]::-webkit-outer-spin-button,
-#collectionList input[type=number]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-#collectionList input[type=number] {
-  -moz-appearance: textfield;
+#collectionList input[type="number"] {
   width: 48px;
   text-align: center;
+  -moz-appearance: textfield;
+}
+
+#collectionList input[type="number"]::-webkit-inner-spin-button,
+#collectionList input[type="number"]::-webkit-outer-spin-button {
+  margin: 0;
+  -webkit-appearance: none;
 }
 
 .trade-actions {
@@ -337,12 +356,12 @@ hr {
 }
 
 .board-post {
-  border: 1px solid #ccc;
-  padding: 12px;
   margin: 10px 0;
+  padding: 12px;
+  border: 1px solid var(--border);
   border-radius: 10px;
-  color: black;
   background: #fffafc;
+  color: black;
 }
 
 .board-card-section {
@@ -350,9 +369,9 @@ hr {
 }
 
 .board-card-section-title {
-  color: rgb(241,157,181);
-  font-weight: bold;
   margin-bottom: 6px;
+  color: var(--pink);
+  font-weight: bold;
 }
 
 .board-card-grid {
@@ -365,24 +384,31 @@ hr {
   position: relative;
   width: 84px;
   padding: 5px;
-  border: 1px solid rgba(241,157,181,0.45);
+  border: 1px solid rgba(241, 157, 181, 0.45);
   border-radius: 8px;
   background: white;
-  text-align: center;
   font-size: 12px;
+  text-align: center;
 }
 
 .board-card-thumb img {
   width: 72px;
   height: 104px;
-  object-fit: cover;
+  border: 1px solid var(--border);
   border-radius: 5px;
-  border: 1px solid #ccc;
+  object-fit: cover;
 }
 
-.board-card-thumb small {
+.board-card-thumb small,
+.board-card-empty,
+.board-card-missing {
   display: block;
   color: #777;
+}
+
+.board-card-empty,
+.board-card-missing {
+  font-size: 13px;
 }
 
 .board-card-count {
@@ -391,50 +417,56 @@ hr {
   right: 4px;
   padding: 2px 6px;
   border-radius: 999px;
-  background: rgb(241,157,181);
+  background: var(--pink);
   color: white;
   font-weight: bold;
 }
 
-.board-card-empty,
-.board-card-missing {
-  color: #777;
-  font-size: 13px;
-}
-
 .board-card-note {
   display: flex;
-  align-items: center;
-  justify-content: center;
   min-width: 84px;
   min-height: 104px;
   padding: 5px;
-  border: 1px dashed rgba(241,157,181,0.65);
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed rgba(241, 157, 181, 0.65);
   border-radius: 8px;
   background: white;
-  color: rgb(241,157,181);
+  color: var(--pink);
   font-weight: bold;
   text-align: center;
 }
 
 #tradeTextCount {
-  text-align: right;
-  font-weight: bold;
   margin: 0 5px 10px;
+  font-weight: bold;
+  text-align: right;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 900px) {
   body {
-    padding: 16px;
+    padding: 14px;
+    font-size: 15px;
   }
 
   .flex-row {
-    gap: 24px;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .flex-row > div,
+  .daily-card-panel {
+    width: 100%;
+  }
+
+  button.tab {
+    flex-basis: calc(50% - 6px);
   }
 
   #deckContainer {
     min-height: auto;
-    padding: 16px;
+    padding: 14px;
+    flex-direction: column;
   }
 
   #deckImages {
@@ -452,210 +484,16 @@ hr {
     width: min(270px, 100%);
     height: auto;
   }
-}
-
-@media (max-width: 900px) {
-  body {
-    padding: 14px;
-    font-size: 15px;
-  }
-
-  .flex-row {
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  button.tab {
-    flex: 1 1 calc(50% - 6px);
-    padding: 10px 12px;
-  }
-
-  .daily-card-panel {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 18px;
-    border-radius: 24px;
-  }
-
-  #deckImages {
-    grid-template-columns: repeat(5, 98px);
-    grid-template-rows: repeat(10, 140px);
-  }
-
-  #deckContainer {
-    flex-direction: column;
-    gap: 16px;
-    padding: 14px;
-  }
-
-  #territoryImage img {
-    width: 240px;
-    height: auto;
-  }
 
   #result {
     max-height: none;
   }
 
-  .cardAll {
-    width: calc(33.333% - 8px);
-  }
-
-  .collection-card {
-    width: calc(33.333% - 8px);
-  }
-
-  .cardAll img,
-  .collection-card img {
-    width: 100%;
-    height: auto;
-  }
-
-  .board-card-thumb {
-    width: calc(33.333% - 6px);
-    box-sizing: border-box;
-  }
-
-  .board-card-thumb img {
-    width: 100%;
-    height: auto;
-  }
-
-  .board-search-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 640px) {
-  body {
-    padding: 10px;
-    font-size: 14px;
-  }
-
-  h1 {
-    font-size: 24px;
-  }
-
-  h2 {
-    font-size: 20px;
-  }
-
-  .search-section label {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  button.tab,
-  .filter-button {
-    flex: 1 1 calc(50% - 6px);
-  }
-
-  .trade-actions {
-    flex-direction: column;
-  }
-
-  .trade-actions button {
-    width: 100%;
-  }
-
   #collectionList,
   #cardListAll {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
-    gap: 8px !important;
-  }
-
-  .cardAll,
-  .collection-card {
-    width: 100% !important;
-    min-width: 0 !important;
-    margin: 0 !important;
-    padding: 8px !important;
-    box-sizing: border-box !important;
-  }
-
-  .cardAll img,
-  .collection-card img {
-    width: 100% !important;
-    max-width: 88px !important;
-    height: auto !important;
-  }
-
-  .collection-card-name {
-    font-size: 13px !important;
-  }
-
-  #deckContainer {
-    padding: 10px;
-  }
-
-  #deckImages {
-    grid-template-columns: repeat(4, 72px);
-    grid-template-rows: repeat(13, 104px);
-    min-width: max-content;
-  }
-
-  #deckImages img {
-    width: 72px;
-    height: 104px;
-  }
-
-  #territoryImage img {
-    width: min(220px, 100%);
-  }
-
-  .board-card-thumb {
-    width: calc(50% - 4px);
-  }
-
-  .board-search-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-{
-  box-sizing: border-box;
-}
-
-img {
-  max-width: 100%;
-}
-
-@media (max-width: 1024px) {
-  body {
-    max-width: none;
-    padding: 16px;
-  }
-
-  .flex-row {
-    gap: 20px;
-  }
-
-  #deckContainer {
-    min-height: auto;
-  }
-
-  .search-section {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 8px;
-  }
-
-  .search-section label {
-    margin: 0;
-  }
-
-  .search-section input,
-  .search-section select {
-    width: 100%;
-    margin: 4px 0 0;
-  }
-
-  #collectionList,
-  #cardListAll {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
   .cardAll,
@@ -668,20 +506,29 @@ img {
   .cardAll img,
   .collection-card img {
     width: 100%;
-    height: auto;
     max-width: 110px;
+    height: auto;
+  }
+
+  .board-card-thumb {
+    width: calc(33.333% - 6px);
+  }
+
+  .board-card-thumb img {
+    width: 100%;
+    height: auto;
   }
 }
 
-@media (max-width: 700px) {
+@media (max-width: 640px) {
   body {
     padding: 10px;
     font-size: 14px;
   }
 
   h1 {
-    font-size: 24px;
     margin: 8px 0 16px;
+    font-size: 24px;
   }
 
   h2 {
@@ -695,61 +542,57 @@ img {
     font-size: 16px;
   }
 
-  button.tab {
-    flex: 1 1 calc(50% - 6px);
-    min-height: 44px;
-    padding: 10px 8px;
-  }
-
+  button.tab,
   .filter-button {
-    flex: 1 1 calc(50% - 6px);
-    min-height: 42px;
+    flex-basis: calc(50% - 6px);
+    min-height: 44px;
     margin: 0;
   }
 
-  .flex-row {
+  .search-section label {
+    display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 4px;
   }
 
-  .flex-row > div {
+  .search-section input,
+  .search-section select {
     width: 100%;
-  }
-
-  .search-section {
-    grid-template-columns: 1fr;
-  }
-
-  .search-section button {
-    width: 100%;
-    min-height: 44px;
     margin: 0;
   }
 
   .daily-card-panel {
-    width: 100%;
     padding: 16px;
     border-radius: 20px;
   }
 
-  #result {
-    max-height: none;
+  .trade-actions {
+    flex-direction: column;
+  }
+
+  .trade-actions button {
+    width: 100%;
+    min-height: 44px;
+    margin: 0;
+  }
+
+  .board-check-group {
+    gap: 8px;
+  }
+
+  .board-check-group label {
+    flex: 1 1 calc(50% - 8px);
+    margin: 0;
   }
 
   #collectionList,
   #cardListAll {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
   }
 
   .cardAll,
   .collection-card {
     padding: 8px;
-  }
-
-  .cardAll img,
-  .collection-card img {
-    max-width: 100%;
   }
 
   .collection-card-name {
@@ -767,40 +610,8 @@ img {
     font-size: 12px;
   }
 
-  .board-check-group {
-    gap: 8px;
-  }
-
-  .board-check-group label {
-    flex: 1 1 calc(50% - 8px);
-    margin: 0;
-  }
-
-  .trade-actions {
-    flex-direction: column;
-  }
-
-  .trade-actions button {
-    width: 100%;
-    min-height: 44px;
-    margin: 0;
-  }
-
-  .board-search-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .board-card-grid {
-    gap: 6px;
-  }
-
-  .board-card-thumb {
-    width: calc(50% - 3px);
-  }
-
   #deckContainer {
     padding: 10px;
-    overflow-x: auto;
   }
 
   #deckImages {
@@ -808,19 +619,22 @@ img {
     grid-template-rows: repeat(13, 104px);
   }
 
+  #deckImages .deck-slot,
   #deckImages img {
     width: 72px;
     height: 104px;
   }
 
-  #territoryImage {
-    width: 100%;
-    min-width: 0;
-  }
-
   #territoryImage img {
     width: min(220px, 100%);
-    height: auto;
+  }
+
+  .board-search-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .board-card-thumb {
+    width: calc(50% - 4px);
   }
 }
 
@@ -829,20 +643,12 @@ img {
     flex-basis: 100%;
   }
 
-  #collectionList,
-  #cardListAll {
-    grid-template-columns: 1fr;
-  }
-
-  .board-check-group label {
-    flex-basis: 100%;
-  }
-
   #deckImages {
     grid-template-columns: repeat(4, 64px);
     grid-template-rows: repeat(13, 92px);
   }
 
+  #deckImages .deck-slot,
   #deckImages img {
     width: 64px;
     height: 92px;
