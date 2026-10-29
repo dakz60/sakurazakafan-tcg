@@ -613,3 +613,238 @@ hr {
     grid-template-columns: 1fr;
   }
 }
+
+{
+  box-sizing: border-box;
+}
+
+img {
+  max-width: 100%;
+}
+
+@media (max-width: 1024px) {
+  body {
+    max-width: none;
+    padding: 16px;
+  }
+
+  .flex-row {
+    gap: 20px;
+  }
+
+  #deckContainer {
+    min-height: auto;
+  }
+
+  .search-section {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .search-section label {
+    margin: 0;
+  }
+
+  .search-section input,
+  .search-section select {
+    width: 100%;
+    margin: 4px 0 0;
+  }
+
+  #collectionList,
+  #cardListAll {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .cardAll,
+  .collection-card {
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+  }
+
+  .cardAll img,
+  .collection-card img {
+    width: 100%;
+    height: auto;
+    max-width: 110px;
+  }
+}
+
+@media (max-width: 700px) {
+  body {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  h1 {
+    font-size: 24px;
+    margin: 8px 0 16px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+
+  button.tab {
+    flex: 1 1 calc(50% - 6px);
+    min-height: 44px;
+    padding: 10px 8px;
+  }
+
+  .filter-button {
+    flex: 1 1 calc(50% - 6px);
+    min-height: 42px;
+    margin: 0;
+  }
+
+  .flex-row {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .flex-row > div {
+    width: 100%;
+  }
+
+  .search-section {
+    grid-template-columns: 1fr;
+  }
+
+  .search-section button {
+    width: 100%;
+    min-height: 44px;
+    margin: 0;
+  }
+
+  .daily-card-panel {
+    width: 100%;
+    padding: 16px;
+    border-radius: 20px;
+  }
+
+  #result {
+    max-height: none;
+  }
+
+  #collectionList,
+  #cardListAll {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .cardAll,
+  .collection-card {
+    padding: 8px;
+  }
+
+  .cardAll img,
+  .collection-card img {
+    max-width: 100%;
+  }
+
+  .collection-card-name {
+    font-size: 13px;
+    word-break: break-word;
+  }
+
+  .collection-trade-actions {
+    gap: 4px;
+  }
+
+  .collection-trade-actions button {
+    flex: 1 1 calc(50% - 4px);
+    padding: 7px 3px;
+    font-size: 12px;
+  }
+
+  .board-check-group {
+    gap: 8px;
+  }
+
+  .board-check-group label {
+    flex: 1 1 calc(50% - 8px);
+    margin: 0;
+  }
+
+  .trade-actions {
+    flex-direction: column;
+  }
+
+  .trade-actions button {
+    width: 100%;
+    min-height: 44px;
+    margin: 0;
+  }
+
+  .board-search-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .board-card-grid {
+    gap: 6px;
+  }
+
+  .board-card-thumb {
+    width: calc(50% - 3px);
+  }
+
+  #deckContainer {
+    padding: 10px;
+    overflow-x: auto;
+  }
+
+  #deckImages {
+    grid-template-columns: repeat(4, 72px);
+    grid-template-rows: repeat(13, 104px);
+  }
+
+  #deckImages img {
+    width: 72px;
+    height: 104px;
+  }
+
+  #territoryImage {
+    width: 100%;
+    min-width: 0;
+  }
+
+  #territoryImage img {
+    width: min(220px, 100%);
+    height: auto;
+  }
+}
+
+@media (max-width: 380px) {
+  button.tab {
+    flex-basis: 100%;
+  }
+
+  #collectionList,
+  #cardListAll {
+    grid-template-columns: 1fr;
+  }
+
+  .board-check-group label {
+    flex-basis: 100%;
+  }
+
+  #deckImages {
+    grid-template-columns: repeat(4, 64px);
+    grid-template-rows: repeat(13, 92px);
+  }
+
+  #deckImages img {
+    width: 64px;
+    height: 92px;
+  }
+}
